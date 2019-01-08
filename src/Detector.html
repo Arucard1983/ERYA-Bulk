@@ -1,0 +1,631 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="created" content="2016-03-10T20:27:27.902047081"/>
+	<meta name="changed" content="2018-11-13T14:57:41.316990055"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2.01cm }
+		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+	</style>
+</head>
+<body lang="pt-PT" link="#000080" vlink="#800000" dir="ltr"><p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="4" style="font-size: 16pt"><b>ERYA : Detector </b></font>
+</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The Detector Setup editor is a
+simple tool to handle the datafile that models the detector
+efficiency at an certain range of energies.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The minimum requirement is to
+export, or type an array of data that should contain a pair of values
+that models the efficiency in function of energy. (The program will
+assume the energy is in keV, and the efficiency as a dimensionless
+value between zero and one).</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The main rule is if you have
+the major number of points, and the greater range of energies, you
+got the better accuracy of the main program calculations.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Alternatively, you can fill a
+model function using the built-in ERYA macro language, that will
+override the interpolation table, and make a direct calculation
+instead.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Adding a Model Function</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Instead to rely on
+interpolation of some table, it is possible to type an expression
+that models the detector efficiency. The syntax should respect the
+following convention:</font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">&lt;Function
+Variables&gt;:&lt;Function Constants &gt;:&lt;The desired formula&gt;</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- You should treat the input
+line as an interface to a very trimmed down programming language, or
+a command line option, which lacks basic control flow, but have some
+characteristics such as variable or parameter assignment, and
+algebraic evaluation capabilities. </font>
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The internal interpreter
+will read and parse the line from the first term in the left, and
+follows the line to the right. You should define several variables or
+parameters (as explained above) separated by commas (,), and separate
+large section such as variables, parameters and the fitting function
+by colons (:), because after a colon (:) the interpreter store the
+updated variables, and discard the internal stack contents.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- After each section separated
+by colons (:), the interpreter will flush the stack cache, and store
+any internal variables. The last chain of commands are maintained on
+memory, and acts as function stack. This was intended to make a
+single compilation step, and use several times the compiled stack, in
+order to speed up the calculation times.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The built-in interpreter for
+the ERYA Model Function admits three types of data: parameters,
+constants and variables.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Get
+Acquaintance about Parameters, Constants, Variables and Functions</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>1.
+Parametes</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">A
+</span></span></font></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">parameter</span></i></span></font></font>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">is
+a special</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">variable
+which only accepts alphanumeric words as arguments, and resembles
+like</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">a
+type declaration on C or Pascal languages. On ERYA, all parameters
+are non-numeric and should be written in the following format.</span></span></font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">&lt;Parameter
+Name&gt; = &lt;Parameter Value&gt;</font></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">And
+a list of parameters should be separated by commas (best practice) or
+colons (non-recommended). The supported parameters and respective
+arguments are the following:</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
+fxvar = &lt;any valid variable&gt;</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Specifies
+the function independent variable, which can be any valid combination
+of alphanumeric characters, as long the first one are a letter (the
+same as C-style syntax), otherwise it will get a syntax error.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
+fyvar = &lt;any valid variable&gt;</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Specifies
+the function dependent variable, like y = f(x), which can be any
+valid combination of alphanumeric characters, as long the first one
+are a letter (the same as C-style syntax).</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
+fxmin = &lt;any valid variable&gt;</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Specifies
+a constant name that should be declared as the minimum possible value
+of the function independent variable, which can be any valid
+combination of alphanumeric characters, as long the first one are a
+letter (the same as C-style syntax). This parameter are not mandatory
+on Detector’s Efficiency widget.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
+fxmax = &lt;any valid variable&gt;</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Specifies
+a constant that should be declared as the maximum possible value of
+the function independent variable, which can be any valid combination
+of alphanumeric characters, as long the first one are a letter (the
+same as C-style syntax). Also, this parameter are not mandatory to
+work on this particular widget.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
+fnvar = &lt;any valid variable&gt;</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Creates
+16 variables, beginning from the initial one with the same
+user-defined variable name, and the next ones, by merging the numbers
+1 to 15 as suffixes. The initial values are “1” for all 16
+variables. Currently, only the Ziegler’s widget use this parameter
+in order to copy the 16 values from the table corresponding to the
+element on main context. On Detector’s context, was not mandatory.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+program expects at least a defined dependent and independent
+variable, fyvar and fxvar, otherwise it will warn the user, by a
+dialog message, that the function is not valid.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+restricted domain parameters, fxmin and fxmax, are optional on the
+Detector, where the program would return a null value for each
+independent value outside the restricted domain range.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Unlike
+the first two parameters, the latter ones should be initialized on
+the constants section of the program block, as explained below.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><b>2.
+Constants</b></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">A
+</span></span></font></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">constant</span></i></span></font></font>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">is
+a fixed symbolic name for a number that the user can declare for best
+convenience.</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">A
+constant name should be an alphanumerical one, but the first
+character should be a letter, like on C languages. </font></font>
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Once
+declared, with the assign symbol (=), the user can put any valid
+arithmetic expression, or simply a number on the right side of the
+expression: </font></font>
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">&lt;Constant
+Name&gt; = &lt;Constant Value&gt;</font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">&lt;Constant
+Name&gt; = &lt;Arithmetic Expression&gt;</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">During
+the list parsing, the built-in interpreter will create a list of
+constants and store into memory, while reading from the left to
+right. Groups of constants should be separated by commas, and when
+define any constant you can also use any algebraic expression that
+contains previous defined constants, as long are declared in first
+place.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:
+The following example will work, due to the fact the last variable
+depends from the first ones previously declared.</span></span></font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">a0
+= 1, a1 = 3, a2 = 4, a3 = a0+a1*a2</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:
+The following example will not work, and will pop-up a warning due to
+an undeclared constant. (Like a C program when try to use a variable
+or constant that was not declared on code.)</span></span></font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">a0
+= 1 , a1 = 3 , a2 = 4 , r = a0+a1*a2-a3</font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">(It will warn of the
+non-existence of “a3”)</font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:
+And finally, you cannot redefine the same constant in the same line,
+if you define previously:</span></span></font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif">a0</font>
+<font face="Liberation Serif, serif">= 1</font> <font face="Liberation Serif, serif">,
+a1</font> <font face="Liberation Serif, serif">= 3</font> <font face="Liberation Serif, serif">,
+a2</font> <font face="Liberation Serif, serif">= 4</font> <font face="Liberation Serif, serif">,
+a0</font> <font face="Liberation Serif, serif">= a0+a1*a2</font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">(It
+will warn that “a0” value cannot be overwritten)</font></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>3.
+Variables</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">A
+</span></span></font></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">variable</span></i></span></font></font>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">is
+like a constant, but the main difference is the fact their value can
+be changed during runtime. On ERYA, all variables should be declared
+as an argument of a parameter, on the previous block of code, as
+explained above. </span></span></font></font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:
+In the program context, the</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">variables</span></span></font></font>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">are
+the function variables defined by the “fxvar” and “fyvar”
+Parameters. Constants are simply any symbolic number to avoid a
+mixture of numbers in scientific format directly on the fitting
+function, reducing syntax errors and other issues.</span></span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">At
+least,</span></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">on
+the rightest part of the line, you should introduce, carefully, the
+</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">algebraic
+function</span></i></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">,
+while don’t forget the to define the variables and constants
+previously, otherwise you got an error.</span></span></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">It is possible to define a
+chain of functions separated by commas, and can be useful to define
+composite functions which in some situations can be advantageous. </font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+- Example 1: Take the following model-function:</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+Efficiency = a<sub>3 </sub>x<sup>3</sup> + a<sub>2</sub>x<sup>2</sup>+
+a<sub>1</sub>x + a<sub>0</sub> , where x = 1 / Energy</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+Where the symbolic constants are: <font size="3" style="font-size: 12pt"><span style="font-weight: normal">a</span></font><sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">3</span></font></sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">=-3000;
+a</span></font><sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">2</span></font></sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">=-234.5;
+a</span></font><sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">1</span></font></sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">=10;
+a</span></font><sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">0</span></font></sub><font size="3" style="font-size: 12pt"><span style="font-weight: normal">=1.5*10</span></font><sup><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-4</span></font></sup></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Then implement the following
+chain of instructions:</font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>fxvar = E, fyvar = F :
+a3=-3000, a2=-234.5, a1=10, a0=1.5E-4 : F = a0 + a1/E + a2/E^2 +
+a3/E^3</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip,
+since the function independent variable can be treated as a composite
+function respective to the reciprocal of energy, it is possible to
+implement the last instruction line as:</span></span></font></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>fxvar
+= E, fyvar = F : a3=-3000, a2=-234.5, a1=10, a0=1.5E-4 : x=1/E, F</b>
+<b>= a0 + a1*x + a2*x^2 + a3*x^3</b> </font></font>
+</p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Example 2: To demonstrate
+the usefulness to use chain of functions, please consider the
+following analytical formula that models some detectors (A
+log-polynomial interpolation formula):</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">log f(x) = a<sub>0 </sub>+ a<sub>1</sub>
+log(x) + a<sub>2</sub> log<sup>2</sup>(x) + a<sub>3</sub> log<sup>3</sup>(x)
++ a<sub>4</sub> log<sup>4</sup>(x) </font>
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Where: a<sub>0</sub>=a<sub>1</sub>=a<sub>2</sub>=a<sub>3</sub>=a<sub>4</sub>=3*10<sup>-4</sup>.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- A direct approach, i.e. to
+write directly as an exponential of a polynomial, while the function
+argument depends of a logarithm, it could cause round-off errors, or
+even overflows, generating wrong values (and the ERYA will treat any
+overflows during Detector Efficiency evaluation as null).</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Using all the proprieties,
+you can define the our function as the following:</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>fxvar = x, fyvar = y : a0 =
+3e-4, a1 = a0, a2 = a0, a3 = a0, a4 = a0: z = ln(x), w = a0 + a1*z +
+a2*z^2 + a3*z^3 + a4*z^4, y = exp(w) </b></font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Once you type any algebraic
+code, ERYA will trigger a syntax check once you click “OK”, in
+order try detect syntax errors before use other functionalities of
+ERYA.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>List of Admissible
+Functions</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif">-</font>
+ERYA will interpret any junction of letters and numbers as a
+variable, and if they are only numbers it will be treated as numbers.
+If the ERYA found an unknown symbol or an invalid junction of letter
+or numbers that the variable (any letters and numbers, while the
+first character is a letter) or an invalid number format, it will
+warn that the user inserted an invalid word.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The ERYA interpreter syntax
+was inspired by the BASIC-like languages found on some programmable
+scientific calculators, but the logic symbols are derived from C
+language.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Numbers should follow the
+standard format for scientific or float point number according to the
+C language standard, such as -2.5e+34 to represent -2,5 * 10<sup>34</sup>,
+or decimal numbers like 22.456, or even integers like 3 or 23.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- However in some operations,
+the built-in interpreter will evaluate negative numbers as one token,
+unlike the C language standard that uses the negative sign as a
+special operator, which means that in some algebraic evaluations ERYA
+will apply -3^2 as equal 9, like the standard mathematical analysis,
+unlike the C language, that would give -3^2 = -9 instead.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Even so, expressions such as 3
+- -2 will give 5, in both situations, although ERYA process the
+expression a little different from the C language standard.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">An expression like 5---7 will
+get an invalid arithmetic expression error, thought. </font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA recognize the basic
+arithmetic operations, like “+”, “-”, “*”, “/”.
+Exponentiation is done by the “^”, such as 3^5 to evaluate 3<sup>5</sup>
+, which is the only major feature that diverge from the C standard.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA support the relational
+operators “&lt;” and “&gt;”, but interprets them as
+arithmetic operators.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Any true relational operation
+will return “1”, and any false statement will get “0”.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">It is intended to define
+limited domain functions on the following format:</font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>fxvar = x, fyvar = y : y =
+(x &gt; 100) * ( x &lt; 200 ) * ( x^3+1)</b></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Note: Do not chain relational
+operators like 2&lt;5&lt;8, since it will make false positives, much
+due to the conversion of each element to a single number. ERYA macro
+language only recognizes double precision numbers as elements, not
+true boolean variables. In fact the previous example will render,
+2&lt;5&lt;8, turns 1&lt;8, and 1. But 7&gt;5&gt;2, will gives 1&gt;2,
+turning 0.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The number of left or right
+parenthesis should be equal, or you will get a parenthesis mismatch
+error.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA recognize several
+trigonometric functions, both circular and hyperbolic, as well their
+inverses. They follow the C standard naming. The following functions
+are valid:</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">sin, cos, tan, sinh, cosh,
+tanh, asin, acos, atan, asinh, acosh, atanh.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The following exponential
+and logarithmic functions are supported:</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">sqrt (square root), ln
+(natural logarithm), log (decimal logarithm) and exp (natural
+exponential).</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Any function argument should
+at last be placed under a pair of parenthesis, like sqrt(4) . </font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:</span></span></font></font>
+<font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">To
+avoid mistakes and potential parsing errors, it is a good advise to
+separate the numbers, operators, functions and variables with at
+least one empty space.</span></span></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Some Technical Information
+about the Model Function Interpreter</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The built-in interpreter use a
+custom parser that read several groups of characters and groups to
+form a dynamic vector of strings. Then the vector of strings are
+subject to a special algorithm to optimize, classify and make an
+error check derived from the Shunting-Yard Algorithm, and form a
+vector of variables, parameters and constants, and the original
+algebraic function are stored as a sequence of string elements in the
+RPN format (Reversed Polish Notation or postfix).</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Once the ERYA makes the
+parsing, and optimization successfully (Or it will give a syntax
+error, which stop all further numerical calculations), the algebraic
+function can now evaluate several values, making the evaluation of
+the efficiency in function of energy. The algebraic function
+numerical evaluation in postfix notation is now a straightforward
+method, since the original function was been optimized, which means
+the operators with different precedence order was switched to
+minimize the numerical evaluation complexity.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Supported File Formats</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">ERYA support a native file
+format to store the Detector data and the user-defined Detector
+Function (epsd), which syntax structure are on XML format.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Other file formats ar
+supported by special file filter formats, such as the LabView ERYA
+format (txt) are supported at the basic level. Alternatively, the
+user can read and write the table directly as an Excel Xlsx file.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The Detector’s Efficiency
+file was a pure text file, instead the other files that was binary
+ones. Some special LabView ERYA builds use an hard-coded efficiency
+function, that was not user programmable.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">You can load and convert
+between those two formats, however there's some caveats:</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- LabView ERYA format don't
+support the Model Function feature, so it will be lost if you choose
+to save in the old format.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Import a LabView ERYA
+Detector txt file will give an empty Model Function, since the old
+format do not had such feature.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA will convert any
+foreign file format to their native <b>epsd</b> file format, if
+select it as a default database file.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- If the user chooses the
+Microsoft Excel <b>xlsx</b> format, any export will create a new file
+from scratch, or overwrite if some file exists. The Xlsx file filter
+will find the relevant data from the columns and rows data contents,
+and extract the raw data as a matrix of strings.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">Once extracted, it will check,
+line by line, and exclude and non-numerical line. The pure numerical
+lines are then written on the built-in spreadsheet editor. The filter
+will only selected the first two columns, and may warn if the
+structure data is not comprehensible during file parsing.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">One final limitation, shared
+with the LabView format, is the Excel format also do not support the
+Model Function functionality.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+</body>
+</html>

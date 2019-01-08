@@ -1,0 +1,207 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="created" content="2016-06-14T17:14:28.679842002"/>
+	<meta name="changed" content="2018-11-13T15:58:59.195814607"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2.01cm }
+		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><p align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="4" style="font-size: 16pt"><b>ERYA : Additional Yield
+Fitting Information</b></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt">This
+additional document contains two main sections: the first one details
+some theoretical information about the Levenberg-Marquardt algorithm,
+and the later section, explains the factors that the user can make to
+change the converge criteria.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><b>The
+Levenberg-Marquardt algorithm on ERYA</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">From
+the <a href="Fit.html">stoichiometric fitting</a> document, the yield
+depends from the evaluation of a numerical integral, that along
+several variables it depends from the stoichiometric ratios, which
+are the critical parameters that can change the value of yields,
+during the fitting procedure.</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">  By
+taking the norm of a vector of different yields, it is possible to
+define the following <i>residual function </i><span style="font-variant: normal"><span style="font-style: normal">:
+</span></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">ε=
+|| Y</span></font></span><span style="font-variant: normal"><sub><font face="Liberation Serif, serif"><span style="font-style: normal">exp</span></font></sub></span><span style="font-variant: normal">
+– </span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">Y</span></font></span><span style="font-variant: normal"><sub><font face="Liberation Serif, serif"><span style="font-style: normal">theo</span></font></sub></span><span style="font-variant: normal">
+</span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">||,
+where the experimental yield are defined by the user, and the
+theoretical yield are evaluated from the current stoichiometric
+ratios, </span></font></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">calculated
+by several factors derived from the databases and some additional
+initial values that was </span></font></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">defined
+by the user.</span></font></span></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif">The main purpose of the
+Levenberg-Marquardt algorithm is to minimize the residual function,
+and find which stoichiometric ratios makes the residual function
+smaller, or by other hand, minimizes the gap between experimental and
+theoretical yield values.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">Since
+the residual function are nonlinear, the fitting process is basically
+an iteration of linear approximations, by taking successive steps:
+||x</span></font></span><span style="font-variant: normal"><sub><font face="Liberation Serif, serif"><span style="font-style: normal">i+1</span></font></sub></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">||
+= ||x</span></font></span><span style="font-variant: normal"><sub><font face="Liberation Serif, serif"><span style="font-style: normal">i</span></font></sub></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">||
++ ||δ||.</span></font></span></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">Where
+the vector δ</span></font></span><span style="font-variant: normal">
+</span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">is
+the solution of the following matrix system: (J</span></font></span><span style="font-variant: normal"><sup><font face="Liberation Serif, serif"><span style="font-style: normal">T
+</span></font></sup></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">J
++ λ</span></font></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">I)
+δ</span></font></span><span style="font-variant: normal"> </span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">=
+J</span></font></span><span style="font-variant: normal"><sup><font face="Liberation Serif, serif"><span style="font-style: normal">T
+</span></font></sup></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">ε</span></font></span></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif">The J matrix are the Jacobian
+matrices, which are the successive derivatives of several yields
+along their stoichiometric ratios.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif">The <font face="Times New Roman, serif">λ</font>
+factor is the gradient damping factor, which is evaluated initially
+from <font face="Times New Roman, serif">λ</font>=<font face="Times New Roman, serif">τ</font>*max||
+J<sup>T </sup>J || , where <font face="Times New Roman, serif">τ is
+the initial damping factor, that can be changed by the user, as will
+be explained on next section.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font face="Times New Roman, serif">The
+algorithm will stop, either by exceeding a maximum number of
+iterations (up to 100, user selectable), or when reaches a
+convergence criteria, </font><font face="Times New Roman, serif">that
+can occur</font><font face="Times New Roman, serif"> from the
+residual functions: </font>||J<sup>T </sup>ε|| &lt; h<sub>1 </sub>||ε||,
+or from the stoichiometric ratios: ||δ|| &lt; h<sub>2 </sub>||x||.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif">Otherwise the stoichiometric
+ratios <b>x</b>  are updated according to the vector δ, as long the
+matrix system had solutions, making the damping factor <font face="Times New Roman, serif">λ</font>
+and the Jacobian matrices been updated for the new stoichiometric
+ratios at each new iteration step, until a solution emerges.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+ <font face="Liberation Serif, serif">An additional renormalization
+step also occurs each time the stoichiometric ratios <b>x</b><span style="font-weight: normal">,
+in order to confine the numerical values  on a more safe range
+domain.</span></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><b>Changing the Convergence
+Criteria</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">When the user opens the Advanced
+Fitting Settings from the “Advanced”, the window displays the
+default settings:</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">- Maximum number of Iterations,
+100 (Selectable from 0 to 100).</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">- Initial damping factor, 3
+(Selectable from 0 to 3).</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">- Yield convergence criteria, 3
+(Selectable from 0 to 6).</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">- Stoichiometric converge
+criteria,3 (Selectable from 0 to 6).</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif">Except the first one, all the
+numbers should be reading as a reciprocal of a decimal exponential of
+the selected argument. This means that the default values are:
+<font face="Times New Roman, serif">τ=10</font><sup><font face="Times New Roman, serif">-3</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">1</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-3</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">2</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-3</font></sup><font face="Times New Roman, serif">.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Times New Roman, serif">The default settings should give
+a fairy good approximation in a short number of iterations, as long
+the experimental results was not far away of the initial
+stoichiometric guess.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+ <font face="Times New Roman, serif">In some occasions it is possible
+to occur a slow convergence due to a series of factors, that only by
+experience can help to minimize the problem.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+ <font face="Times New Roman, serif">The fitting time will increase
+when the number of independent fitting parameter increases. With two
+or three, usually the fitting take a couple of seconds. But with 10
+or 20 elements, it may take some minutes to achieve the results.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+ <font face="Times New Roman, serif">Other factors that may cause
+abnormal fitting times, even for some samples with fewer fitting
+parameters. A common cause  is that some Elements have a
+cross-section function that was not very well conditioned, require
+several iterations steps to achieve a reasonable result, due to a
+slow convergence.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font face="Times New Roman, serif">If
+the experimental results are too far away, it is possible to reduce
+the precision (Like τ=10</font><sup><font face="Times New Roman, serif">-2</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">1</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-1</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">2</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-1</font></sup><font face="Times New Roman, serif">),
+to give an initial correction. Otherwise, it would get a slow
+convergence (Taking 50 or almost 100 iterations), or even fail to get
+a solution.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font face="Times New Roman, serif">On
+other hand, taking an higher precision can fail to find a solution,
+or make a negligible correction beyond the experimental precision.
+Only in a few cases, use an higher precision is needed, like τ=10</font><sup><font face="Times New Roman, serif">-3</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">1</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-4</font></sup><font face="Times New Roman, serif">;
+h</font><sub><font face="Times New Roman, serif">2</font></sub><font face="Times New Roman, serif">=10</font><sup><font face="Times New Roman, serif">-4</font></sup><font face="Times New Roman, serif">.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font face="Times New Roman, serif">As a rule of thumb, if any
+fitting takes too long, probably the cause was one of the described
+before. </font>
+</p>
+</body>
+</html>

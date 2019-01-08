@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ERYA-Bulk_Detector>
+<File_Details>
+<Contents>
+<Program_Name>ERYA-Bulk</Program_Name>
+<Program_Version>3.75</Program_Version>
+<Date_File_Creation>2017-10-10T15:20:56.00Z</Date_File_Creation>
+</Contents>
+</File_Details>
+<Detector_Data>
+<Detector_Function>
+<macro>fxvar = E, fyvar = F: a3=-2078.4, a2=-312.84, a1=5.006, a0=0.001: x=1/E, F=a3*x^3+a2*x^2+a1*x+a0</macro>
+</Detector_Function>
+<Energy_Efficiency>
+<register n="1" Energy="3451.152" Efficiency="0.002234752"/>
+<register n="2" Energy="3272.99" Efficiency="0.002316666"/>
+<register n="3" Energy="3253.416" Efficiency="0.002326201"/>
+<register n="4" Energy="3201.962" Efficiency="0.002351812"/>
+<register n="5" Energy="2598.458" Efficiency="0.002726009"/>
+<register n="6" Energy="2034.755" Efficiency="0.00326954"/>
+<register n="7" Energy="2015.181" Efficiency="0.003293695"/>
+<register n="8" Energy="1771.351" Efficiency="0.003637642"/>
+<register n="9" Energy="1408.011" Efficiency="0.004360555"/>
+<register n="10" Energy="1360.25" Efficiency="0.004482848"/>
+<register n="11" Energy="1298.6" Efficiency="0.00465329"/>
+<register n="12" Energy="1238.282" Efficiency="0.004835545"/>
+<register n="13" Energy="1212.95" Efficiency="0.004917178"/>
+<register n="14" Energy="1175.102" Efficiency="0.005045307"/>
+<register n="15" Energy="1112.116" Efficiency="0.005276634"/>
+<register n="16" Energy="1087" Efficiency="0.005375862"/>
+<register n="17" Energy="1037.84" Efficiency="0.005583019"/>
+<register n="18" Energy="964.131" Efficiency="0.005930237"/>
+<register n="19" Energy="867.388" Efficiency="0.006467974"/>
+<register n="20" Energy="846.772" Efficiency="0.006597056"/>
+<register n="21" Energy="778.903" Efficiency="0.00706562"/>
+<register n="22" Energy="688.678" Efficiency="0.007815736"/>
+<register n="23" Energy="443.976" Efficiency="0.011114434"/>
+<register n="24" Energy="411.115" Efficiency="0.011794414"/>
+<register n="25" Energy="383.859" Efficiency="0.012425139"/>
+<register n="26" Energy="367.789" Efficiency="0.012829216"/>
+<register n="27" Energy="356.014" Efficiency="0.013141918"/>
+<register n="28" Energy="344.275" Efficiency="0.0134686"/>
+<register n="29" Energy="302.858" Efficiency="0.01475321"/>
+<register n="30" Energy="276.404" Efficiency="0.015693868"/>
+<register n="31" Energy="244.692" Efficiency="0.016955678"/>
+<register n="32" Energy="223.116" Efficiency="0.017894012"/>
+<register n="33" Energy="197" Efficiency="0.0190871"/>
+<register n="34" Energy="160.609" Efficiency="0.020643212"/>
+<register n="35" Energy="135" Efficiency="0.02118732"/>
+<register n="36" Energy="121.7824" Efficiency="0.020934518"/>
+<register n="37" Energy="110" Efficiency="0.019564305"/>
+<register n="38" Energy="80.999" Efficiency="0.011166223"/>
+</Energy_Efficiency>
+</Detector_Data>
+</ERYA-Bulk_Detector>

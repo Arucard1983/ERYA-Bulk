@@ -1,0 +1,475 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title></title>
+	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="created" content="2016-03-10T20:33:10.842593381"/>
+	<meta name="changed" content="2018-11-13T14:54:52.350219724"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		@page { size: 21cm 29.7cm; margin: 2.01cm }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
+	</style>
+</head>
+<body lang="pt-PT" link="#000080" vlink="#800000" dir="ltr"><p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font size="4" style="font-size: 16pt"><b>ERYA : Ziegler Parameters</b></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The Ziegler Parameters editor
+contains a spreadsheet dedicated to the user make an easy edition,
+and maintaining a stack of numerical tables that ERYA use to handle a
+semi-empirical physical model of scattering derived from the Bragg
+Rule.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font size="3" style="font-size: 12pt">An optional custom function
+macro, and some utilities complements this widget functionality.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The basic functions for the
+1977 and 1991 Ziegler’s functions are hard-coded on program and
+don't require further explanation unless you want to read the details
+at the bottom of this document, leaving the user to fill the 12
+parameters that each chemical element should describe.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The editor contains two main
+tabs, where the left ones is the single Ziegler's Parameters, and the
+second tab are dedicated to scroll (using the switch) the SRIM tables
+for each element.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">As a final alternative, it is
+possible to define a user-defined function to bypass the hard-coded
+functions.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<b>Main Features:</b></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">-
+For easy management, the first column are dedicated to the chemical
+symbol of the element, and the next 12 columns (A-1 to A-12) are the
+Ziegler's Fitting Parameters which was</span></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">publish
+from the original Ziegler's books, but can also be exported from a
+compatible spreadsheet file, or a database table. The final columns</span></span></font>
+<font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">(Atomic
+Mass, Bloch Parameter, Density) refers to the standard atomic mass of
+the element, where ERYA will use on internal evaluations if the
+original <a href="Database.html">Element
+Database</a> do not provide forehand. The Bloch Parameter the ratio
+between the mean ionization potential and the atomic number, using eV
+units; while the Density is the Elements density at standard pressure
+and temperature, measured with g/cm</span></span></font><sup><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">3</span></span></font></sup><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">.</span></span></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- This program, like the ERYA
+LabView version, support two Ziegler models which the main difference
+are the number of parameters. The 1977 version requires 12 fitting
+parameters, and the 1991 version only requires 8 (The A-9 to A-12
+columns are ignored or reset to zero).</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The user can force the 1977
+or 1991 Ziegler's model, by switching the pull-down menu on the top
+right window. The custom macro or the SRIM tables can be activated by
+the same menu. </font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The program will try lo load
+the row assigned to a particular atomic number, leaving the Element
+name as a pure convenience. If the element don't exist, it would give
+an error.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The editor can export the
+LabView ERYA original Ziegler file in ASCII, but the program will use
+an hard-coded dictionary to change the “Elements” column to the
+chemical symbols automatically, beginning with “H, He, ...”</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Using the built-in ERYA
+macro language, it is possible to define a custom function. With this
+new feature, it is even possible to use the table as an array of
+constants. (See below).</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- As a final option, the user
+can use the SRIM tables for each element, as long activate the “SRIM”
+mode, and check by the atomic number scroll-box, the presence of the
+element’s stopping powers forehand.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Compatibility with LabView
+ERYA:</b></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA-Profiling support the
+import of the LabView ERYA Ziegler Parameters binary file.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">However the export as a binary
+file is not possible, due to the lack of documentation, and also as a
+safety measure. When the user choose to export with the LabView
+format, it will save to as a plain ASCII file format, where the
+LabView ERYA program can rebuild again.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- If you export the native
+file format (epsz) to the LabView text format, the original Element
+names will be replaced to their respective atomic numbers.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">-It is not possible to export
+or import custom functions to LabView or ASCII format.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- SRIM tables are not
+supported at all to any LabView ERYA programs. All text files created
+by this program will give only text files with two columns of
+numerical data.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Export and Import Ziegler
+Parameters from an Excel File:</b></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- ERYA-Profiling supports to
+read and write the Ziegler Parameters from Microsoft Excel files.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">However, while reading
+directly from an Excel file are supported, the program expects a
+compact spreadsheet with 14 or 16 columns, otherwise the ERYA’s
+Xlsx filter will fail to parse, and gives an error.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The Excel format also
+preserves the custom Element’s names, and write the labels at the
+first column.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Any custom function are not
+stored or retrieved from an Excel file.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- It is only possible to
+export or import a single SRIM table for a single Element. The table
+should have only two columns (any labels are accepted, but ignored
+safely), and require the user to manually select the “SRIM” tab,
+and the correct Element’s Atomic Number before import an Excel
+file. The same logic applies, when export an Excel file, it will take
+the current selected Element’s Atomic Number on screen. The same
+export/import rules also applies to plain ASCII files.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Using SRIM Tables</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- When select the
+“LabView/ASCII” option from “Import” button, ERYA can parse
+an unedited SRIM Stopping-Power output file to the correct Atomic
+Number location, making all unit conversions without any additional
+steps, even if the user don’t select the “SRIM” mode forehand.
+ERYA can ask if you want to override the table on the Atomic Number
+defined by the source file.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Pure numerical text files
+with two columns are also supported, if the user select previously
+the “SRIM” tab, and the correct Atomic Number forehand.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- When export a SRIM table as
+“LabView/ASCII” file, it will only export the selected Atomic
+Number table as a simple text file with two numerical columns.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- The only way to import or
+export all SRIM tables from ERYA at once, is to use the native <b>epsz</b>
+file format.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Using the Copy and Paste
+from the Clipboard (Deprecated!)</b></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+- If you can’t export a Ziegler table from an Excel file, as a
+workaround, try to copy and paste, by clicking on the first leftmost
+cell grid, and then click the “Paste” button. The reverse, it is
+simply to select the data, and then click “Copy”. Once done, just
+paste on any document you have, including a spreadsheet program, or a
+simple text editor.</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+- Notice that this feature is now deprecated, and should be used as a
+last resource when the main tools fail.</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Ziegler Parameters
+Additional Reference</b></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">The Ziegler Parameters tables
+publish in 1977 uses a full set of 12 fitting parameters for each
+element, and evaluates the stopping power in function of energy.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">† <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">For
+E&lt;10 keV</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S
+=</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">1</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">0.5</span></font></sup></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">† <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">For
+10&lt;E&lt;1000 keV</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">1/S
+=</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">1/S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">LOW</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">+
+1/S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">HIGH</span></font></sub></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">LOW</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">=</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">0.45</span></font></sup></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">HIGH</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">=</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">(A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">3</span></font></sub><font face="Liberation Serif, serif"><span style="font-weight: normal">/E)
+log (1 + (A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">4</span></font></sub><font face="Liberation Serif, serif"><span style="font-weight: normal">/E)
++ (A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">5</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">E)
+)</span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">† <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">For
+E &gt; 1000</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">keV</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S
+=</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">(A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">6</span></font></sub><font face="Liberation Serif, serif"><span style="font-weight: normal">/β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">)
+{log ( A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">7</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2
+</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">/
+(1 - β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">))
+- β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2
+</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">-
+A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">8</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">-
+A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">9
+</span></font></sub><font face="Liberation Serif, serif"><span style="font-weight: normal">log
+(E)</span></font><sub> </sub><font face="Liberation Serif, serif"><span style="font-weight: normal">-</span></font><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">10</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">log</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">(E)</span></font><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">-
+A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">11</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">log</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">3</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">(E)</span></font><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">-
+A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">12</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">log</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">4</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">(E)</span></font><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">}</span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">Where
+β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">is
+the relativistic velocity from the energy-mass formula for the proton
+beams, which are calculated from:</span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">β</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">=
+(E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">+
+2 m E) / (m + E)</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">2</span></font></sup>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">,
+where m = 938280 keV is the rest mass of the proton.</span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">Otherwise,
+the Ziegler Parameters published in 1991 use only 8 parameters, but
+use another set of</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">equations.</span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">† <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">For
+E &gt; 25</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">keV</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">1/S
+=</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">1/S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">LOW</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">+
+1/S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">HIGH</span></font></sub></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">LOW</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">=</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">1</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">A2
+</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">+</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">3</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">A4</span></font></sup></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif"><span style="font-weight: normal">S</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">HIGH</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">=</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">(A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">5</span></font></sub>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">/
+E</span></font><sup><font face="Liberation Serif, serif"><span style="font-weight: normal">A6</span></font></sup><font face="Liberation Serif, serif"><span style="font-weight: normal">)
+log ( (A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">7</span></font></sub><font face="Liberation Serif, serif"><span style="font-weight: normal">/E)
++ (A</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">8</span></font></sub><sub>
+</sub><font face="Liberation Serif, serif"><span style="font-weight: normal">E)
+)</span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Using
+a Custom Function</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Applying
+the extensive reference from <a href="Detector.html">Detector’s
+Efficiency</a> , it is possible to define a custom algebraic
+expression at models the stopping-power (in eV/10</span></span></font></font><sup><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">15</span></span></font></font></sup>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">atm/cm</span></span></font></font><sup><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">2</span></span></font></font></sup>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">units),
+in function of Energy (keV).</span></span></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">In
+order to load the values stored on the Ziegler's Constants table, the
+ERYA Macro use the parameter <b>fnvar</b> to create an array of 16
+constants, beginning with the variable name defined by the user (e.g.
+<b>zn</b>), and this will add more 15 of them, by appending the
+number’s order as suffixes.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">In
+this case, the variables will be: <b>zn, zn1, …, zn15</b>.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+base <b>zn</b> variable will be the Atomic Number value, and points
+to the corresponding table’s row. The <b>zn1 ~ zn12</b> will load
+the A-1 to A-12 parameters. The final <b>zn13</b> will be the Atomic
+mass.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">On
+ERYA-Bulk, the <b>zn14</b> and <b>zn15</b> variables are not used on
+this program context, even it was created on the interpreter memory.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">This
+feature is currently an hack to the ERYA macro language, in order to
+give an alternative to vectors, or the capability to read external
+data sources. </font></font>
+</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Notice
+that is possible to define constant values, and should not use any of
+the 16 variables defined by the <b>fnvar</b> macro parameter.</font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">It
+is obligatory to define the parameters <b>fxvar</b>, <b>fyvar</b> and
+<b>fnvar</b>, before write the algebraic function, such as the
+following example:</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>fxvar
+= x, fyvar = y, fnvar = n : a = 100 : y = (n * x + 1)*a</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Using
+the SRIM tables</b></font></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Selecting
+the “SRIM” mode, ERYA will evaluate the stopping by the
+interpolation of data from the tables that corresponds to the correct
+Element’s Atomic Number. </font></font>
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">In
+order to update the SRIM table, use SRIM software to export a single
+element stopping-power by an hydrogen ion beam, resulting a plain
+text file. Then just use the “Import” button from this widget,
+and select the “txt” file format. (It contains a lot of header
+data that ERYA will use to recognize the relevant data structures.)
+Any necessary unit conversions are made on fly, and placed on the
+correct atomic number automatically.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Alternatively,
+it is possible to read a two column numeric text file, or even an
+Excel file, but is required to the user select manually the correct
+atomic number from the “SRIM” tab, before import the data.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ 
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Once
+completed by either way, click on “Update Table” to store the new
+table on the ERYA program memory. To permanently store the updated
+tables, use the “Export” button to save as a native <b>epsz </b>file.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+“Clear All Tables” will delete all SRIM tables from ERYA program
+memory.</font></font></p>
+</body>
+</html>
