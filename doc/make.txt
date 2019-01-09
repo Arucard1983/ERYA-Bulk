@@ -8,7 +8,7 @@ In this scenario, it will explain how to use a Linux computer to build ERYA-Bulk
 
 Before you start, you will need:
 1. ERYA-Bulk source-code
-2. wxWidgets 3.0.2 source-code library
+2. wxWidgets 3.0.4 source-code library
 3. wxMathPlot 0.13 source-code library
 4. GCC toolchain from your Linux distro.
 5. MinGW toolchain for Windows versions.
@@ -19,7 +19,7 @@ Before you start, you will need:
 
 Linux Compilation:
 
-1. Install build-essentials and wxWidgets 3.0.2 from your favorite distro's package manager
+1. Install build-essentials and wxWidgets 3.0.4 from your favorite distro's package manager
 # On Debian systems, just type:
 $ sudo apt-get install build-essential libwxgtk3.0-dev
 
@@ -46,10 +46,10 @@ Windows Cross-Compiling on Linux:
 # On Debian systems, just apply:
 $ sudo apt-get install mingw-w64 wine
 
-2. Build wxWidgets 3.0.2 from source.
+2. Build wxWidgets 3.0.4 from source.
 $ wget -nc --no-check-certificate https://sourceforge.net/projects/wxwindows/files/3.0.2/wxWidgets-3.0.2.tar.bz2
-$ tar xjf wxWidgets-3.0.2.tar.bz2
-$ cd wxWidgets-3.0.2
+$ tar xjf wxWidgets-3.0.4.tar.bz2
+$ cd wxWidgets-3.0.4
 $ ./configure --prefix=/usr/x86_64-w64-mingw32/ --host=x86_64-w64-mingw32 --build=x86_64-linux --disable-shared --enable-unicode --with-msw --without-subdirs
 $ make
 $ sudo make install
