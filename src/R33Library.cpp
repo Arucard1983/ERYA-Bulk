@@ -1,6 +1,6 @@
 /***************************************************************
  * Name:      R33Library.cpp
- * Purpose:   IBANDL file format (*.r33), ITN text file format (*.dat/*.txt), LabView DataLog binary file (*.txt:DTLG) library implementation
+ * Purpose:   IBANDL file format (*.r33), ITN text file format (*.dat|*.txt), LabView DataLog binary file (*.txt:DTLG) library implementation
  * Author:    Vasco Manteigas (vm.manteigas@campus.fct.utl.pt)
  * Created:   2016-10-01
  * Copyright: Grupo de Reacoes Nucleares - LIBPHYS
