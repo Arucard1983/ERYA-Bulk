@@ -386,9 +386,6 @@ double Element::EvaluateSigma(double AtEnergy)
       double slope = (epsilon2 - epsilon1) / (E2 - E1); // a
       double initial = epsilon1 - slope * E1; // b
       return slope * AtEnergy + initial;
-//      double slope = (AtEnergy - E1)/(E2 - E1);
-//      double linear = epsilon1 + slope*(epsilon2 - epsilon1);
-//      return linear;
      }
     }
     return 0;
