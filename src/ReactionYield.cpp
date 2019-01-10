@@ -1112,6 +1112,7 @@ IntegerVector FittingParameterVector::GetElementIDAt(int ElementID)
    if(this->Item(i).GetGroupElementsID().GetValue(0) == ElementID)
     return this->Item(i).GetGroupElementsID();
  }
+ return IntegerVector();
 }
 
 // Update a stoichiometric value for the selected Element ID
