@@ -1,0 +1,20 @@
+# First version of ERYA-Bulk makefile.
+# TODO: Make some conditions to check wxWidgets libraries dependences.
+# TODO: Copy assets to /build directory.
+# Using tip from https://stackoverflow.com/questions/1950926/create-directories-using-make-file
+
+# Variables
+CC = g++
+BUILD = build
+WXWIDGETS = `wx-config --cxxflags --libs`
+TARGET = ERYA-Bulk
+
+all:
+#Create build directory 
+	$(info $(shell mkdir -p $(BUILD)))
+
+#Compile the file
+	$(CC) ./src/*.cpp $(WXWIDGETS) -std=c++11 -o ./$(BUILD)/$(TARGET)
+
+
+
