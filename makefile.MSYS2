@@ -1,0 +1,23 @@
+# Windows Version ERYA-Profiling makefile using gcc with MSYS2.
+# TODO: Automatically copy of dll's will be a usuful addition.
+# Using tip from https://stackoverflow.com/questions/1950926/create-directories-using-make-file
+
+# Variables
+CC = g++
+BUILD = build
+WXWIDGETS = `wx-config --cxxflags --libs`
+TARGET = ERYA-Bulk.exe
+CP = cp -r
+
+all:
+#Create build directory 
+	$(info $(shell mkdir -p $(BUILD)))
+
+#Compile the file
+	$(CC) ./src/*.cpp $(WXWIDGETS) -std=c++11 -o ./$(BUILD)/$(TARGET)
+
+#Copy the assets
+	$(CP) ./src/*.html ./$(BUILD)/
+	$(CP) ./src/readme.txt ./$(BUILD)/
+	$(CP) ./src/*.ep* ./$(BUILD)/
+
