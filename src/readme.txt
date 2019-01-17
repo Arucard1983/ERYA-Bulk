@@ -5,11 +5,10 @@ ERYA-Bulk Version 4.10 ReadMe
 1. Minimum Requirements
 
 ERYA-Bulk requires a computer with an supported operating system or architecture.
-- Current Version supports Windows 7 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux with wxWidgets GTK+ 3.0 toolkit (libwxgtk3 library) or greater.
+- Windows 7, 10 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux Debian 9 or Ubuntu 18.04 or greater.
 - 64-bit x86-64 is the default suported architecture for all operating systems listed before. Windows and Linux 32-bit versions are provided for legacy systems.
 - ARM binary versions are also provided for Linux systems.
 - The minimum usefull screen resolution is 1280*720, but it is highly recommended to use a FullHD display (1920*1080) for better view.
-- If the text size in labels and menus are to small or too big, even using the recomended screen resolutions, try to set the default pixel scale to normal (72 or 90 dpi), using the native operating system tools.
 - About 100 Mb of free hard disk space is highly recommended.
 
 2. Supported Features
@@ -22,49 +21,57 @@ ERYA-Bulk requires a computer with an supported operating system or architecture
 3. Installation from Binary Package.
 
 # Linux Instructions
-- Download the "Linux" package to a temporary folder, and then open a Terminal emulator:
-$ cd <temp folder>
-# If you use Debian, or Ubuntu, then install the package using the following commands:
-$ sudo dpkg -i eryabulk_4.00-5_amd64.deb
-$ sudo apt-get -f install
-# Or using the GUI GNOME Software installer, Synaptic or any package manager avaliable.
-- Click on package file, and the pacjage manager should install any additional libraries.
-# Open the ERYA-Bulk from your favorite Desktop Environment (Menu>Science>ERYA-Bulk), or simply type on Terminal:
-$ /opt/ERYA-Bulk/ERYA-Bulk
-# The ERYA-Bulk will create a profile directory as ~/.ERYA-Bulk, where the local configuration settings will be stored.
-# To uninstall, simply use this command on Terminal:
-$ sudo apt-get remove eryabulk
-- If necessary, delete the user profile folder:
-$ rm -rf ~/.ERYA-Bulk
-- If the program complains about missing libraries, check your Linux Distro support website to search the package name of libwxgtk3. On Debian systems, just type:
-$ sudo apt-get install libwxgtk3.0-0v5
+3.1. Check first if your Linux distribution are compatible with Debian 9 or Ubuntu 18.04 codebase.
+- Debian 9 Stretch require to enable the stretch-backports in order to install the updated wxWidgets libraries.
 
+3.2. Download the correct arch version to your computer, then open a Terminal window on the same folder of the downloaded package.
+- For Ubuntu systems, it's not necessary to open a root shell before install programs:
+$ sudo apt update
+$ sudo apt dist-upgrade
+$ sudo dpkg -i *.deb
+$ sudo apt -f install
+- On Debian 9, due to higher security restrictions, it is necessary to open a root shell first:
+$ su [Ask for your root password...]
+$ apt update
+$ apt dist-upgrade
+$ dpkg -i *.deb
+$ dpkg -t stretch-backports -f install
+
+3.3. Open the ERYA-Bulk from your favorite Desktop Environment (Menu>Education>ERYA-Bulk), or simply type on Terminal:
+$ /opt/ERYA-Bulk/ERYA-Bulk
+
+3.4. The ERYA-Bulk will create a profile directory as ~/.ERYA-Bulk, where the local configuration settings will be stored.
+
+3.5. To uninstall, simply use this command on Terminal:
+$ sudo apt remove eryabulk
+
+3.6. If necessary, delete the user profile folder:
+$ rm -rf ~/.ERYA-Bulk
 
 # Windows Instructions
-- Open the Self-Extractor archive, and select the desired target folder. You can extract to the standard Program Directory, or to a user Documents folder.
-- To uninstall, just delete the program folder or run the uninstaller program.
-- Ince removed, if necessary delete the C:\users\<name>\Local Settings\Application Data\ERYA-Bulk\ folder.
+- Open the Package File that will start the installation wizard program. Follow the instructions.
+- To uninstall, just run the uninstaller program.
+- Once removed, if necessary delete the C:\users\<name>\Local Settings\Application Data\ERYA-Bulk-Win64\ folder.
 
 # Mac OS X Instructions
 - Unpack the zipped file, and then copy the application package (ERYA-Bulk.app) to the Applications folder.
-- To uninstall, delete the application from the Application folder, and then the ~/Library/Application Support/ERYA-Bulk folder.
+- To uninstall, delete the application from the Application folder, and then the ~/Library/Application Support/ERYA-Bulk-OSX folder.
 
 4. First Run
 
-# At start-up, once the program don't found any configuration file, it will display a wizard, asking the user to follow the instructions.
-Once completed, ERYA-Profiling will create a ERYA-Profiling.conf on the local user settings directory, which location are defaulted by wxWidgets (see remarks above), where should store the target location and the name of three core database files (Element Database, Detector Efficiency and Ziegler Parameters).
-# You can use the original Databases from LabView ERYA, including the text format, and the binary format. However ERYA-Bulk will export, check and convert to their native format as their default databases.
-# The original bundled databases are located in the same directory of the program, and during this step the program will default this folder to ease the user selection. 
-# The program will check the selected files, and if everything goes correctly, the selected databases and the configuration file will be stored sucefully, otherwise you will get an error and ERYA will start in reset mode (No database loaded at all).
-- Once done selecting (it's better to choose the bundled databases first), ERYA-Bulk will start at full functionality.
-- In next start-up, ERYA-Bulk will load the config file automatically and load the database files without user interaction.
-# Note: If any default database is damaged, an error will be issued, and probably require to repeat the first time procedure to reset.
+# When ERYA don't find any configuration file, it will start a setup wizard, asking for the default Database, Detector and Ziegler files to be the default ones.
+- Once completed the setup, ERYA will start automatically straight to GUI, loading the default databases into memory.
+- A failure on this stage will make ERYA starts on reset mode, warning the user about the faulty file.
+# You can import the original Databases from LabView ERYA, including the ones using plain text format, and the binary format, using the Database Tools on the program context.
+- However ERYA-Bulk will import, check and convert to their native format when saves their content.
+# To fix setup errors, open the tool from Database > Setup, and make the necessary changes.
+- Once fixed, click on "Save" to create a new configuration file. The new settings will be tested, and ERYA will reload the databases to check if everything are fine.
+- To reset any setup files, and forces ERYA to start the Setup Wizard, you can click on "Delete" button to make it.
 # Note: The ERYA-Bulk.conf file will be stored on the following directory.
 - Linux : ~/.ERYA-Bulk/
 - Windows : C:\users\<name>\Local Settings\Application Data\ERYA-Bulk\
 - Mac OS X: ~/Library/Application Support/ERYA-Bulk
 - Portable (All Operating Systems): The same program directory.
-
 
 5. About files compability
 
@@ -91,20 +98,17 @@ This software can export the Ziegler, Detector and Element database from an ERYA
 
 7. Troubleshooting and Issues
 
-- If you use a debug release, click "Cancel" on start-up to disable annoying debugging warnings unless you want to contribute the ERYA development.
-- If the program fails to open the main window and opens error mensages, this means the essentials databases are corrupted, or the configuration file described on section #4 are corrupted.
-# To fix, remove the application and config files as described by section #3, and make a fresh install of the application.
-- On most realistic situations, any fitting process rarely exceeds several seconds, unless you use a slow computer.
-# Our tests show that any Fitting procedure takes between 4 to 13 steps, 10 in average.
-Intel Core x86-64 computers may evaluate a full fitting analysis in less than 3 seconds.
-On other hand, a Tegra 3(ARM) may take up to 30 seconds to do the same task.
-- The application may crash in some unpredictable situations, but is it now a much rare issue.
-# The user can, finally, import binary LabView files which structure are compatible with ERYA-Bulk. The new import feature was possible due to some third-party research, and much reverse engineering.
+# If the program fails to open the main window and opens error mensages, this means the essentials databases are corrupted, or the configuration file described on section #4 are corrupted.
+- To fix, remove the application and config files as described by section #3, and make a fresh install of the application.
+# On most common situations, any fitting process rarely exceeds one minute.
+- Samples with 10 or 20 elements (beyond any realistic sample) may take several minutes to fit, but it's expected from the numerical implementation.
+# The application may crash in some unpredictable situations, but is it now a much rare issue.
+# The user can import binary LabView files which structure are compatible with ERYA-Bulk. The new import feature was possible due to some third-party research, and much reverse engineering.
 - Since the LabView import libraries cannot be 100% safe to work, please backup the original file before import.
 # The ERYA-Bulk can also save some results as a Microsoft Office Excel spreadsheet files, making the clipboard feature less relevant.
 
 Copyrights
 
-Group: 2017 LibPhys
+Group: 2018 LibPhys
 Programmer e-mail: vm.manteigas@campus.fct.unl.pt
 wxMathPlot/wxWidgets licence:  https://github.com/wxWidgets/wxWidgets/blob/master/docs/licence.txt
