@@ -249,7 +249,7 @@ bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement
  if (textEditIsotopic->GetValue() == wxEmptyString)
   textEditIsotopic->Clear();
  }
- tableDataEditor->ClearGrid(); // But the main speadsheet are always cleared.
+ tableDataEditor->ClearGrid(); // But the main spreadsheet are always cleared.
  // Set Parameters
  double UnitFactor;
  if (SelectUnits == 0)
@@ -257,7 +257,7 @@ bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement
  else
   UnitFactor = 1000;
  if (SelectAngles == 0)
-  UnitFactor = UnitFactor * (8 * std::acos(0.0));
+  UnitFactor = UnitFactor * (8 * std::acos(0.0)); //4*pi
  else
   UnitFactor =  UnitFactor * 1.0;
  // Process the file
@@ -275,6 +275,9 @@ bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement
     // Fetch the two elements
     wxString c0 = ITNLine.GetUnexcluded().Item(0);
     wxString c1 = ITNLine.GetUnexcluded().Item(1);
+    // Replace commas by decimal points, if necessary
+    int test0 = c0.Replace(wxT(","),wxT("."),true);
+    int test1 = c1.Replace(wxT(","),wxT("."),true);
     double nc0,nc1;
     // Verify if the tokens are numerical values
     if(c0.ToDouble(&nc0) && c1.ToDouble(&nc1))
@@ -452,102 +455,7 @@ bool SRIMFile::SRIMImport()
      dial->ShowModal();
      return false;
   }
- // Get the table units
- wxString CurrentUnitLine = database.GetLine(Units);
- wxArrayString CurrentUnitSeparators;
- CurrentUnitSeparators.Add(wxT("("));
- CurrentUnitSeparators.Add(wxT(")"));
- CurrentUnitSeparators.Add(wxT("/"));
- CurrentUnitSeparators.Add(wxT("="));
- TextLineParser CurrentUnitData(CurrentUnitLine,CurrentUnitSeparators);
- if(CurrentUnitData.GetUnexcluded().GetCount()==3)
-  {
-    wxString TestUnit = CurrentUnitData.GetUnexcluded().Item(2); // Is the L.S.S unit ?
-    if(TestUnit.Contains(wxT("L.S.S.")))
-    {
-      UnitConversionFactor = 7.9050e-1;
-    }
-    else
-    {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Unsupported Stopping-Power Unit: ") + TestUnit, wxT("SRIM Import Error"), wxOK | wxICON_ERROR);
-     dial->ShowModal();
-     return false;
-    }
-  }
-  else if(CurrentUnitData.GetUnexcluded().GetCount()==4)
-  {
-    // Check the following units
-    wxString TestUnit1 = CurrentUnitData.GetUnexcluded().Item(2);
-    wxString TestUnit2 = CurrentUnitData.GetUnexcluded().Item(3);
-    if(TestUnit1.Contains(wxT("eV")) && TestUnit2.Contains(wxT("Angstrom"))) //ev/A
-    {
-      UnitConversionFactor = 8.3388e-1;
-    }
-    else if(TestUnit1.Contains(wxT("keV")) && TestUnit2.Contains(wxT("micron"))) //kev/um
-    {
-      UnitConversionFactor = 8.3388e+0;
-    }
-    else if(TestUnit1.Contains(wxT("MeV")) && TestUnit2.Contains(wxT("mm"))) //MeV/mm
-    {
-      UnitConversionFactor = 8.3388e+0;
-    }
-    else
-    {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Unsupported Stopping-Power Unit: ") + TestUnit1 + wxT(":") +  TestUnit2, wxT("SRIM Import Error"), wxOK | wxICON_ERROR);
-     dial->ShowModal();
-     return false;
-    }
-  }
-  else if(CurrentUnitData.GetUnexcluded().GetCount()==5)
-  {
-    // Check the following units
-    wxString TestUnit1 = CurrentUnitData.GetUnexcluded().Item(2);
-    wxString TestUnit2 = CurrentUnitData.GetUnexcluded().Item(3);
-    wxString TestUnit3 = CurrentUnitData.GetUnexcluded().Item(4);
-    if(TestUnit1.Contains(wxT("keV")) && TestUnit2.Contains(wxT("ug")) && TestUnit3.Contains(wxT("cm2"))) //keV/(ug/cm^2)
-    {
-      UnitConversionFactor = 1.1582e-2;
-    }
-    else if(TestUnit1.Contains(wxT("MeV")) && TestUnit2.Contains(wxT("mg")) && TestUnit3.Contains(wxT("cm2"))) //MeV/(mg/cm^2)
-    {
-      UnitConversionFactor = 1.1582e-2;
-    }
-    else if(TestUnit1.Contains(wxT("keV")) && TestUnit2.Contains(wxT("mg")) && TestUnit3.Contains(wxT("cm2"))) //keV/(mg/cm^2)
-    {
-      UnitConversionFactor = 1.1582e+1;
-    }
-    else
-    {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Unsupported Stopping-Power Unit: ") + TestUnit1 + wxT(":") +  TestUnit2 + wxT(":") +  TestUnit3, wxT("SRIM Import Error"), wxOK | wxICON_ERROR);
-     dial->ShowModal();
-     return false;
-    }
-  }
-  else if(CurrentUnitData.GetUnexcluded().GetCount()==6)
-  {
-    // Check the following units
-    wxString TestUnit1 = CurrentUnitData.GetUnexcluded().Item(2);
-    wxString TestUnit2 = CurrentUnitData.GetUnexcluded().Item(3);
-    wxString TestUnit3 = CurrentUnitData.GetUnexcluded().Item(4);
-    wxString TestUnit4 = CurrentUnitData.GetUnexcluded().Item(5);
-    if(TestUnit1.Contains(wxT("eV")) && TestUnit2.Contains(wxT("1E15")) && TestUnit3.Contains(wxT("atoms")) && TestUnit4.Contains(wxT("cm2"))) //ev/(1E15 atm/cm^2), which is the default ERYA units!
-    {
-      UnitConversionFactor = 1.0;
-    }
-    else
-    {
-       wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Unsupported Stopping-Power Unit: ") + TestUnit1 + wxT(":") +  TestUnit2 + wxT(":") +  TestUnit3 +  TestUnit2 + wxT(":") +  TestUnit4, wxT("SRIM Import Error"), wxOK | wxICON_ERROR);
-     dial->ShowModal();
-     return false;
-    }
-  }
-  else
-  {
-    wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Unexpected Stopping-Power Unit."), wxT("SRIM Import Error"), wxOK | wxICON_ERROR);
-     dial->ShowModal();
-     return false;
-  }
- // Overwrites the unit conversion factor
+  // Load the correct line with the unit conversion factor
  wxString ConversionLine = database.GetLine(Convert);
  wxArrayString ConversionSeparators;
  ConversionSeparators.Add(wxT("("));
