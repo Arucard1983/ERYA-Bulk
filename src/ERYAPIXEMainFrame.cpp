@@ -920,6 +920,7 @@ void ERYAPIXEMainFrame::OnMainNew( wxCommandEvent& event )
   renderStoichiometry->DelAllLayers(false,true);
   renderError->DelAllLayers(false,true);
   renderDetectorFitting->DelAllLayers(false,true);
+  this->GenerateLog();
   barMainStatus->SetStatusText(wxT("ERYA is Ready...") ,0);
  }
 }
@@ -930,6 +931,8 @@ void ERYAPIXEMainFrame::OnMainCheck( wxCommandEvent& event )
  for(int k=0; k<textSG.GetCount(); k++)
  {
     wxString temp = textSG.Item(k)->GetValue();
+    if(temp.Len()==0) // Empty values are equal to one, by default.
+        temp = wxT("1");
     AlgebraicFunction test(temp);
     if(test.GetErrorString().Trim().Len()==0)
     {
