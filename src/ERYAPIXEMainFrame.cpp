@@ -657,7 +657,7 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
     }
     else
     {
-     barMainStatus->SetStatusText(wxT("Warning! ERYA Profiling starts in Default Mode") ,0);
+     barMainStatus->SetStatusText(wxT("Warning! ERYA Bulk starts in Default Mode") ,0);
     }
  }
 }
@@ -670,7 +670,7 @@ void ERYAPIXEMainFrame::OnHelpGuide( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.10\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2018 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version 4.20\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2018 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )
@@ -1296,7 +1296,7 @@ bool ERYAPIXEMainFrame::StartUpProgram()
    firstrunwizard->Destroy();
    if(AcceptSync) //The wizard was completed
    {
-    wxBusyInfo* CreatingFiles = new wxBusyInfo(wxT("ERYA-Profiling are checking the files for consistency\nPlease wait, since on slow machines it can take\nseveral seconds to finish."));
+    wxBusyInfo* CreatingFiles = new wxBusyInfo(wxT("ERYA-Bulk are checking the files for consistency\nPlease wait, since on slow machines it can take\nseveral seconds to finish."));
     if(!(this->SaveSetupFile(CurrentConfig,CurrentDetectorFile,CurrentDatabaseFile,CurrentZieglerFile,CurrentMode)))
     {
      if(CreatingFiles)
@@ -1339,7 +1339,7 @@ bool ERYAPIXEMainFrame::StartUpProgram()
     }
     else
     {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default database is not compatible with ERYA Profiling."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
+     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default database is not compatible with ERYA Bulk."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
      dial->ShowModal();
      return false;
     }
@@ -1354,7 +1354,7 @@ bool ERYAPIXEMainFrame::StartUpProgram()
     }
     else
     {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default detector is not compatible with ERYA Profiling."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
+     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default detector is not compatible with ERYA Bulk."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
      dial->ShowModal();
      return false;
     }
@@ -1370,14 +1370,14 @@ bool ERYAPIXEMainFrame::StartUpProgram()
     }
     else
     {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default Ziegler is not compatible with ERYA Profiling."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
+     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The default Ziegler is not compatible with ERYA Bulk."), wxT("Error: Invalid Database"), wxOK | wxICON_ERROR);
      dial->ShowModal();
      return false;
     }
  }
  else
  {
-  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("ERYA Profiling will start without any default databases."), wxT("Error: Incorrect Configuration"), wxOK | wxICON_ERROR);
+  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("ERYA Bulk will start without any default databases."), wxT("Error: Incorrect Configuration"), wxOK | wxICON_ERROR);
   dial->ShowModal();
   return false;
  }
@@ -1673,7 +1673,7 @@ bool ERYAPIXEMainFrame::SaveSetupFile(wxString MainDirectory, wxString MainDetec
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.10")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.20")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
   // Save the file
