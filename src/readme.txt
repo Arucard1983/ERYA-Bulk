@@ -1,4 +1,4 @@
-ERYA-Bulk Version 4.10 ReadMe
+ERYA-Bulk Version 4.20 ReadMe
 
 ----------------------------------------------------
 
@@ -95,6 +95,8 @@ This software can export the Ziegler, Detector and Element database from an ERYA
 # Backports several compatibility libraries from the new wxWidgets based ERYA-Profiling.
 # Support to SRIM tables and custom function to the Stopping-Power evaluation, along an updated Ziegler's Parameters widget.
 # The fitting and basic profiling process now had a gauge dialog that informs some basic progress information, along the possibility to abort the whole process.
+# Some minor bugfixes on main interface events.
+# The widget dialogs can now be resized by mouse.
 
 7. Troubleshooting and Issues
 
