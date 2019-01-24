@@ -250,7 +250,7 @@ class dialogDatabaseManager : public wxDialog
 
 
 	public:
-		dialogDatabaseManager( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Database Manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogDatabaseManager( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Database Manager"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogDatabaseManager();
 
 };
@@ -301,7 +301,7 @@ class dialogAddDatabase : public wxDialog
 
 
 	public:
-		dialogAddDatabase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Add Element to Database"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogAddDatabase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Add Element to Database"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogAddDatabase();
 
 };
@@ -345,7 +345,7 @@ class dialogDetectorSetup : public wxDialog
 
 	public:
 
-		dialogDetectorSetup( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Detector Eficiency"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogDetectorSetup( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Detector Eficiency"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogDetectorSetup();
 
 };
@@ -403,7 +403,7 @@ class dialogZieglerParameters : public wxDialog
 
 	public:
 
-		dialogZieglerParameters( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Ziegler Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1280,720 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogZieglerParameters( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA - Ziegler Parameters"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1280,720 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogZieglerParameters();
 
 };
@@ -442,7 +442,7 @@ class dialogSetup : public wxDialog
 
 	public:
 
-		dialogSetup( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Default Databases"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 640,480 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogSetup( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("Default Databases"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 640,480 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogSetup();
 
 };
@@ -476,7 +476,7 @@ class dialogHelp : public wxDialog
 
 	public:
 
-		dialogHelp( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Help Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE );
+		dialogHelp( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Help Viewer"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1200, 720 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogHelp();
 
 };
@@ -508,7 +508,7 @@ class wizardFirstRun : public wxWizard
 
 	public:
 
-		wizardFirstRun( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Bulk Setup Wizard"), const wxBitmap& bitmap = wxBitmap(ERYA_Bulk_xpm), const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE );
+		wizardFirstRun( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Bulk Setup Wizard"), const wxBitmap& bitmap = wxBitmap(ERYA_Bulk_xpm), const wxPoint& pos = wxDefaultPosition, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		WizardPages m_pages;
         bool StartWizard(){return this->RunWizard(this->GetFirstPage());}; //Create a nice function to simplify the wizard loading
 		~wizardFirstRun();
@@ -549,7 +549,7 @@ class dialogAdvancedFit : public wxDialog
 
 	public:
 
-		dialogAdvancedFit( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Advanced Fitting Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE );
+		dialogAdvancedFit( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Advanced Fitting Settings"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize, long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
 		~dialogAdvancedFit();
 
 };
