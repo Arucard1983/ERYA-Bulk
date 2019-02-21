@@ -12,37 +12,10 @@
 // R33File class implementation
 bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic)
 {
- // Ask the user to clear the element parameters, while loads the original IBANDL file.
- wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Delete all Element Parameters?"), wxT("Clear Current Element Data."), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
- if (dial->ShowModal() == wxID_YES)
- {
-  textEditElement->Clear();
-  textEditGamma->Clear();
-  textEditNumber->Clear();
-  textEditAbundance->Clear();
-  textEditAtomic->Clear();
-  textEditIsotopic->Clear();
- }
- else // Otherwise, only empty parameters are cleared.
- {
- if (textEditElement->GetValue() == wxEmptyString)
-  textEditElement->Clear();
- if (textEditGamma->GetValue() == wxEmptyString)
-  textEditGamma->Clear();
- if (textEditNumber->GetValue() == wxEmptyString)
-  textEditNumber->Clear();
- if (textEditAbundance->GetValue() == wxEmptyString)
-  textEditAbundance->Clear();
- if (textEditAtomic->GetValue() == wxEmptyString)
-  textEditAtomic->Clear();
- if (textEditIsotopic->GetValue() == wxEmptyString)
-  textEditIsotopic->Clear();
- }
- tableDataEditor->ClearGrid(); // But the main speadsheet are always cleared.
-
  // Our IBANDL file parsing is a very simple one, and only dedicated to search and find the relevant values.
  // A more robust implementation would require to create several classes to handle the diffrent parameters and data blocks.
  // Since our recipe works, it just begin with the file loading
+ tableDataEditor->ClearGrid();
  wxTextFile database(R33FileName);
  database.Open();
  // Find Data block and CommentBlock delimiters
@@ -74,6 +47,7 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
   CurrentSeparators.Add(wxT(")"));
   CurrentSeparators.Add(wxT(","));
   CurrentSeparators.Add(wxT("+"));
+  CurrentSeparators.Add(wxT("-"));
   TextLineParser CurrentLine(CurrentParameterLine,CurrentSeparators);
   if(CurrentLine.GetUnexcluded().GetCount()>0)
   {
@@ -91,7 +65,7 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
      textEditAtomic->SetValue(CurrentLine.GetUnexcluded().Item(2));
     }
    }
-   else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Egamma")) // Process the line Egamma: E0+E1+...
+   else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Egamma")) // Process the line Egamma: E0+E1+..., but only the first value are stored
    {
     if (CurrentLine.GetUnexcluded().GetCount()>0)
      {
@@ -100,8 +74,14 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
    }
    else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Reaction")) // Process the line Reaction : X(a,b)Y
    {
-    if (CurrentLine.GetUnexcluded().GetCount()>1)
+    if (CurrentLine.GetUnexcluded().GetCount()>2)
     {
+     if(CurrentLine.GetUnexcluded().Item(2) != wxT("p")) // Only proton projectiles are supported
+     {
+      wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Error: Unsupported projectile:") + CurrentLine.GetUnexcluded().Item(2), wxT("Unsupported IBANDL file"), wxOK | wxICON_ERROR);
+      dial->ShowModal();
+      return false;
+     }
      textEditElement->SetValue(CurrentLine.GetUnexcluded().Item(1));
     }
    }
@@ -180,11 +160,13 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
  wxTextFile file(R33FileName);
  file.Create();
  file.AddLine( wxT("Comment: ERYA Element Database exported to IBANDL") );
+ file.AddLine( wxT("ERYA will always assume that the Reaction is an inelastic proton-nuclide reaction. Fix the Reaction field, if required.") );
  file.AddLine( wxT("Element,") + valueEditElement );
  file.AddLine( wxT("Gamma Peak,") + valueEditGamma );
  file.AddLine( wxT("Atomic Number,") + valueEditNumber );
  file.AddLine( wxT("Atomic Abundance,") + valueEditAbundance);
  file.AddLine( wxT("Atomic Mass,") + valueEditAtomic);
+ file.AddLine( wxT("Isotopic Mass,") + valueEditIsotopic);
  file.AddLine( wxT("Isotopic Mass,") + valueEditIsotopic);
  file.AddLine( wxEmptyString);
  file.AddLine( wxT("Version: R33") );
@@ -194,7 +176,7 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
  file.AddLine( wxT("SubFile:" ) );
  file.AddLine( wxT("Serial Number:") );
  file.AddLine( wxT("X4Number:") );
- file.AddLine( wxT("Reaction:   ") + valueEditElement + wxT("(p,p0)") + valueEditElement);
+ file.AddLine( wxT("Reaction:   ") + valueEditElement + wxT("(p,p+g)") + valueEditElement);
  file.AddLine( wxT("Distribution: Energy") );
  file.AddLine( wxT("Egamma: ")  + valueEditGamma);
  file.AddLine( wxT("Masses: 1.0, ")  + valueEditAtomic + wxT(", 1.0, ") + valueEditAtomic);
@@ -223,34 +205,8 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
 // ITNFile class implementation
 bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic)
 {
- // Ask the user to clear the element parameters, while loads the original ITN file.
- wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Delete all Element Parameters?"), wxT("Clear Current Element Data."), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
- if (dial->ShowModal() == wxID_YES)
- {
-  textEditElement->Clear();
-  textEditGamma->Clear();
-  textEditNumber->Clear();
-  textEditAbundance->Clear();
-  textEditAtomic->Clear();
-  textEditIsotopic->Clear();
- }
- else // Otherwise, only empty parameters are cleared.
- {
- if (textEditElement->GetValue() == wxEmptyString)
-  textEditElement->Clear();
- if (textEditGamma->GetValue() == wxEmptyString)
-  textEditGamma->Clear();
- if (textEditNumber->GetValue() == wxEmptyString)
-  textEditNumber->Clear();
- if (textEditAbundance->GetValue() == wxEmptyString)
-  textEditAbundance->Clear();
- if (textEditAtomic->GetValue() == wxEmptyString)
-  textEditAtomic->Clear();
- if (textEditIsotopic->GetValue() == wxEmptyString)
-  textEditIsotopic->Clear();
- }
- tableDataEditor->ClearGrid(); // But the main spreadsheet are always cleared.
- // Set Parameters
+ tableDataEditor->ClearGrid();
+ // Start initial parameters
  double UnitFactor;
  if (SelectUnits == 0)
   UnitFactor = 1;
