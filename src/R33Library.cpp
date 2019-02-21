@@ -18,16 +18,14 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
  tableDataEditor->ClearGrid();
  wxTextFile database(R33FileName);
  database.Open();
- // Find Data block and CommentBlock delimiters
- int beginDataBlock, endDataBlock, commentBlock;
+ // Find Data block delimiters
+ int beginDataBlock, endDataBlock;
  wxString SigmaUnits = wxT("mb"); //default value
+ double EnergyFactor = 1.0; //default value
+ double SigmaFactor = 1.0; //default value
  for(int k=0; k<database.GetLineCount(); k++)
   {
-    if(database.GetLine(k).Trim().Len() == 0)
-    {
-      commentBlock = k + 1;
-    }
-    else if(database.GetLine(k).Trim() == wxT("Data:"))
+    if(database.GetLine(k).Trim() == wxT("Data:"))
     {
       beginDataBlock = k + 1;
     }
@@ -37,7 +35,7 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
     }
   }
    // Process the first part of file, and extract the relevant information
- for(int i=commentBlock; i<beginDataBlock; i++)
+ for(int i=0; i<beginDataBlock; i++)
   {
   // Prepare the current line, and select the token separators
   wxString CurrentParameterLine = database.GetLine(i);
@@ -70,6 +68,26 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
     if (CurrentLine.GetUnexcluded().GetCount()>0)
      {
       textEditGamma->SetValue(CurrentLine.GetUnexcluded().Item(1));
+     }
+   }
+   else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Enfactors")) // Process the Energy conversion line
+   {
+    if (CurrentLine.GetUnexcluded().GetCount()>0)
+     {
+      if(CurrentLine.GetUnexcluded().Item(1).ToDouble(&EnergyFactor))
+      {
+        EnergyFactor = EnergyFactor * 1.0;
+      }
+     }
+   }
+   else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Sigfactors")) // Process the Sigma conversion line
+   {
+    if (CurrentLine.GetUnexcluded().GetCount()>0)
+     {
+      if(CurrentLine.GetUnexcluded().Item(1).ToDouble(&SigmaFactor))
+      {
+        SigmaFactor = SigmaFactor * 1.0;
+      }
      }
    }
    else if (CurrentLine.GetUnexcluded().Item(0) == wxT("Reaction")) // Process the line Reaction : X(a,b)Y
@@ -126,7 +144,15 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
       {
        if(k>1 && SigmaUnits == wxT("mb"))
        {
-        value = value*8*std::acos(0); //multiply by 4*pi, if the units are "mbarn per sr"
+        value = SigmaFactor*value*8*std::acos(0); //multiply by 4*pi, if the units are "mbarn per sr"
+       }
+       else if(k>1 && SigmaUnits == wxT("tot"))
+       {
+        value = SigmaFactor*value;
+       }
+       else
+       {
+        value = EnergyFactor * value;
        }
        if((std::abs(value) < 1e-3 || std::abs(value) > 1e+6) && value != 0.0)
         tempvalue = wxString::Format("%.3e",value);
@@ -176,7 +202,7 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
  file.AddLine( wxT("SubFile:" ) );
  file.AddLine( wxT("Serial Number:") );
  file.AddLine( wxT("X4Number:") );
- file.AddLine( wxT("Reaction:   ") + valueEditElement + wxT("(p,p+g)") + valueEditElement);
+ file.AddLine( wxT("Reaction:   ") + valueEditElement + wxT("(p,pg)") + valueEditElement);
  file.AddLine( wxT("Distribution: Energy") );
  file.AddLine( wxT("Egamma: ")  + valueEditGamma);
  file.AddLine( wxT("Masses: 1.0, ")  + valueEditAtomic + wxT(", 1.0, ") + valueEditAtomic);
