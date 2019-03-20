@@ -10,7 +10,6 @@
  #ifndef PARSERLIBRARY_H_INCLUDED
  #define PARSERLIBRARY_H_INCLUDED
  #include "ERYAPIXE.h"
- #include "LinearAlgebra.h"
  #include <cmath>
 
 class AlgebraicVariable;
@@ -157,11 +156,14 @@ class AlgebraicFunction
  double GetFyxEval(double argument);
  bool IsFunctionDefined();
  bool IsFunctionWithVectorDefined();
+ bool IsDomainDefined();
  bool FindReplaceVariableValue(wxString var, double value);
  bool SetFunctionNumberParameter(std::vector<double> value);
  AlgebraicVariableVector GetOnlyConstants();
  AlgebraicVariableVector GetOnlyVariables();
  AlgebraicVariableVector GetNonFVariables();
+ double GetFunctionMinimum();
+ double GetFunctionMaximum();
 };
 
 

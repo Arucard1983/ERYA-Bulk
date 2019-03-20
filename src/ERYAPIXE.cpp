@@ -83,7 +83,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	menuDatabase->Append( menuDatabaseElements );
 
 	wxMenuItem* menuDatabaseZiegler;
-	menuDatabaseZiegler = new wxMenuItem( menuDatabase, wxID_ANY, wxString( wxT("Ziegler Parameters") ) , wxEmptyString, wxITEM_NORMAL );
+	menuDatabaseZiegler = new wxMenuItem( menuDatabase, wxID_ANY, wxString( wxT("Stopping-Power") ) , wxEmptyString, wxITEM_NORMAL );
 	menuDatabase->Append( menuDatabaseZiegler );
 
     menuDatabase->AppendSeparator();
@@ -769,10 +769,10 @@ dialogAddDatabase::dialogAddDatabase( wxWindow* parent, wxWindowID id, const wxS
 	wxGridSizer* sizerEditButtons;
 	sizerEditButtons = new wxGridSizer( 1, 8, 0, 0 );
 
-	buttonImportR33 = new wxButton( this, wxID_ANY, wxT("Import R33"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonImportR33 = new wxButton( this, wxID_ANY, wxT("Import"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerEditButtons->Add( buttonImportR33, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonExportR33 = new wxButton( this, wxID_ANY, wxT("Export R33"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonExportR33 = new wxButton( this, wxID_ANY, wxT("Export"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerEditButtons->Add( buttonExportR33, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     buttonEditCopy = new wxButton( this, wxID_ANY, wxT("Copy"), wxDefaultPosition, wxDefaultSize, 0 );

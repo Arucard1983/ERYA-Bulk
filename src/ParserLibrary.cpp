@@ -70,7 +70,7 @@ bool AlgebraicVariableVector::FindReplace(wxString name, double newvalue)
   return false;
 }
 
-// An internal function (cannot access directly) to find the real array address of a given parameter
+// An internal funcion (cannot access directly) to find the real array adress of a given parameter
 int ParameterVector::FindParameterAdress(wxString varname)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -136,7 +136,7 @@ bool TokenVector::ClassifyAndCheck()
    {
     this->Item(i).SetAllFlags(0,true,true,false,false,false,false);
    }
-   else if (this->CheckIsValidSymbol(i)) // If the token is a valid symbol, then it requires futher details
+   else if (this->CheckIsValidSymbol(i)) // If the token is a valid symbol, then it requires further details
    {
     if (this->Item(i).GetValue() == wxT("+"))
      this->Item(i).SetAllFlags(3,true,false,false,false,true,false);
@@ -149,9 +149,9 @@ bool TokenVector::ClassifyAndCheck()
     else if (this->Item(i).GetValue() == wxT("^"))
      this->Item(i).SetAllFlags(5,false,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("<"))
-     this->Item(i).SetAllFlags(2,false,false,false,false,true,false);
+     this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT(">"))
-     this->Item(i).SetAllFlags(2,false,false,false,false,true,false);
+     this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("="))
      this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("("))
@@ -168,40 +168,44 @@ bool TokenVector::ClassifyAndCheck()
    else if (this->CheckIsValidVariable(i)) // If the token is a valid variable, first we need to check against the list of built-in functions, and special words
    {
     if (this->Item(i).GetValue() == wxT("asin"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sin"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("asinh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sinh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("acos"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("cos"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("acosh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("cosh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("atan"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("tan"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("atanh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("tanh"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("exp"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("log"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("ln"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sqrt"))
-     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("fxvar"))
      this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
     else if (this->Item(i).GetValue() == wxT("fyvar"))
+     this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
+    else if (this->Item(i).GetValue() == wxT("fxmin"))
+     this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
+    else if (this->Item(i).GetValue() == wxT("fxmax"))
      this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
     else if (this->Item(i).GetValue() == wxT("fnvar"))
      this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
@@ -406,11 +410,11 @@ bool AlgebraicFunction::AlgebraicParser()
      }
      else
      {
-      // Testing for number compatibility, i.e., (+/-)(0)
+      // Testing for number compability, i.e., (+/-)(0)
        Token *testnum = new Token(character + nextchar);
        if (testnum->CheckIsValidNumber())
        {
-         if(InternalFunctionTokens.GetCount()>0) //Check if the previous token are a variable, function or a symbol, as long it wans't the right parenthesis ")"
+         if(InternalFunctionTokens.GetCount()>0) //Check if the previous token are a variable, function or a symbol, as long it wasn't the right parenthesis ")"
          {
            if(InternalFunctionTokens.Last().GetPriority()>0 || InternalFunctionTokens.Last().GetValue() == wxT("(") ) //On higher priority tokens, or the left parenthesis "(" any plus and minus sign should be the beginning of a number token.
            {
@@ -420,7 +424,7 @@ bool AlgebraicFunction::AlgebraicParser()
            {
             if(InternalFunctionTokens.Last().GetValue() == wxT(")") || InternalFunctionTokens.Last().CheckIsValidNumber() || InternalFunctionTokens.Last().CheckIsValidSymbol())
             {
-               // The sign should be an independent token, since it was an arithmetic operator
+               // The sign should be an indepenentent token, since it was an arithmetic operatior
                cache.Clear();
               if(!(InternalFunctionTokens.NewToken(character)))
               {
@@ -483,7 +487,6 @@ bool AlgebraicFunction::AlgebraicParser()
  // And finishes the procedure
   return true;
 }
-
 
 // Evaluate the numerical values of built-in functions, using the STL library
 double AlgebraicFunction::EvaluateFunction(Token f, double arg)
@@ -550,7 +553,7 @@ bool AlgebraicFunction::AlgebraicCompiler()
 {
  RPNTokenStack.Clear();
  TokenVector LocalOperatorStack;
- // Start the Shunting-Yard main cycle
+ // Start the Shunting-Yard main cicle
  for(int i=0; i<InternalFunctionTokens.GetCount(); i++)
  {
   // If the current toke is a number, just copy to the output stack
@@ -659,7 +662,7 @@ bool AlgebraicFunction::AlgebraicCompiler()
    {
     if (LocalOperatorStack.Last().GetValue() == wxT("("))
      {
-      // If found a left parenthesis, delete it and finishes the flushing cycle
+      // If found a left parenthesis, delete it and finishes the flusing cycle
       LocalOperatorStack.RemoveAt(LocalOperatorStack.GetCount()-1);
        j = OriginalStackSize;
        FoundLeftParenthesis = true;
@@ -769,7 +772,7 @@ bool AlgebraicFunction::AlgebraicCalculator()
           if(RegisterStack.Item(RegisterStack.GetCount()-2).IsConstant() && InternalFunctionVariables.Find(tempvar)) // A constant cannot be overwritten
           {
             // Unless the constant is a function variable
-            if ( tempvar == FunctionParameters.FindGet(wxT("fyvar")) || tempvar == FunctionParameters.FindGet(wxT("fxvar"))  || tempvar == FunctionParameters.FindGet(wxT("fnvar")))
+            if ( tempvar == FunctionParameters.FindGet(wxT("fyvar")) || tempvar == FunctionParameters.FindGet(wxT("fxvar")) || tempvar == FunctionParameters.FindGet(wxT("fxmin")) || tempvar == FunctionParameters.FindGet(wxT("fxmax")) || tempvar == FunctionParameters.FindGet(wxT("fnvar")))
             {
              double temp = RegisterStack.Item(RegisterStack.GetCount()-1).GetValue(); // Get the variable value
              InternalFunctionVariables.FindReplace(tempvar,temp); // Store the new variable
@@ -809,7 +812,7 @@ bool AlgebraicFunction::AlgebraicCalculator()
             wxString ParameterTerm = RegisterStack.Item(RegisterStack.GetCount()-1).GetName();
             double ConstantValue;
             // Begin the validity of the parameters first, and later the internal algebraic variables
-            if (ParameterType == wxT("fxvar") || ParameterType == wxT("fyvar")) // The y-var and x-var of a function requires a valid name
+            if (ParameterType == wxT("fxvar") || ParameterType == wxT("fyvar") || ParameterType == wxT("fxmin") || ParameterType == wxT("fxmax")) // The y-var and x-var of a function requires a valid name
             {
               if (ParameterTerm != wxT("_NULL_"))
               {
@@ -833,7 +836,7 @@ bool AlgebraicFunction::AlgebraicCalculator()
                return false;
               }
             }
-            else if (ParameterType == wxT("fnvar")) // The y-var and x-var of a function requires a valid name
+            else if (ParameterType == wxT("fnvar")) // A parameter macro to create 16 new variables with the form <name>, <name>1,..., <name>15
             {
               if (ParameterTerm != wxT("_NULL_"))
               {
@@ -914,7 +917,7 @@ bool AlgebraicFunction::AlgebraicCalculator()
      }
      else // Invalid number of arguments
      {
-      ErrorCode = wxT("Declaration Error: Assignment operator \"=\" without valid arguments");
+      ErrorCode = wxT("Declaration Error: Assigment operator \"=\" without valid arguments");
       return false;
      }
    }
@@ -945,15 +948,10 @@ bool AlgebraicFunction::AlgebraicCalculator()
         ErrorCode = wxT("Syntax Error: Cannot use parameter: \"") + RegisterStack.Item(RegisterStack.GetCount()-1).GetName() + wxT("\" outside definition.");
         return false;
       }
-      else if(!(InternalFunctionVariables.Find(RegisterStack.Item(RegisterStack.GetCount()-1).GetName())))
-      {
-       ErrorCode = wxT("Declaration Error: Undefined Variable: \"") + RegisterStack.Item(RegisterStack.GetCount()-1).GetName() + wxT("\"");
-       return false;
-      }
       else
       {
-       ErrorCode = ErrorCode = wxT("Syntax Error: Invalid numerical expression"); // Invalid expression
-       return false;
+        ErrorCode = wxT("Declaration Error: Undefined Variable: \"") + RegisterStack.Item(RegisterStack.GetCount()-1).GetName() + wxT("\"");
+        return false;
       }
     }
     else
@@ -1082,9 +1080,15 @@ bool AlgebraicFunction::AlgebraicCalculator()
         ErrorCode = wxT("Syntax Error: Cannot use parameter: \"") + RegisterStack.Item(RegisterStack.GetCount()-1).GetName() + wxT("\" outside definition.");
         return false;
       }
+      else if(!(InternalFunctionVariables.Find(RegisterStack.Item(RegisterStack.GetCount()-1).GetName())))
+      {
+       ErrorCode = wxT("Declaration Error: Undefined Variable: \"") + RegisterStack.Item(RegisterStack.GetCount()-1).GetName() + wxT("\"");
+       return false;
+      }
       else
       {
-       RegisterStack.Clear();
+       ErrorCode = ErrorCode = wxT("Syntax Error: Invalid numerical expression"); // Invalid expression
+       return false;
       }
     }
     else
@@ -1157,7 +1161,7 @@ double AlgebraicFunction::FunctionCalculator()
      }
      else
      {
-      ErrorCode = wxT("Function Error: Assignment operator \"=\" without valid arguments!"); // Invalid syntax format.
+      ErrorCode = wxT("Function Error: Assigment operator \"=\" without valid arguments!"); // Invalid syntax format.
       return NAN;
      }
    }
@@ -1376,6 +1380,118 @@ bool AlgebraicFunction::IsFunctionWithVectorDefined()
  }
 }
 
+// Check the function consistency with a limited domain
+bool AlgebraicFunction::IsDomainDefined()
+{
+ if(this->IsFunctionDefined())
+ {
+  if(FunctionParameters.Find(wxT("fxmin")) && FunctionParameters.Find(wxT("fxmax")))
+  {
+  wxString fx = FunctionParameters.FindGet(wxT("fxmin"));
+  wxString fy = FunctionParameters.FindGet(wxT("fxmax"));
+  if(InternalFunctionVariables.Find(fx) && InternalFunctionVariables.Find(fy) && fx.Len()>0 && fy.Len()>0)
+   {
+    return true;
+   }
+   else
+   {
+    if(ErrorCode.Len() == 0)
+     ErrorCode = wxT("Function Error: The Function Should have a Limited Domain!");
+    return false;
+   }
+  }
+ else
+  {
+  return false;
+  }
+ }
+ else
+ {
+  return false;
+ }
+}
+
+// Get the minimum and maximum of the function, if the user defined a limited domain, otherwise, returns NAN.
+double AlgebraicFunction::GetFunctionMinimum()
+{
+ if(FunctionParameters.Find(wxT("fxmin")))
+ {
+  wxString fx = FunctionParameters.FindGet(wxT("fxmin"));
+  if(InternalFunctionVariables.Find(fx) && fx.Len()>0)
+  {
+    return InternalFunctionVariables.FindGet(fx);
+  }
+  else
+  {
+    return NAN;
+  }
+ }
+ else
+ {
+  return NAN;
+ }
+}
+
+double AlgebraicFunction::GetFunctionMaximum()
+{
+ if(FunctionParameters.Find(wxT("fxmax")))
+ {
+  wxString fx = FunctionParameters.FindGet(wxT("fxmax"));
+  if(InternalFunctionVariables.Find(fx) && fx.Len()>0)
+  {
+    return InternalFunctionVariables.FindGet(fx);
+  }
+  else
+  {
+    return NAN;
+  }
+ }
+ else
+ {
+  return NAN;
+ }
+}
+
+// Evaluate a value of the function, while check the presence of the independent and dependent function variable. Will return NAN in case of error.
+double AlgebraicFunction::GetFyxEval(double argument)
+{
+ if(this->IsFunctionDefined())
+ {
+  wxString fx = FunctionParameters.FindGet(wxT("fxvar"));
+  wxString fy = FunctionParameters.FindGet(wxT("fyvar"));
+  wxString fm = FunctionParameters.FindGet(wxT("fxmax"));
+  wxString fn = FunctionParameters.FindGet(wxT("fxmin"));
+  InternalFunctionVariables.FindReplace(fx,argument);
+  double result = this->FunctionCalculator();
+  InternalFunctionVariables.FindReplace(fy,result);
+  if(fm.Len() == 0 && fn.Len() == 0) // No restricted domain variables
+  {
+   return result;
+  }
+  else // Get the restricted domain values
+  {
+   double xleft,xright;
+   xleft = InternalFunctionVariables.FindGet(fn);
+   xright = InternalFunctionVariables.FindGet(fm);
+   if((argument>=xleft)&&(argument<=xright))
+    return result;
+   else
+    return 0.0;
+  }
+ }
+ else
+ {
+  ErrorCode = wxT("Function Error: Incorrect Function Declaration.");
+  return NAN;
+ }
+}
+
+// Replace any variable stored on the function. Constants cannot be overwritten.
+bool AlgebraicFunction::FindReplaceVariableValue(wxString var, double value)
+{
+  return InternalFunctionVariables.FindReplace(var,value);
+}
+
 // Designed to allocate a pseudo-vector of several elements, where the string defined by "fnvar" are the initial term, and <n>1,<n>2... are the next ones
 bool AlgebraicFunction::SetFunctionNumberParameter(std::vector<double> value)
 {
@@ -1405,31 +1521,6 @@ bool AlgebraicFunction::SetFunctionNumberParameter(std::vector<double> value)
  {
    return false;
  }
-}
-
-// Evaluate a value of the function, while check the presence of the independent and dependent function variable. Will return NAN in case of error.
-double AlgebraicFunction::GetFyxEval(double argument)
-{
- if(this->IsFunctionDefined())
- {
-  wxString fx = FunctionParameters.FindGet(wxT("fxvar"));
-  wxString fy = FunctionParameters.FindGet(wxT("fyvar"));
-  InternalFunctionVariables.FindReplace(fx,argument);
-  double temp = this->FunctionCalculator();
-  InternalFunctionVariables.FindReplace(fy,temp);
-  return temp;
- }
- else
- {
-  ErrorCode = wxT("Function Error: Incorrect Function Declaration.");
-  return NAN;
- }
-}
-
-// Replace any variable stored on the function. Constants cannot be overwritten.
-bool AlgebraicFunction::FindReplaceVariableValue(wxString var, double value)
-{
-  return InternalFunctionVariables.FindReplace(var,value);
 }
 
 // Main Function Constructor, which simply guides the three main algebraic procedures to obtain a numeric value from the user input

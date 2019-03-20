@@ -3,16 +3,16 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.1 (Linux)"/>
 	<meta name="created" content="2016-03-10T16:43:52.474822999"/>
-	<meta name="changed" content="2018-11-13T15:37:48.360982618"/>
+	<meta name="changed" content="2019-02-28T17:16:19.218124411"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2.01cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
@@ -50,21 +50,17 @@ of elements, both alone or belonging to a compound.</font></p>
 <font size="3" style="font-size: 12pt">- Taking stoichiometric
 fittings of compounds, when makes sense.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- Load, edit, export simple
-databases of elements, including partial import only support of the
-LabView ERYA Databases. (Some technical details are explained on the
-bottom of this page.)</font></p>
+<font size="3" style="font-size: 12pt">- Load, edit, export and
+import databases of elements.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- LabView Source files for the
-Databases, that uses the ASCII text format, can be exported and
-imported without issues, but some exceptions to the rule exists. (Any
-element with several gamma peaks are decoupled into separate element
-registers, and this reflects on the LabView export file).</font></p>
+<font size="3" style="font-size: 12pt">- Contains import routines to
+convert the Original LabView Databases, to the native database
+formats used by this program.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- Import and Export some data
 to the native Operating System Clipboard, with several limitations.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">The user are warned to use
+<font size="3" style="font-size: 12pt">The user are warned to use
 direct file export/import instead.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- Basic Import/Export of
@@ -76,9 +72,8 @@ modifications.</font></p>
 and export cross-sections of single elements on plain text format.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- A very basic Excel Xlsx file
-writer was also implemented, making possible to export (only) the
-Yield results to an Excel file, even without install Microsoft
-Office.</font></p>
+writer was also implemented, making possible to export the Yield
+results to an Excel file, even without install Microsoft Office.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- Support to read simple Excel
 Xlsx files is only possible to cells with text and numbers, and
@@ -87,32 +82,12 @@ is only implemented on Ziegler or Detector editors, and on Elements
 edition of their cross-sections.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- The native Elements,
-Detector and Ziegler databases now uses a XML template, deprecating
-the plain text format (reserved now for the LabView Source files).</font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- Support for SRIM tables, and
-export them on <a href="Ziegler.html">Ziegler's
-Parameter</a> widget.</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><b>Better
-integration with the new wxWidgets’s ERYA-Profiling</b></font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- The ERYA-Bulk main databases
-will recognize the XML signatures of the ERYA-Profiling databases,
-meaning, that it will possible to export/import between the two
-programs.</font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- A setup wizard ported from
-ERYA-Profiling replaced the custom setup code, when ERYA-Bulk starts
-at the first time. Now the ERYA-Bulk config file use a XML file, like
-the ERYA-Profiling.</font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- A new option to generate a
-sequence of partial result yields between the inputed initial and
-final energy, and append to the Yield output file, on Excel Xlsx file
-format.</font></p>
+Detector and Ziegler databases now uses a XML template, while
+maintains some support to export to ASCII formats for legacy and
+interchange with other programs.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
+Support for SRIM tables, and export them on <a href="Ziegler.html">Ziegler's
+Parameter</a> widget.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -124,52 +99,42 @@ Language: ERYA Macro</b></font></p>
 software, the program accepts as input a small program, similar to
 BASIC, with C conventions, in order to define custom functions, and
 algebraic expressions.</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><span style="font-variant: normal"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">A
-brief reference are explained on <a href="Detector.html">Detector
-Efficiency</a>, </span></span></font></span><span style="font-variant: normal"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">and</span></span></font></span><span style="font-variant: normal"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">
-<a href="Ziegler.html">Ziegler's
-Parameter</a>. </span></span></font></span>
-</p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><span style="font-variant: normal">
+</span><span style="font-variant: normal"><font size="3" style="font-size: 12pt"><span style="font-style: normal"><span style="font-weight: normal">More
+details can be obtained <a href="Macro.html">here</a>.</span></span></font></span></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><b>Additional
-features compared to LabView ERYA:</b></p>
+features compared to the LabView ERYA:</b></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">ERYA also adds the following
-functionalities, compared from the LabView ERYA-Profiling:</font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- It’s now a single coherent
-program, not a prototype formed by a LabView GUI handler and a
-console attached program.</font></p>
+functionalities, compared from the previous LabView ERYA:</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
-The <a href="Detector.html">Detector
-Efficiency</a>, both by an interpolation table or an algebraic
-function (ERYA macro language), is now user-programmable, without
-needing to recompile the software.</span></font></p>
+The <a href="Detector.html">Detector Efficiency</a>, both by an
+interpolation table or an algebraic function (ERYA macro language),
+is now user-programmable, without needing to recompile the software.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
-The <a href="Database.html">Element
-Database</a> optimizes when changed, placing the elements by
-alphabetic order. </span></font>
+The <a href="Database.html">Element Database</a> optimizes when
+changed, placing the elements by alphabetic order. </span></font>
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
 This application also support the 1977 and 1991 <a href="Ziegler.html">Ziegler'</a><a href="Ziegler.html">s</a></span></font><a href="Ziegler.html">
 <font size="3" style="font-size: 12pt"><span style="font-weight: normal">Parameter</span></font></a>
 <font size="3" style="font-size: 12pt"><span style="font-weight: normal">models.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
-The <a href="Ziegler.html">Ziegler's
-Parameter</a> also supports the SRIM tables, or even a custom
-algebraic function (ERYA macro).</span></font></p>
+The <a href="Ziegler.html">Ziegler's Parameter</a> also supports the
+SRIM tables, or even a custom algebraic function (ERYA macro).</span></font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- Simple and basic support to
 load and save numerical and string data from Microsoft Excel Xlsx
 files. Those Excel files can be edited by any supported program to
 further analysis.</font></p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- The fitting operation uses
-the Levenberg-Marquardt algorithm, <a href="Fitextra.html">implemented
-from scratch</a>, instead the proprietary closed-source non-linear
-fitting routines bundled on LabView Runtime.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span style="font-weight: normal">-
+The fitting operation uses the Levenberg-Marquardt algorithm,
+<a href="Fitextra.html">implemented from scratch</a>, instead the
+proprietary closed-source non-linear fitting routines bundled on
+LabView Runtime.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -187,9 +152,9 @@ Cross-section built-in spreadsheet editors, and the target
 application, but there’s no guarantee of correct formating. Use the
 tips on the relevant sections to ease correct handling.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- All former LabView export
-tools or routines will never be updated, including the file load/save
-procedures, except for eventual critical bug fixes.</font></p>
+<font size="3" style="font-size: 12pt">- All LabView export tools or
+routines will never be updated, except for eventual critical bug
+fixes.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -377,119 +342,7 @@ window application, and select the adequate database to be edited.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><b>About
-LabView Binary DataLog File Import</b></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-ERYA supports partially the import of Database and Ziegler binary
-files (The Detector was always a two columns text file, or an
-hard-coded function) from LabView ERYA.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-This resource was only possible to be implemented by reverse
-engineering the file structure, using some third-party documentation,
-and hex-dumping from the original files to figure out how the data
-was stored on their binary files. 
-</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-ERYA support the fixed structure of Database and Ziegler databases
-from LabView DataLog files versions 7.x.x.x, 8.x.x.x and 9.x.x.x. The
-program checks the presence of the magic header “DTLG” at the
-beginning of file, which means a valid LabView DataLog file and then
-reads all content as a stream of unsigned characters in hexadecimal
-format. The program do not know all the rules of the file structures,
-since follows instead a fixed template for the two expected file
-formats, and prioritize the decoding of the data registers addresses,
-which contains the relevant data.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-Since this means that ERYA hard-codes the Database and Ziegler
-register structures (a full and universal LabView DataLog export
-filter is beyond the scope of this program), once gets the “magic”
-offset address, it will export and convert the binary numerical data
-to the expected Element or Ziegler databases.</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-The ERYA cannot save any database on LabView DataLog, since the rules
-of some obscure file features are unknown, and could make unreadable
-by the LabView ERYA again. Also the third-party documentation only
-limits the possibility of export a read-only LabView DataLog file,
-and even so, the mode how the data types and structure declaration is
-not so trivial to decipher.</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-As a workaround, ERYA support the export of the Ziegler and the
-Database as a plain text file, which can be compiled by LabView ERYA
-again.</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><b>About
-Microsoft Excel Xlsx File Filter Support</b></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-In order to help the export and import of some data files, and the
-prevalence of Excel files on workflow, this application can now read
-and write very simple Excel spreadsheet files compatibles from
-version 2007 and onwards, which can be edited from Microsoft Office®,
-LibreOffice®, Google Docs®, and other similar products.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-Only cells filled with names and numbers are supported, and the
-boolean TRUE() and FALSE() functions, and only will read or write
-single-worksheet files, or the very first worksheet.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-Tables, cell formating, formulas and other advanced features are
-incompatible and ignored, treating such cells as equal to blank ones.
-In some situations, ERYA can get import errors on some rare
-occasions, when notices an unexpected feature.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-Other major limitation is the fact this experimental library can
-write only new Excel files from scratch with minimal styles, and all
-data should packed as a single matrix block. Some little enhancements
-later makes possible to place empty cells and rows, along the main
-data matrix.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-All created Excel files will begin at the first spreadsheet cell. By
-contrast, any Excel file with relevant data can begin at any cell,
-and ERYA will readdress the data block automatically.</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-Also only reads simple blocks of cells, as long they form a single
-block of data, but empty cells are fine readied as null strings, and
-discarded on all ERYA-Bulk export routines.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-The user should follow the recommendations on each help topic on the
-relevant tool to create any source Excel files that would not cause
-ambiguities, or data export errors.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-The Xlsx filter, once extracted the original data block to a export
-matrix of data, it takes some rules to bypass rows filled with
-strings (or parse them, on some rare situations), and takes priority
-of numerical cells, in order to copy to the ERYA-Bulk memory
-locations intended to be relevant. 
-</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-The Xlsx filter was inspired from the Simple Xlsx Writer and Simple
-Xlsx Parser projects, while it was originally written in Ruby and
-Java, ERYA Xlsx filter was written from scratch, and built along the
-wxWidgets native support for <i>zip</i> and <i>xml</i> documents
-streams.</p>
-<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
 
 </p>
 </body>

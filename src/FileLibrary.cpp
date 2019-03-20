@@ -527,7 +527,7 @@ bool DatabaseFile::ElementBlockParsing(wxArrayString ElementBlock)
    wxArrayString CurrentEnergyError;
    wxArrayString CurrentSigma;
    wxArrayString CurrentSigmaError;
-   if (DatabaseFileVersion == wxT("txt")) // Process the uncrypted LabView database format
+   if (DatabaseFileVersion == wxT("txt")) // Process the  LabView database source file format (is a plain text file, luckily)
   {
    wxArrayString CurrentGammaStack; //Required for LabView file format correct handling
    wxArrayString AllEnergyStack; //Required for LabView file format correct handling
@@ -1164,7 +1164,7 @@ ZieglerFile::ZieglerFile(wxString ZieglerFilePath, wxString Version, ZieglerPara
  ZieglerFileVersion = Version;
  ParsedParameters = CurrentParameters;
  ParsedTables = CurrentTables;
- TableMode = Argument; // For non-native formats, it restricts the kind of data
+ TableMode = Argument; // If argument is zero, force Ziegler's Parameters, otherwise it will use the SRIM table corresponding to the Atomic Number
 }
 
 bool ZieglerFile::ZieglerFileLoad()
@@ -1379,11 +1379,11 @@ bool ZieglerFile::ZieglerFileLoad()
   }
   return true;
  }
- else if (ZieglerFileVersion == wxT("txt")) // LabView files can be binary or text file format
+ else if (ZieglerFileVersion == wxT("txt")) // Database files with such extension can be a genuine text file, or a LabView binary file
  {
   LabViewZiegler LabViewBinaryZiegler(ZieglerFileName);
   SRIMFile SRIMFileZiegler(ZieglerFileName);
-  if(LabViewBinaryZiegler.IsLabViewFile()) // Experimental LabView Binary Database Support. First check the header file.
+  if(LabViewBinaryZiegler.IsLabViewFile()) // Use the LabView Binary Database Loader. First check the header file.
   {
     if(LabViewBinaryZiegler.IsLabViewZiegler()) // It is a compatible file ?
     {
@@ -1434,7 +1434,7 @@ bool ZieglerFile::ZieglerFileLoad()
      return false;
    }
   }
-  else // It's a text file format from LabView itself
+  else // It's a generic text file format
   {
    wxTextFile file(ZieglerFileName);
    file.Open();

@@ -3,25 +3,21 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 5.3.1.2 (Linux)"/>
-	<meta name="created" content="00:00:00"/>
-	<meta name="changed" content="2017-07-03T19:28:47.100316432"/>
+	<meta name="generator" content="LibreOffice 6.1.5.1 (Linux)"/>
+	<meta name="created" content="2016-03-11T00:50:17.012769788"/>
+	<meta name="changed" content="2019-02-28T17:05:06.642043627"/>
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2017-02-17T16:52:33.412203616">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2017-02-04T02:54:42.158086885">
 	<meta name="created" content="00:00:00">
-	<meta name="changed" content="2017-01-21T02:28:13.393125807">
-	<meta name="created" content="2016-03-11T00:50:17.012769788">
-	<meta name="changed" content="2016-11-23T15:00:42.379510000">
+	<meta name="created" content="00:00:00">
 	<style type="text/css">
-		@page { margin: 2.01cm }
-		p { margin-bottom: 0.25cm; line-height: 120% }
-		a:link { so-language: zxx }
+		@page { size: 21cm 29.7cm; margin: 2.01cm }
+		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		a:link { color: #000080; so-language: zxx; text-decoration: underline }
+		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
-<body lang="pt-PT" dir="ltr">
-<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<body lang="pt-PT" link="#000080" vlink="#800000" dir="ltr"><p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
 <font size="4" style="font-size: 16pt"><b>ERYA : Database Manager</b></font></p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -34,8 +30,9 @@ necessary parameters to handle yield calculations.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Since
 the application follows the IBANDL recommendations, the default
 physical units are the</span></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">atomic
-and isotopic masses in atomic mass units (amu), wh</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">ere</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">
-is also equal to the molar mass in grams per mole; the abundances are
+and isotopic masses in atomic mass units (amu), where</span></span></font>
+<font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">is
+also equal to the molar mass in grams per mole; the abundances are
 dimensionless; and the</span></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">cross-section
 data are internally stored in milibarn per keV.</span></span></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -135,51 +132,66 @@ format where store, in particular, the cross-section data in
 milibarn-keV, the energy in keV and the isotope mass in atomic mass
 unit (grams per mol).</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">This program also had a
-partial support to export and import the <b>LabView ERYA txt</b>
-format, although in reality exists two different file formats, even
-in a single file extension.</font></p>
+ <font size="3" style="font-size: 12pt">And another, mainly for
+recovery purposes, to import databases created by the LabView
+software. </font>
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>LabView Database Import
+(Legacy and Deprecated Feature)</b></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font size="3" style="font-size: 12pt">ERYA supports, much to legacy
+feature, the binary and text form of <b>LabView ERYA </b><b>database
+</b>format.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">One of the supported LabView
-ERYA Database formats are called <b>Source Database File, </b>which
+ERYA Database formats are called the  <b>Source Database File, </b>which
 is a standard text file that the LabView Runtime of ERYA compile to
 their native binary format. </font>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">ERYA can export and import
-(with some potential issues) their contents, as long it maintains the
-expected file structure.</font></p>
+ <font size="3" style="font-size: 12pt">Since it was a standard ASCII
+file, ERYA can export and import this kind of Database, but it is
+strictly discouraged to use as backup file, and use the XML standard
+instead.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">Recently, due to reverse
-engineering by third-party research and the author of ERYA, this
-program can import the <b>Binary Database File, </b>compiled by
-LabView ERYA itself. </font>
+<br/>
+
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The process is transparent to
-the user, since it detects by import option at “Load” button, if
-the <b>LabView ERYA txt </b>file are a Source or a Binary Database
-file.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">However, it is not possible to
-save the current Database to a binary file, due to the lack of
-documentation, and potential data corruption. If the user select the
-ERYA txt at “Save” button, it will store as a Source Database
-File, that can be compiled by LabView ERYA again.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The LabView ERYA Database
-store the same data elements of ERYA, but the only difference is the
-fact tat the cross-section unit are in barn-keV. </font>
+ <font size="3" style="font-size: 12pt">It is also possible to import
+to ERYA the <b>Binary Database File,</b> which is the binary file
+compiled by LabView ERYA itself. </font>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">However, this program do not
-accept a default Database in LabView ERYA format, and even if the
-user tries to setup one, ERYA will convert and store the default
-Database on their native <b>epd </b>file format, since internally,
-the program use the native type. Other file formats, are only
-implemented as an import/export filters.</font></p>
+<font size="3" style="font-size: 12pt">ERYA detects during the “Load”
+button event, if the <b>LabView ERYA </b><b>database </b>file are a
+Source or a Binary Database file, and apply the correct file filter
+without additional user interaction.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <span lang="en-US">It
+is not possible to export any ERYA-Bulk Database to binary form (It
+will export to a text file, instead), and it will never be
+implemented such feature.</span></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <span lang="en-US">Use
+the LabView Import feature only as a convenient tool to import
+databases created by the LabView ERYA, and convert to the native ERYA
+databases files.</span></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <span lang="en-US">Some
+technical details are available <a href="Legacy.html">here</a>.</span></p>
 </body>
 </html>
