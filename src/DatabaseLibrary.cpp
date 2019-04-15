@@ -38,6 +38,40 @@ ElementDatabase::ElementDatabase(wxString Name, wxString Gamma, wxString Number,
   dataSigmaError = SigmaError;
 }
 
+// Enforce a strict name convention for Elements:
+// Their name should consist with number and/or letters, and the underscore characters
+// Other fields are pure numerical values
+bool ElementDatabase::CheckElement()
+{
+  //Check name validity
+  if(dataEditElement.Len()==0)
+    return false;
+  wxString chars = wxT("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_");
+  for(int i=0; i<dataEditElement.Len(); i++)
+  {
+   wxString character = dataEditElement.GetChar(i);
+   int counter;
+   counter = chars.Find(character);
+   if(counter == wxNOT_FOUND)
+    return false;
+  }
+  // Check all numeric values
+  double testGamma, testNumber, testAbundance, testAtomic, testIsotopic;
+  if(!(dataEditGamma.ToDouble(&testGamma)))
+    return false;
+  else if(!(dataEditNumber.ToDouble(&testNumber)))
+    return false;
+  else if(!(dataEditAbundance.ToDouble(&testAbundance)))
+    return false;
+  else if(!(dataEditAtomic.ToDouble(&testAtomic)))
+    return false;
+  else if(!(dataEditIsotopic.ToDouble(&testIsotopic)))
+    return false;
+  // Pass all tests
+  else
+   return true;
+}
+
 // Obtain the relevant Element information to the Element Editor
 bool ElementDatabase::GetAllElementInfo(wxTextCtrl* &SetElement, wxTextCtrl* &SetGammaPeak, wxTextCtrl* &SetNumber, wxTextCtrl* &SetAbundance, wxTextCtrl* &SetMass, wxTextCtrl* &SetIsotopic, wxGrid* &SetEnergySigmaErrorTable)
 {
@@ -313,8 +347,11 @@ int ElementDatabaseArray::FindElement(wxString GetElementName, wxString GetGamma
 // After a sucefull operation, the database are sorted by the Element Name, and then by the Gamma Peak
 bool ElementDatabaseArray::NewElement(ElementDatabase CandidateElement, bool Overwrite)
 {
- // Any Element candidate should havee, at least, a name and a gamma!
+ // Any Element candidate should have, at least, a name and a gamma!
  if(CandidateElement.GetGamma().Len() == 0 || CandidateElement.GetElement().Len() == 0)
+  return false;
+ // Verify if their names are plenty valid
+ if(!(CandidateElement.CheckElement()))
   return false;
  // Check the element presence on the database
  int CheckCandidateAdress = this->FindElement(CandidateElement.GetElement(),CandidateElement.GetGamma());
