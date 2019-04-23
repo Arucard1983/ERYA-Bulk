@@ -547,6 +547,11 @@ bool SRIMFile::IsSRIMFile()
  database.Open();
  // Using unique keywords, find the line numbers that contains the relevant data blocks.
  int Magic, Ion, Atom, Units, InitialTable, FinalTable;
+ Magic = 0;
+ Ion = 0;
+ Atom = 0;
+ InitialTable = 0;
+ FinalTable = 0;
  for(int k=0; k<database.GetLineCount(); k++)
   {
     if(database.GetLine(k).Contains(wxT("Ion =")))
@@ -575,10 +580,15 @@ bool SRIMFile::IsSRIMFile()
     }
   }
  // if any of delimiters are null, then the file is invalid.
- if (Ion == 0 || Atom == 0 || Units == 0 || InitialTable == 0 || FinalTable == 0 || Magic == 0)
-    return false;
  database.Close();
- return true;
+ if (Ion == 0 || Atom == 0 || Units == 0 || InitialTable == 0 || FinalTable == 0 || Magic == 0)
+ {
+     return false;
+ }
+ else
+ {
+     return true;
+ }
 }
 
 // LabView Database File Initialization Function.

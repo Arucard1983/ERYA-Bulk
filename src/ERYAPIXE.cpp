@@ -983,7 +983,7 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	wxString choiceZieglerVersionChoices[] = { wxT("1977/1983 Version (12 Parameters)"), wxT("1991/2000 Version (8 Parameters)"), wxT("Custom Interpolation Formula (Algebraic)"), wxT("SRIM Experimental Data (Interpolation)"), wxEmptyString };
 	int choiceZieglerVersionNChoices = sizeof( choiceZieglerVersionChoices ) / sizeof( wxString );
 	choiceZieglerVersion = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choiceZieglerVersionNChoices, choiceZieglerVersionChoices, 0 );
-	choiceZieglerVersion->SetSelection( 0 );
+	choiceZieglerVersion->SetSelection( 3 );
 	selectorZieglerVersion->Add( choiceZieglerVersion, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -1000,6 +1000,69 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	sizerZieglerParameters->Add( textZieglerFunction, 0, wxALL|wxEXPAND, 5 );
 
 	tabZieglerTables = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+
+    tabZieglerSRIM = new wxPanel( tabZieglerTables, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* sizerZieglerSRIMTable;
+	sizerZieglerSRIMTable = new wxBoxSizer( wxVERTICAL );
+
+	wxFlexGridSizer* sizerZieglerSRIMSelector;
+	sizerZieglerSRIMSelector = new wxFlexGridSizer( 1, 4, 0, 0 );
+	sizerZieglerSRIMSelector->AddGrowableCol( 0 );
+	sizerZieglerSRIMSelector->SetFlexibleDirection( wxBOTH );
+	sizerZieglerSRIMSelector->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
+
+	labelZieglerSRIMCurrentElement = new wxStaticText( tabZieglerSRIM, wxID_ANY, wxT("The SRIM data related to Atomic Number Element selected, are displayed here:"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelZieglerSRIMCurrentElement->Wrap( -1 );
+	sizerZieglerSRIMSelector->Add( labelZieglerSRIMCurrentElement, 0, wxALL|wxEXPAND, 5 );
+
+	spinZieglerSRIMCurrentElement = new wxSpinCtrl( tabZieglerSRIM, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 200, 1 );
+	sizerZieglerSRIMSelector->Add( spinZieglerSRIMCurrentElement, 0, wxALL, 5 );
+
+	buttonZieglerSRIMUpdate = new wxButton( tabZieglerSRIM, wxID_ANY, wxT("Update Element"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerZieglerSRIMSelector->Add( buttonZieglerSRIMUpdate, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+
+	buttonZieglerSRIMEraseAllData = new wxButton( tabZieglerSRIM, wxID_ANY, wxT("Erase All Tables"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerZieglerSRIMSelector->Add( buttonZieglerSRIMEraseAllData, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+
+
+	sizerZieglerSRIMTable->Add( sizerZieglerSRIMSelector, 0, wxEXPAND, 5 );
+
+	tableZieglerSRIM = new wxGrid( tabZieglerSRIM, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+
+	// Grid
+	tableZieglerSRIM->CreateGrid( 1000, 2 );
+	tableZieglerSRIM->EnableEditing( true );
+	tableZieglerSRIM->EnableGridLines( true );
+	tableZieglerSRIM->EnableDragGridSize( false );
+	tableZieglerSRIM->SetMargins( 0, 0 );
+
+	// Columns
+	tableZieglerSRIM->SetColSize( 0, 600 );
+	tableZieglerSRIM->SetColSize( 1, 600 );
+	tableZieglerSRIM->EnableDragColMove( false );
+	tableZieglerSRIM->EnableDragColSize( true );
+	tableZieglerSRIM->SetColLabelSize( 30 );
+	tableZieglerSRIM->SetColLabelValue( 0, wxT("Energy (keV)") );
+	tableZieglerSRIM->SetColLabelValue( 1, wxT("Stopping Power (ev*10^15 atm/cm^2)") );
+	tableZieglerSRIM->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+
+	// Rows
+	tableZieglerSRIM->EnableDragRowSize( true );
+	tableZieglerSRIM->SetRowLabelSize( 80 );
+	tableZieglerSRIM->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
+
+	// Label Appearance
+
+	// Cell Defaults
+	tableZieglerSRIM->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
+	sizerZieglerSRIMTable->Add( tableZieglerSRIM, 1, wxALL|wxEXPAND, 5 );
+
+
+	tabZieglerSRIM->SetSizer( sizerZieglerSRIMTable );
+	tabZieglerSRIM->Layout();
+	sizerZieglerSRIMTable->Fit( tabZieglerSRIM );
+	tabZieglerTables->AddPage( tabZieglerSRIM, wxT("SRIM Stopping Power Tables"), true );
+
 	tabZieglerEquations = new wxPanel( tabZieglerTables, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* sizerZieglerEquationsTable;
 	sizerZieglerEquationsTable = new wxBoxSizer( wxVERTICAL );
@@ -1063,67 +1126,7 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	tabZieglerEquations->Layout();
 	sizerZieglerEquationsTable->Fit( tabZieglerEquations );
 	tabZieglerTables->AddPage( tabZieglerEquations, wxT("Ziegler Equations Parameters"), false );
-	tabZieglerSRIM = new wxPanel( tabZieglerTables, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* sizerZieglerSRIMTable;
-	sizerZieglerSRIMTable = new wxBoxSizer( wxVERTICAL );
 
-	wxFlexGridSizer* sizerZieglerSRIMSelector;
-	sizerZieglerSRIMSelector = new wxFlexGridSizer( 1, 4, 0, 0 );
-	sizerZieglerSRIMSelector->AddGrowableCol( 0 );
-	sizerZieglerSRIMSelector->SetFlexibleDirection( wxBOTH );
-	sizerZieglerSRIMSelector->SetNonFlexibleGrowMode( wxFLEX_GROWMODE_SPECIFIED );
-
-	labelZieglerSRIMCurrentElement = new wxStaticText( tabZieglerSRIM, wxID_ANY, wxT("The SRIM data related to Atomic Number Element selected, are displayed here:"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelZieglerSRIMCurrentElement->Wrap( -1 );
-	sizerZieglerSRIMSelector->Add( labelZieglerSRIMCurrentElement, 0, wxALL|wxEXPAND, 5 );
-
-	spinZieglerSRIMCurrentElement = new wxSpinCtrl( tabZieglerSRIM, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 1, 200, 1 );
-	sizerZieglerSRIMSelector->Add( spinZieglerSRIMCurrentElement, 0, wxALL, 5 );
-
-	buttonZieglerSRIMUpdate = new wxButton( tabZieglerSRIM, wxID_ANY, wxT("Update Element"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerZieglerSRIMSelector->Add( buttonZieglerSRIMUpdate, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
-
-	buttonZieglerSRIMEraseAllData = new wxButton( tabZieglerSRIM, wxID_ANY, wxT("Erase All Tables"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerZieglerSRIMSelector->Add( buttonZieglerSRIMEraseAllData, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
-
-
-	sizerZieglerSRIMTable->Add( sizerZieglerSRIMSelector, 0, wxEXPAND, 5 );
-
-	tableZieglerSRIM = new wxGrid( tabZieglerSRIM, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-
-	// Grid
-	tableZieglerSRIM->CreateGrid( 1000, 2 );
-	tableZieglerSRIM->EnableEditing( true );
-	tableZieglerSRIM->EnableGridLines( true );
-	tableZieglerSRIM->EnableDragGridSize( false );
-	tableZieglerSRIM->SetMargins( 0, 0 );
-
-	// Columns
-	tableZieglerSRIM->SetColSize( 0, 600 );
-	tableZieglerSRIM->SetColSize( 1, 600 );
-	tableZieglerSRIM->EnableDragColMove( false );
-	tableZieglerSRIM->EnableDragColSize( true );
-	tableZieglerSRIM->SetColLabelSize( 30 );
-	tableZieglerSRIM->SetColLabelValue( 0, wxT("Energy (keV)") );
-	tableZieglerSRIM->SetColLabelValue( 1, wxT("Stopping Power (ev*10^15 atm/cm^2)") );
-	tableZieglerSRIM->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
-
-	// Rows
-	tableZieglerSRIM->EnableDragRowSize( true );
-	tableZieglerSRIM->SetRowLabelSize( 80 );
-	tableZieglerSRIM->SetRowLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
-
-	// Label Appearance
-
-	// Cell Defaults
-	tableZieglerSRIM->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	sizerZieglerSRIMTable->Add( tableZieglerSRIM, 1, wxALL|wxEXPAND, 5 );
-
-
-	tabZieglerSRIM->SetSizer( sizerZieglerSRIMTable );
-	tabZieglerSRIM->Layout();
-	sizerZieglerSRIMTable->Fit( tabZieglerSRIM );
-	tabZieglerTables->AddPage( tabZieglerSRIM, wxT("SRIM Stopping Power Tables"), true );
 
 	sizerZieglerParameters->Add( tabZieglerTables, 1, wxALL, 5 );
 
