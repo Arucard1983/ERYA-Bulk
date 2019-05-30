@@ -1,4 +1,4 @@
-ERYA-Bulk Version 4.20 ReadMe
+ERYA-Bulk Version 4.30 ReadMe
 
 ----------------------------------------------------
 
@@ -97,6 +97,8 @@ This software can export the Ziegler, Detector and Element database from an ERYA
 # The fitting and basic profiling process now had a gauge dialog that informs some basic progress information, along the possibility to abort the whole process.
 # Some minor bugfixes on main interface events.
 # The widget dialogs can now be resized by mouse.
+# SRIM tables are the default setting for the Stopping-Power model.
+# References about Stoichiometry are replaced to Composition.
 
 7. Troubleshooting and Issues
 

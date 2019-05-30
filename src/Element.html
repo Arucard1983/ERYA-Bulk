@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-03-11T00:50:28.861974389"/>
-	<meta name="changed" content="2018-11-13T14:58:22.659213915"/>
+	<meta name="changed" content="2019-05-24T16:08:10.607798037"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -15,7 +15,7 @@
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2.01cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
@@ -60,7 +60,7 @@ Feature</b></font></p>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">Unless strictly necessary, you
-should create own database elements by importing a bunch of IBANDL
+should create own database elements by importing a serie of IBANDL
 files (in r33 format) and extract their content using the “Import”
 button.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -107,37 +107,25 @@ parameters, but it will not be exported again.</font></p>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<font size="3" style="font-size: 12pt"><b>LabView ERYA / ITN
-Import/Export Features</b></font></p>
+<font size="3" style="font-size: 12pt"><b>ASCII Import/Export
+Features</b></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">In case of had a text file
-(txt/dat) exported from the LabView ERYA that is not a binary file,
-but plain text, you can import the cross-section data from the “R33
-Import/Export” buttons, and selecting the “Labview” alternative
-option, from the standard file dialog box.</font></p>
+<font size="3" style="font-size: 12pt">A good alternative to import
+cross-section data for a certain element is to load plain ASCII files
+that contains columns of numerical data, and was an informal standard
+to share data between different softwares.</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">The
+main drawback is the total absence of information about the elements
+names or any physical references that requires to be manually typed
+on the correct boxes.</span></span></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">If you edit an existing
-Element, the user can maintain or delete the six elements parameters,
-otherwise when you create a new element from scratch , you should add
-manually from third sources the necessary information, or you get an
-error when you try to save the new cross-section for a new element.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The LabView format normally
-store the cross-section in barn-keV, and the application will convert
-internally to milibarn-keV. The inverse is also made when to save the
-current cross-section of the active element to the LabView format.
-The same rules apply to the ITN text format.</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">For convenience, when the user
-export a text source file, the program will open an additional dialog
-to override the standard program guess about the original measurement
-units.</font></p>
+ <font size="3" style="font-size: 12pt">For convenience, when the
+user export a text source file, the program will open an additional
+dialog asking about the original measurement units, and some parsing
+flags.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">The user can choose between
 the milibarn or barn cross-section unit, and steradian or total angle
@@ -147,14 +135,14 @@ integration. </font>
 <font size="3" style="font-size: 12pt">An optional parsing option to
 ignore invalid lines (when it do not contains a pair of numbers)
 instead to abort with an error are also available.</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">More import/export filters for
-individual cross-section elements can be implemented in the future,
-to ease the migration between LabView ERYA and wxWidgets ERYA as
-smooth and technically possible.</font></p>
+ <font size="3" style="font-size: 12pt">All errors columns cannot be
+imported or exported by this method (and filled with zeros instead,
+on the cross-section editor), since the majority of programs never
+used such information.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font size="3" style="font-size: 12pt">Any export of the current
+cross-section to a text file, will convert to total barn units.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -177,8 +165,8 @@ user select the cross-section units (barn or mili-barn), and if is a
 differential or integration cross-section, and finally if the source
 file have two or four columns.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">Even so, only the first sheet
-of the Excel file will be parsed, due to the limitations of the
+ <font size="3" style="font-size: 12pt">Notice that only the first
+sheet of the Excel file will be parsed, due to the limitations of the
 built-in Xlsx file filter implemented on ERYA.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -214,7 +202,19 @@ by selecting the data and then clicking on “Copy”, and finally
 just paste on your favorite Spreadsheet program. </font>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>Warning! </b>This feature
 is very limited, and only work to four columns filled with data.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Notice: </b><span style="font-weight: normal">Copy
+or paste a single box data of the Element’s physical
+characteristics are perfectly fine.</span></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
 </body>
 </html>

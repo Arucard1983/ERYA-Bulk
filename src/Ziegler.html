@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.5.1 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-03-10T20:33:10.842593381"/>
-	<meta name="changed" content="2019-03-19T17:09:55.505711832"/>
+	<meta name="changed" content="2019-05-24T18:04:52.248783680"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -18,39 +18,53 @@
 	</style>
 </head>
 <body lang="pt-PT" link="#000080" vlink="#800000" dir="ltr"><p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
-<font size="4" style="font-size: 16pt"><b>ERYA : Ziegler Parameters</b></font></p>
+<font size="4" style="font-size: 16pt"><b>ERYA : Stopping-Power</b></font></p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The Ziegler Parameters editor
-contains a spreadsheet dedicated to the user make an easy edition,
-and maintaining a stack of numerical tables that ERYA use to handle a
+<font size="3" style="font-size: 12pt">The Stopping-Power editor
+contains a spreadsheet dedicated to the user make an easy edition of
+the Ziegler’s Parameters, and a chain editor of SRIM tables, that
+enables ERYA to load a stack of numerical tables to handle a
 semi-empirical physical model of scattering derived from the Bragg
 Rule.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">An optional custom function
-macro, and some utilities complements this widget functionality.</font></p>
+<br/>
+
+</p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The basic functions for the
-1977 and 1991 Ziegler’s functions are hard-coded on program and
-don't require further explanation unless you want to read the details
-at the bottom of this document, leaving the user to fill the 12
-parameters that each chemical element should describe.</font></p>
+ <font size="3" style="font-size: 12pt">The user can select one of
+four models from the appropriate pull-down menu on top right window:</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">The editor contains two main
-tabs, where the left ones is the single Ziegler's Parameters, and the
-second tab are dedicated to scroll (using the switch) the SRIM tables
-for each element.</font></p>
+<font size="3" style="font-size: 12pt">- The first two modes are the
+1977 and 1991 Ziegler’s functions that are hard-coded on program,
+and require the user fill the 12 parameters on the Ziegler’s
+spreadsheet tab that each chemical element should describe.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">As a final alternative, it is
-possible to define a user-defined function to bypass the hard-coded
-functions.</font></p>
+ <font size="3" style="font-size: 12pt">Additional information are
+available at the bottom document.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">-  The third mode enable the
+user-defined function written on the top window.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- And finally, and the
+program’s default mode, uses the interpolation tables derived from
+SRIM, one of each element.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">To access all content, this
+widget contains two main tabs, where the right ones are dedicated to
+the Ziegler's Parameters, and the left tab are dedicated to scroll
+(using the switch) the SRIM tables for each element.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<b>Main Features:</b></p>
+<b>Main Features of Ziegler’s Table:</b></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">-
 For easy management, the first column are dedicated to the chemical
 symbol of the element, and the next 12 columns (A-1 to A-12) are the
@@ -94,36 +108,66 @@ an error.</font></p>
 Ziegler Parameters file in ASCII, but the program will use an
 hard-coded dictionary to change the “Elements” column to the
 chemical symbols automatically, beginning with “H, He, ...”</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
 
 </p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Main Features of Custom
+Function:</b></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">-
 Using the built-in ERYA macro language, it is possible to define a
 custom function. With this new feature, it is even possible to use
-the table as an array of constants. (For more information, read
-<a href="Macro.html">here</a>.)</span></span></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+the </span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Ziegler’s
+</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">table
+</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">load
+special constants values, as it will be explained with an example
+later.</span></span></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<b>Main Features of SRIM Interpolation Tables:</b></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- To manage the entire set of
+interpolation tables for all elements, the SRIM Table editor only
+displays a single element each time, according to the atomic number’s
+switch.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- As a final option, the user
-can use the SRIM tables for each element, as long activate the “SRIM”
-mode, and check by the atomic number scroll-box, the presence of the
-element’s stopping powers forehand.</font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+<font size="3" style="font-size: 12pt">- The user only need to change
+the atomic number’s value to display their content on the SRIM
+spreadsheet below. Manual editing requires to click on “Update
+Table” button to store on memory, otherwise any changes are lost. <font face="Liberation Serif, serif">
+To permanently store the updated tables, use the “Export” button
+to save as a native </font><font face="Liberation Serif, serif"><b>epsz
+</b></font><font face="Liberation Serif, serif">file.</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">- Clicking “Erase All
+Tables” will delete all SRIM tables from memory.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>Export and Import Ziegler
 Parameters from an Excel File or plain ASCII files:</b></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- ERYA-Profiling supports to
-read and write the Ziegler Parameters from Microsoft Excel files.</font></p>
+<font size="3" style="font-size: 12pt">- ERYA-Bulk supports to read
+and write the Ziegler Parameters from Microsoft Excel files.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">However, while reading
 directly from an Excel file are supported, the program expects a
-compact spreadsheet with 14 or 16 columns, otherwise the ERYA’s
-Xlsx filter will fail to parse, and gives an error.</font></p>
+compact spreadsheet with 14 columns, otherwise the ERYA’s Xlsx
+filter will fail to parse, and gives an error.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -140,6 +184,9 @@ stored or retrieved from an Excel file.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font size="3" style="font-size: 12pt"><b>Export and Import
+Interpolation SRIM Tables from an Excel File or plain ASCII files:</b></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- It is only possible to
 export or import a single SRIM table for a single Element. The table
@@ -187,7 +234,8 @@ Section</a>. </span></span></font>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<font size="3" style="font-size: 12pt"><b>Using SRIM Tables</b></font></p>
+<font size="3" style="font-size: 12pt"><b>Import Original SRIM
+Stopping-Power Files:</b></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -196,17 +244,36 @@ Section</a>. </span></span></font>
 “SRIM/LabView/ASCII” option from “Import” button, ERYA can
 parse an unedited SRIM Stopping-Power output file to the correct
 Atomic Number location, making all unit conversions without any
-additional steps, even if the user don’t select the “SRIM” mode
-forehand. ERYA can ask if you want to override the table on the
-Atomic Number defined by the source file.</font></p>
+additional steps.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- Pure numerical text files
-with two columns are also supported, if the user select previously
-the “SRIM” tab, and the correct Atomic Number forehand.</font></p>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">In
+order to import a SRIM table without fail, use SRIM®  software to
+export a single element stopping-power by an hydrogen ion beam,
+resulting a plain text file. </font></font>
+</p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Then
+just use the “Import” button from this widget, and select the
+“txt” file format. (It contains a lot of header data that ERYA
+will use to recognize the relevant data structures.)</font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif">Any
+necessary unit conversions are made on fly, and placed on the correct
+atomic number automatically. </font>ERYA can ask if you want to
+override the table on the Atomic Number defined by the source file.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- When export a SRIM table as
 “LabView/ASCII” file, it will only export the selected Atomic
-Number table as a simple text file with two numerical columns.</font></p>
+Number table as a simple text file with two numerical columns, as
+explained before.</font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- The only way to import or
 export all SRIM tables from ERYA at once, is to use the native <b>epsz</b>
@@ -390,60 +457,21 @@ this program context, even it was created on the interpreter memory.</font></fon
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Notice
-that is possible to define constant values, and should not use any of
-the 16 variables defined by the <b>fnvar</b> macro parameter.</font></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">It
 is obligatory to define the parameters <b>fxvar</b>, <b>fyvar</b> and
 <b>fnvar</b>, before write the algebraic function, such as the
 following example:</font></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>fxvar
-= x, fyvar = y, fnvar = n : a = 100 : y = (n * x + 1)*a</b></font></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>Using
-the SRIM tables</b></font></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b><span style="font-style: normal">fxvar
+= x, fyvar = y, fnvar = a : low = a1*x^a2 + a3*x^a4 , high =
+(a5/x^a6) * ln (a7/x + a8*x) , y = (x&gt;=</span><span style="font-style: normal">25</span><span style="font-style: normal">)*((high*low)/(high+low))</span></b></font></font></p>
+<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
+<br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Selecting
-the “SRIM” mode, ERYA will evaluate the stopping by the
-interpolation of data from the tables that corresponds to the correct
-Element’s Atomic Number. </font></font>
-</p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">In
-order to update the SRIM table, use SRIM software to export a single
-element stopping-power by an hydrogen ion beam, resulting a plain
-text file. Then just use the “Import” button from this widget,
-and select the “txt” file format. (It contains a lot of header
-data that ERYA will use to recognize the relevant data structures.)
-Any necessary unit conversions are made on fly, and placed on the
-correct atomic number automatically.</font></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Alternatively,
-it is possible to read a two column numeric text file, or even an
-Excel file, but is required to the user select manually the correct
-atomic number from the “SRIM” tab, before import the data.</font></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Once
-completed by either way, click on “Update Table” to store the new
-table on the ERYA program memory. To permanently store the updated
-tables, use the “Export” button to save as a native <b>epsz </b>file.</font></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
-
-</p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
-“Clear All Tables” will delete all SRIM tables from ERYA program
-memory.</font></font></p>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal">This
+example are the same built-in 1991 Ziegler’s Function described on
+this document.</span></font></font></p>
 </body>
 </html>

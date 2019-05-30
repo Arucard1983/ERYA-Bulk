@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.5.1 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-03-10T20:27:27.902047081"/>
-	<meta name="changed" content="2019-02-28T17:43:22.407099414"/>
+	<meta name="changed" content="2019-05-24T16:09:34.558204901"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -34,7 +34,7 @@ efficiency at an certain range of energies.</font></p>
 <font size="3" style="font-size: 12pt">The minimum requirement is to
 export, or type an array of data that should contain a pair of values
 that models the efficiency in function of energy. (The program will
-assume the energy is in keV, and the efficiency as a dimensionless
+assume the energy is in keV, and the efficiency is a dimensionless
 value between zero and one).</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">The main rule is if you have
@@ -80,19 +80,19 @@ interpolation, it is required to fill a custom function on top window
 input-box. </font>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">A typical custom-function for
+<font size="3" style="font-size: 12pt">A typical custom-function for
 Detector’s Efficiency have the following format, like in this
 example:</font></p>
 <p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>fxvar = E, fyvar = F :
 a3=-3.E4, a2=-276, a1=10, a0=1.5E-4 : F = a0 + a1/E + a2/E^2 + a3/E^3</b></font></p>
-<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
-<br/>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">When
-ERYA detects a valid algebraic function, will ignore any table data,
-and use exclusively the direct function evaluation.</span></span></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">When ERYA detects a valid
+algebraic function, will ignore any table data, and use exclusively
+the direct function evaluation.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Further
 information about writing a custom function can be accessed <a href="Macro.html">here</a>.</span></span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>

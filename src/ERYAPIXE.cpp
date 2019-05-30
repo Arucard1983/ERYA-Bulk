@@ -146,7 +146,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
         labelElementCalibrationParameter->SetFont(TableFont);
 	sizerButtons->Add( labelElementCalibrationParameter, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Stoichiometric\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometricGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Composition\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricGuess->Wrap( -1 );
     labelStoichiometricGuess->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricGuess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -166,12 +166,12 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     labelYieldFitted->SetFont(TableFont);
 	sizerButtons->Add( labelYieldFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted\nStoichiometry"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometricFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted\nComposition"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricFitted->Wrap( -1 );
     labelStoichiometricFitted->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricMass = new wxStaticText( scrollButtons, wxID_ANY, wxT("Stoichiometric\nFitted Mass"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometricMass = new wxStaticText( scrollButtons, wxID_ANY, wxT("Composition\nFitted Mass"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricMass->Wrap( -1 );
     labelStoichiometricMass->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricMass, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -264,7 +264,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	tabYieldEnergy->SetSizer( sizerYieldEnergy );
 	tabYieldEnergy->Layout();
 	sizerYieldEnergy->Fit( tabYieldEnergy );
-	tabbedOutput->AddPage( tabYieldEnergy, wxT("Stoichiometry"), false );
+	tabbedOutput->AddPage( tabYieldEnergy, wxT("Composition"), false );
 	tabFittingError = new wxPanel( tabbedOutput, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* sizerFittingError;
 	sizerFittingError = new wxBoxSizer( wxVERTICAL );
@@ -312,7 +312,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	tabLogProfiling->SetSizer( sizerLogProfiling );
 	tabLogProfiling->Layout();
 	sizerLogProfiling->Fit( tabLogProfiling );
-	tabbedOutput->AddPage( tabLogProfiling, wxT("Energy Profiling"), false );
+	tabbedOutput->AddPage( tabLogProfiling, wxT("Energy Table"), false );
 
 	sizerMainFrame->Add( tabbedOutput, 1, wxEXPAND | wxALL, 5 );
 
@@ -362,7 +362,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	textStepSize = new wxTextCtrl( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerMainButtons->Add( textStepSize, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-    labelDetectorAngle = new wxStaticText( this, wxID_ANY, wxT("Profiling Step\n (keV)"), wxDefaultPosition, wxDefaultSize, 0 );
+    labelDetectorAngle = new wxStaticText( this, wxID_ANY, wxT("Table Step\n (keV)"), wxDefaultPosition, wxDefaultSize, 0 );
     labelDetectorAngle->SetFont(TableFont);
     labelDetectorAngle->SetForegroundColour(wxColour(64,64,128,wxALPHA_OPAQUE));
 	labelDetectorAngle->Wrap( -1 );

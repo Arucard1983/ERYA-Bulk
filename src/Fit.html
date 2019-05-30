@@ -3,38 +3,37 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-06-14T17:14:28.679842002"/>
-	<meta name="changed" content="2018-11-13T16:06:08.793467558"/>
+	<meta name="changed" content="2019-05-24T16:19:54.245994279"/>
 	<meta name="created" content="00:00:00">
 	<meta name="changed" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2.01cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
 </head>
 <body lang="en-US" link="#000080" vlink="#800000" dir="ltr"><p align="center" style="margin-bottom: 0cm; line-height: 100%">
 <font size="4" style="font-size: 16pt"><b>ERYA – Bulk : How to make
-a Stoichiometric Analysis</b></font></p>
+a Composition Analysis</b></font></p>
 <p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="4" style="font-size: 16pt"><font size="3" style="font-size: 12pt">Once
 you have a workable Element Database, a viable Detector Efficiency
-data, and a suitable</font> <font size="3" style="font-size: 12pt">Ziegler
-Parameters table, you can make a stoichiometric analysis without much
-effort.</font></font></p>
+data, and a suitable</font> <font size="3" style="font-size: 12pt">Stopping-Power</font><font size="3" style="font-size: 12pt">
+table, you can make a </font><font size="3" style="font-size: 12pt">composition</font><font size="3" style="font-size: 12pt">
+analysis without much effort.</font></font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="4" style="font-size: 16pt"><font size="3" style="font-size: 12pt">If
-you prefer </font><font size="3" style="font-size: 12pt">to </font><font size="3" style="font-size: 12pt">
-read the theoretic basis before use this</font> <font size="3" style="font-size: 12pt">major
-application feature, just read the next section, otherwise jump to
-the Fitting Instructions.</font> </font>
+you prefer to read the theoretic basis before </font><font size="3" style="font-size: 12pt">use
+the software</font><font size="3" style="font-size: 12pt">, just read
+the next section, otherwise jump to the Fitting Instructions.</font> </font>
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -50,12 +49,12 @@ defined from the user, taking the user-defined parameters and all
 related databases to calculate the pretended result.</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><span style="font-weight: normal">The
 gamma emission yield of an isotope either independent or adjacent for</span>
-<span style="font-weight: normal">a particular Compound, </span><span style="font-weight: normal">(A</span><span style="font-weight: normal">s
-you can read more about the</span> <span style="font-weight: normal">Compounds
-sections of this document</span><span style="font-weight: normal">)</span><span style="font-weight: normal">,</span>
-<span style="font-weight: normal">when bombarded by a beam of protons
-at non-relativistic energies (less than 10 MeV),</span> it <span style="font-weight: normal">can
-be evaluated from the following integral:</span></p>
+<span style="font-weight: normal">a particular Compound, (As you can
+read more about the</span> <span style="font-weight: normal">Compounds
+sections of this document),</span> <span style="font-weight: normal">when
+bombarded by a beam of protons at non-relativistic energies (less
+than 10 MeV),</span> it <span style="font-weight: normal">can be
+evaluated from the following integral:</span></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -92,7 +91,7 @@ alone, their mass fraction will be equal to one.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">- If the isotope belongs to a
 certain compound, the mass fraction is evaluated by taking the weight
-average of their isotope mass and stoichiometric ratio of current
+average of their isotope mass and composition ratio of current
 compound.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><span style="font-weight: normal">-
 Thus, taking the sum, S = Σ s</span></font><sub><font face="Liberation Serif, serif"><span style="font-weight: normal">k
@@ -160,7 +159,8 @@ dε quantity is the <a href="Ziegler.html">Energy Stopping</a></span></font>
 <font face="Liberation Serif, serif"><span style="font-weight: normal">loss
 which use the Bragg's Law and the Ziegler's </span></font><font face="Liberation Serif, serif"><i><span style="font-weight: normal">ansatz</span></i></font>
 <font face="Liberation Serif, serif"><span style="font-weight: normal">equations
-to model the energy beam losses.</span></font></p>
+to model the energy beam losses. </span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">(An
+interpolation mode derived from the SRIM are also available.)</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -199,7 +199,7 @@ you need in the same analysis, as long you have declared the
 necessary number of elements on main screen.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">The main purpose of the
-Compounds is to define a strictly fixed stoichiometric ratio, as any
+Compounds is to define a strictly fixed composition ratio, as any
 physical chemical compound will have a defined quantity of each
 element, and thus a fixed stoichiometry between element species. </font>
 </p>
@@ -207,25 +207,28 @@ element, and thus a fixed stoichiometry between element species. </font>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><b>About
-the Stoichiometric Fitting</b></font></p>
+the Composition Fitting</b></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">Optionally, if you select the
 “Fit” flag on the Elements tab of main screen, it will trigger
-the Stoichiometric fitting procedure.</font></p>
+the Composition fitting procedure.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">Basically will read the
 evaluated yield using the integral described on the Yield Evaluation
 section, plus an user inserted yield, which should be an experimental
 or guess result, and try to minimize the difference between the
-theoretic and experiment yield, by changing the stoichiometric
-indexes.</font></p>
+theoretic and experiment yield, by changing the composition indexes.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">ERYA will read the Elements and
 Compounds objects in memory, and define the number of independent
 parameters to make the stoichiometry fitting successfully. </font>
+</p>
+<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
 </p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">Since the Compounds share a
@@ -255,6 +258,10 @@ ERYA will try to apply an iterative nonlinear fitting algorithm based
 on Levenberg-Marquardt algorithm, to minimize the gap between
 experimental and theoretic yields, while respecting the constraints
 defined by the user.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><span style="font-weight: normal">Additional
 settings can be achieved by selecting the “<a href="Fitextra.html">Advanced</a>”
 button, and it will open an optional dialog to change the convergence
@@ -279,13 +286,14 @@ Analysis How-To</b></font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">1. You need to check first if
 you have a functional database. If the program warns about an invalid
-database for Elements, Ziegler or Detector Setup, you need to check
-the source database files (You should put all three in the same
+database for Elements, Stopping-Power or Detector Setup, you need to
+check the source database files (You should put all three in the same
 directory), and delete the configuration file (ERYA-Bulk.conf)
-located on main program directory as explained on readme.txt file.
-Once deleted, run ERYA again and fill the databases files when the
-program asks while it will use the new information to rebuild a new
-configuration file.</font></p>
+located on main program directory as explained on readme.txt file.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+ <font face="Liberation Serif, serif">Once deleted, run ERYA again
+and fill the databases files when the program asks while it will use
+the new information to rebuild a new configuration file.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -297,7 +305,8 @@ at start-up, using the adequate menu.</span></font></p>
 <font face="Liberation Serif, serif"><span style="font-weight: normal">Tip:
 Also check the <a href="Detector.html">Detector Setup</a></span></font>
 <font face="Liberation Serif, serif"><span style="font-weight: normal">and
-<a href="Ziegler.html">Ziegler Parameters</a></span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">from
+</span></font><a href="Ziegler.html"><font face="Liberation Serif, serif"><span style="font-weight: normal">Stopping
+Power</span></font></a> <font face="Liberation Serif, serif"><span style="font-weight: normal">from
 the appropriate menu options.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -324,28 +333,30 @@ needs.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">4. Notice that the stoichiometry
 inserted on the main spreadsheet will be renormalized, no matter the
-values inserted. Also, during the fitting procedure, the
-stoichiometry are renormalized for each step, reducing the number of
-necessary steps to achieve a solution.</font></p>
+values inserted. Also, during the fitting procedure, the composition
+are renormalized for each step, reducing the number of necessary
+steps to achieve a solution.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">5. In the main spreadsheet, you
-should also fill the initial values of the stoichiometry, the
+should also fill the initial values of the sample composition, the
 experimental yields of some elements or compounds. Without this
 additional information, ERYA cannot make a more accurate fitting.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">†
 <font face="Liberation Serif, serif"><span style="font-weight: normal">Tip:
 You can tune the fitting process, by selecting in the adequate
 check-box</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">the
-relevant elements for which the stoichiometric ratios are
-problem-prone to be variable due to the foreground contamination.</span></font>
-<font face="Liberation Serif, serif"><span style="font-weight: normal">Elements
+relevant elements for which the </span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">composition</span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">
+ratios are problem-prone to be variable due to the foreground
+contamination.</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">Elements
 without detailed cross-sections are futile to be fitted, and you
-should be </span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">deselected</span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">
-</span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">them</span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">
-from the Stoichiometric Fitting procedure. </span></font>
+should be deselected</span></font> <font face="Liberation Serif, serif"><span style="font-weight: normal">them</span></font>
+<font face="Liberation Serif, serif"><span style="font-weight: normal">from
+the </span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">Composition
+</span></font><font face="Liberation Serif, serif"><span style="font-weight: normal">Fitting
+procedure. </span></font>
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -356,6 +367,10 @@ Energy parameters to define the energy range and click “Run</font>”
 <font face="Liberation Serif, serif">to get the results. If anything
 goes right (Any errors will be warned to the user, mainly by the form
 of message boxes.), the results will appear in a matter of seconds.</font></p>
+<p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<br/>
+
+</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">†
 <font face="Liberation Serif, serif"><span style="font-weight: normal">Tip:
 To avoid unnecessary time-consuming problems, first make an initial
@@ -373,9 +388,9 @@ gamma peak of isolated elements.</font></p>
 <font face="Liberation Serif, serif">If necessary, at the same Energy
 scale, define the Compounds, and repeat the calculations.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font face="Liberation Serif, serif">Finally, make a real
-Stoichiometric Fitting, and if necessary, change the parameters and
-compare the results.</font></p>
+<font face="Liberation Serif, serif">Finally, make a real Composition
+Fitting, and if necessary, change the parameters and compare the
+results.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>

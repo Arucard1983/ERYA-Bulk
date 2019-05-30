@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.3.2 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-06-14T17:14:28.679842002"/>
-	<meta name="changed" content="2018-11-13T15:58:59.195814607"/>
+	<meta name="changed" content="2019-05-24T16:22:00.930306107"/>
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
 	<meta name="created" content="00:00:00">
@@ -14,7 +14,7 @@
 	<meta name="created" content="00:00:00">
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2.01cm }
-		p { margin-bottom: 0.25cm; line-height: 120%; background: transparent }
+		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
 		a:link { color: #000080; so-language: zxx; text-decoration: underline }
 		a:visited { color: #800000; so-language: zxx; text-decoration: underline }
 	</style>
@@ -44,7 +44,7 @@ depends from the evaluation of a numerical integral, that along
 several variables it depends from the stoichiometric ratios, which
 are the critical parameters that can change the value of yields,
 during the fitting procedure.</p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%">  By
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">By
 taking the norm of a vector of different yields, it is possible to
 define the following <i>residual function </i><span style="font-variant: normal"><span style="font-style: normal">:
 </span></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">ε=
@@ -53,10 +53,8 @@ define the following <i>residual function </i><span style="font-variant: normal"
 </span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">||,
 where the experimental yield are defined by the user, and the
 theoretical yield are evaluated from the current stoichiometric
-ratios, </span></font></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">calculated
-by several factors derived from the databases and some additional
-initial values that was </span></font></span><span style="font-variant: normal"><font face="Liberation Serif, serif"><span style="font-style: normal">defined
-by the user.</span></font></span></p>
+ratios, calculated by several factors derived from the databases and
+some additional initial values that was defined by the user.</span></font></span></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -99,21 +97,20 @@ be explained on next section.</font></font></p>
 <font face="Liberation Serif, serif"><font face="Times New Roman, serif">The
 algorithm will stop, either by exceeding a maximum number of
 iterations (up to 100, user selectable), or when reaches a
-convergence criteria, </font><font face="Times New Roman, serif">that
-can occur</font><font face="Times New Roman, serif"> from the
-residual functions: </font>||J<sup>T </sup>ε|| &lt; h<sub>1 </sub>||ε||,
-or from the stoichiometric ratios: ||δ|| &lt; h<sub>2 </sub>||x||.</font></p>
+convergence criteria, that can occur</font> <font face="Times New Roman, serif">from
+the residual functions: </font>||J<sup>T </sup>ε|| &lt; h<sub>1
+</sub>||ε||, or from the stoichiometric ratios: ||δ|| &lt; h<sub>2
+</sub>||x||.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
 <font face="Liberation Serif, serif">Otherwise the stoichiometric
-ratios <b>x</b>  are updated according to the vector δ, as long the
+ratios <b>x</b> are updated according to the vector δ, as long the
 matrix system had solutions, making the damping factor <font face="Times New Roman, serif">λ</font>
 and the Jacobian matrices been updated for the new stoichiometric
 ratios at each new iteration step, until a solution emerges.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; line-height: 100%">
- <font face="Liberation Serif, serif">An additional renormalization
+<font face="Liberation Serif, serif">An additional renormalization
 step also occurs each time the stoichiometric ratios <b>x</b><span style="font-weight: normal">,
-in order to confine the numerical values  on a more safe range
-domain.</span></font></p>
+in order to confine the numerical values on a more safe range domain.</span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -138,7 +135,7 @@ default settings:</font></p>
 (Selectable from 0 to 6).</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif">- Stoichiometric converge
-criteria,3 (Selectable from 0 to 6).</font></p>
+criteria, 3 (Selectable from 0 to 6).</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -158,21 +155,21 @@ a fairy good approximation in a short number of iterations, as long
 the experimental results was not far away of the initial
 stoichiometric guess.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
- <font face="Times New Roman, serif">In some occasions it is possible
+<font face="Times New Roman, serif">In some occasions it is possible
 to occur a slow convergence due to a series of factors, that only by
 experience can help to minimize the problem.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
- <font face="Times New Roman, serif">The fitting time will increase
+<font face="Times New Roman, serif">The fitting time will increase
 when the number of independent fitting parameter increases. With two
 or three, usually the fitting take a couple of seconds. But with 10
 or 20 elements, it may take some minutes to achieve the results.</font></p>
 <p align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
- <font face="Times New Roman, serif">Other factors that may cause
+<font face="Times New Roman, serif">Other factors that may cause
 abnormal fitting times, even for some samples with fewer fitting
-parameters. A common cause  is that some Elements have a
-cross-section function that was not very well conditioned, require
-several iterations steps to achieve a reasonable result, due to a
-slow convergence.</font></p>
+parameters. A common cause is that some Elements have a cross-section
+function that was not very well conditioned, require several
+iterations steps to achieve a reasonable result, due to a slow
+convergence.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>

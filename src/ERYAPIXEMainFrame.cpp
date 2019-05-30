@@ -455,13 +455,13 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(wxT("Fit")));
     CurrentYieldTable.Add(TableNode(wxT("Fixed Ratio Group")));
     CurrentYieldTable.Add(TableNode(wxT("Calibration Parameter")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Guess")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Mass")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Error")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Fitted")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Mass")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Error")));
     for(int z=0; z<AdditionalColumns; z++)
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
@@ -518,7 +518,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(textMaximumEnergy->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Step(keV)="),0));
     CurrentYieldTable.Add(TableNode(textStepSize->GetValue(),1));
-    CurrentYieldTable.Add(TableNode(wxT("Detector Calibration"),0));
+    CurrentYieldTable.Add(TableNode(wxT("Table Step(keV)"),0));
     CurrentYieldTable.Add(TableNode(textDetectorAngle->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Charge(uC)="),0));
     CurrentYieldTable.Add(TableNode(textCharge->GetValue(),1));
@@ -670,7 +670,7 @@ void ERYAPIXEMainFrame::OnHelpGuide( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.20\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2018 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version 4.30\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2018 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )
@@ -974,13 +974,13 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(wxT("Fit")));
     CurrentYieldTable.Add(TableNode(wxT("Fixed Ratio Group")));
     CurrentYieldTable.Add(TableNode(wxT("Calibration Parameter")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Guess")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Mass")));
-    CurrentYieldTable.Add(TableNode(wxT("Stoichiometric Error")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Fitted")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Mass")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Error")));
     for(int z=0; z<AdditionalColumns; z++)
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
@@ -1037,7 +1037,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(textMaximumEnergy->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Step(keV)="),0));
     CurrentYieldTable.Add(TableNode(textStepSize->GetValue(),1));
-    CurrentYieldTable.Add(TableNode(wxT("Detector Calibration"),0));
+    CurrentYieldTable.Add(TableNode(wxT("Table Step(keV)"),0));
     CurrentYieldTable.Add(TableNode(textDetectorAngle->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Charge(uC)="),0));
     CurrentYieldTable.Add(TableNode(textCharge->GetValue(),1));
@@ -1677,7 +1677,7 @@ bool ERYAPIXEMainFrame::SaveSetupFile(wxString MainDirectory, wxString MainDetec
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.20")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.30")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
   // Save the file

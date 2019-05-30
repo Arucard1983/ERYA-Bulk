@@ -3,9 +3,9 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
 	<title></title>
-	<meta name="generator" content="LibreOffice 6.1.5.1 (Linux)"/>
+	<meta name="generator" content="LibreOffice 6.1.5.2 (Linux)"/>
 	<meta name="created" content="2016-03-10T20:27:27.902047081"/>
-	<meta name="changed" content="2019-02-28T16:12:38.542480173"/>
+	<meta name="changed" content="2019-05-24T16:42:08.487915901"/>
 	<style type="text/css">
 		@page { size: 21cm 29.7cm; margin: 2cm }
 		p { margin-bottom: 0.25cm; background: transparent; line-height: 120%; background: transparent }
@@ -20,74 +20,75 @@ Language Reference</b></font></p>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">At some program’s options
-or inputs, ERYA accepts small programs to handle custom functions or
+<font size="3" style="font-size: 12pt">At some program’s options or
+inputs, ERYA accepts small programs to handle custom functions or
 algebraic expressions that during the numerical simulation will
 deliver numerical values.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">Along the ERYA’s
+<font size="3" style="font-size: 12pt">Along the ERYA’s
 documentation this internal programming language handled by an
 interpreter will be declared as <b>ERYA Macro</b> and resembles the
-BASIC<b> </b>dialect found on programmable calculators. Compared to
-other BASIC implementations, it was designed to made single-line
-programs, and tailored to write algebraic functions.</font></p>
+BASIC dialect found on programmable calculators. Compared to other
+BASIC implementations, it was designed to made single-line programs,
+and tailored to write algebraic functions.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">Several characteristics like
+<font size="3" style="font-size: 12pt">Several characteristics like
 flow control, code branches, subroutines and other features presents
 on more advanced interpreters are absent on ERYA Macro language.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">This documents will detail
-the syntax rules and recommend code practices to the user code the
+<font size="3" style="font-size: 12pt">This documents will detail the
+syntax rules and recommend code practices to the user code the
 functions.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>ERYA Macro Code Standards</b></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">A ERYA Macro are composed by
-a linear sequence of sentences, separated by commas (,) forming a
-chain function. It is possible to write several chain functions,
-requiring to use colons (:) to separate them.</font></p>
+<font size="3" style="font-size: 12pt">A ERYA Macro are composed by a
+linear sequence of sentences, separated by commas (,) forming a chain
+function. It is possible to write several chain functions, requiring
+to use colons (:) to separate them.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">This convention are inherited
+<font size="3" style="font-size: 12pt">This convention are inherited
 from BASIC language, when multiple sentences could be placed on the
 same line, using the colon symbol to separate them.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">ERYA Macro will consider the
-last sentence as the <i>return </i><span style="font-style: normal">sentence
+<font size="3" style="font-size: 12pt">ERYA Macro will consider the
+last sentence as the <i>return </i><span style="font-variant: normal"><span style="font-style: normal">sentence
 of the custom function, and ERYA will cache them in order to optimize
-the execution time code.</span></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+the execution time code.</span></span></font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-variant: normal; font-style: normal; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt">ERYA Macro will consider two
+types of sentences:</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt"><span style="font-style: normal">ERYA
-Macro will consider two types of sentences:</span></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt"><span style="font-style: normal">-
-</span><span style="font-style: normal"><b>Function Sentences</b></span><span style="font-style: normal">:
+<font size="3" style="font-size: 12pt"><span style="font-variant: normal"><span style="font-style: normal">-
+</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>Function
+Sentences</b></span></span><span style="font-variant: normal"><span style="font-style: normal">:
 Composed by a variable and a number or algebraic expression linked by
 an equal sign (=). ERYA will store the numerical value of the
 variable, according to the numerical evaluation of the algebraic
-equation.</span></font></p>
+equation.</span></span></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt"><span style="font-style: normal">-
-</span><span style="font-style: normal"><b>Algebraic Sentences: </b></span><span style="font-style: normal">Are
+<font size="3" style="font-size: 12pt"><span style="font-variant: normal"><span style="font-style: normal">-
+</span></span><span style="font-variant: normal"><span style="font-style: normal"><b>Algebraic
+Sentences: </b></span></span><span style="font-variant: normal"><span style="font-style: normal">Are
 made with a simple numerical expression, that ERYA will evaluate and
-store on an answer memory variable. Only the last Algebraic Sentence
-returned value can be retrieved by the interpreter code to the ERYA
-numerical routines.</span></font></p>
+store on an answer memory variable. </span></span><span style="font-variant: normal"><span style="font-style: normal">Multiple
+sentences return values will overwrite the answaer variable content.</span></span></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font size="3" style="font-size: 12pt"><span style="font-variant: normal"><span style="font-style: normal">Only
+the last Algebraic Sentence returned value can be retrieved by the
+interpreter code to the ERYA numerical routines.</span></span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -97,16 +98,14 @@ Function using ERYA Macro</b></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">A typical user-defined
-function, like the ones defined on <a href="Detector.html">Detector’s
-Efficiency</a> or <a href="Ziegler.html">Ziegler’s
-Parameters</a> as options, should follow this template:</font></p>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">A
+typical user-defined function, like the ones defined on <a href="Detector.html">Detector’s
+Efficiency</a> or </span></span></font><a href="Ziegler.html"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Stopping-Power</span></span></font></a><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">
+as options, should follow this template:</span></span></font></p>
 <p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>&lt;Function
 Variables&gt;:&lt;Function Constants &gt;:&lt;The desired formula&gt;</b></font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -121,14 +120,15 @@ by colons (:), the interpreter will flush the stack cache, and store
 or update the variable stack memory. The last chain of commands are
 maintained on memory, and turns to be the function stack.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">This was intended to make a
+<font size="3" style="font-size: 12pt">This was intended to make a
 single compilation step, and one the ERYA numerical code calls the
-custom function from memory with an input value, it just need to run
-the function stack, and their memory stack values, to return the
-function output, reducing the interpreter time to run the code.</font></p>
+custom function from memory with an input function variable value, it
+just need to run the function stack, and their memory stack values,
+to return the function output, reducing the interpreter time to run
+the code.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">- A Function sentence can be
-further classified by three types:  parameters, constants and
+further classified by three types: parameters, constants and
 variables.</font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
@@ -149,18 +149,20 @@ Parameters</b></font></font></p>
 </span></span></font></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">parameter</span></i></span></font></font>
 <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">is
 a special</span></span></font></font> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">variable
-which only accepts alphanumeric words as arguments, </span></span></font></font><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">and
-was the simplest form to ERYA Macro supports variable declarations.</span></span></font></font></p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Each
+which only accepts alphanumeric words as arguments, and was the
+simplest form to ERYA Macro supports variable declarations.</span></span></font></font></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Each
 kind parameter should only be declared a single time, and ERYA will
 warn the user when a parameter are redeclared twice, stopping any
-further numerical simulation.</span></span></font></font></p>
+further numerical simulation.</font></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">On
+<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">On
 ERYA, all parameters are non-numeric and should be written in the
-following format.</span></span></font></font></p>
+following format.</font></font></p>
 <p lang="en-US" align="center" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">&lt;Parameter
 Name&gt; = &lt;Parameter Value&gt;</font></font></p>
@@ -226,32 +228,35 @@ same as C-style syntax). </font></font>
 <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">-
 fnvar = &lt;any valid variable&gt;</font></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Defines
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">Defines
 a vector of 16 elements, where the initial vector element starts with
 the user-defined variable name as arguments. The next vector elements
 are placed by merging the numbers 1 to 15 as suffixes. The initial
 values are “1” for all 16 variables. </font></font>
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">The
 vector values are normally changed by the Ziegler’s Parameters
 table values, and not by the macro code itself.</font></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">On
-ERYA program, only the <i>fxvar</i><span style="font-style: normal">
-and </span><i>fyvar</i><span style="font-style: normal"> are
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt">On
+ERYA program, only the <i>fxvar</i><span style="font-variant: normal">
+</span><span style="font-variant: normal"><span style="font-style: normal">and
+</span></span><i>fyvar</i><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">are
 obligatory to define a custom function, otherwise it will display an
 error about an undefined function. The Ziegler’s custom function
-also requires </span><i>fnvar</i><span style="font-style: normal">
-parameter in order to copy the Ziegler’s Parameters values.</span></font></font></p>
+also requires </span></span><i>fnvar</i><span style="font-variant: normal">
+</span><span style="font-variant: normal"><span style="font-style: normal">parameter
+in order to copy the Ziegler’s Parameters values.</span></span></font></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-style: normal">The
-</span><i>fxmax</i><span style="font-style: normal"> and </span><i>fxmin</i><span style="font-style: normal">
-are optional on all ERYA-Bulk program, and serve to define a global
-limiting function domain at any context.</span></font></font></p>
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span style="font-variant: normal"><span style="font-style: normal">The
+</span></span><i>fxmax</i><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">and
+</span></span><i>fxmin</i><span style="font-variant: normal"> </span><span style="font-variant: normal"><span style="font-style: normal">are
+optional on all ERYA-Bulk program, and serve to define a global
+limiting function domain at any context.</span></span></font></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -364,18 +369,17 @@ function, reducing syntax errors and other issues.</span></span></font></font></
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"><b><font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US">4.
-Functions</span></font></font></b></p>
+<p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><b>4.
+Functions</b></font></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%"> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">On
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">On
 the last macro block of code (after the last colon sign), the user
-should define t</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">he
-</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">algebraic
+should define the </span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><i><span style="font-weight: normal">algebraic
 function</span></i></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">,
-</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">while
-taking care to define the necessary parameters, constants and
+while taking care to define the necessary parameters, constants and
 variables previously.</span></span></font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">It is possible to define a
@@ -386,7 +390,7 @@ terms of readlibilty.</font></p>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; line-height: 100%">
- <b>Example 1:</b> Take the following model-function:</p>
+<b>Example 1:</b> Take the following model-function:</p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -427,10 +431,9 @@ implement the last instruction line as:</span></span></font></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p align="left" style="margin-bottom: 0cm; line-height: 100%">
-<font size="3" style="font-size: 12pt"><span lang="en-US"><b>Example
-2:</b></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">
-To demonstrate the usefulness to use chain of functions, consider the
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><font size="3" style="font-size: 12pt"><span lang="en-US"><b>Example
+2:</b></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">To
+demonstrate the usefulness to use chain of functions, consider the
 following analytical formula that models some detectors (A
 log-polynomial interpolation formula):</span></span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
@@ -451,8 +454,7 @@ log(x) + a<sub>2</sub> log<sup>2</sup>(x) + a<sub>3</sub> log<sup>3</sup>(x)
 plain it was written on paper, could be very difficult to understand
 or fix when the interpreter delivers syntax errors, or the whole
 function delivers unexpected values.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -466,8 +468,7 @@ proprieties, it’s possible to define the function as the following:</font></p>
 3e-4, a1 = a0, a2 = a0, a3 = a0, a4 = a0: z = ln(x), w = a0 + a1*z +
 a2*z^2 + a3*z^3 + a4*z^4, y = exp(w) </b></font>
 </p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
@@ -526,9 +527,10 @@ Exponentiation is done by the “^”, such as 3^5 to evaluate 3<sup>5</sup>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<font size="3" style="font-size: 12pt">- ERYA support the relational
-operators “&lt;” and “&gt;”, but interprets them as
-arithmetic operators.</font></p>
+<font size="3" style="font-size: 12pt">- ERYA support the main BASIC
+relational operators less “&lt;” , more “&gt;”, equal less
+“&lt;=”, equal more “&gt;=”, equal “==” and different
+“&lt;&gt;”.</font></p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
 <font size="3" style="font-size: 12pt">Any true relational operation
 will return “1”, and any false statement will get “0”.</font></p>
@@ -537,19 +539,18 @@ will return “1”, and any false statement will get “0”.</font></p>
 limited domain functions on the following format:</font></p>
 <p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
 <font size="3" style="font-size: 12pt"><b>fxvar = x, fyvar = y : y =
-(x &gt; 100) * ( x &lt; 200 ) * ( x^3+1)</b></font></p>
-<p lang="en-US" align="center" style="margin-bottom: 0cm; line-height: 100%">
-<br/>
+(x &gt;= 100) * ( x &lt;= 200 ) * ( x^3+1)</b></font></p>
+<p align="center" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-† <font size="3" style="font-size: 12pt"><font face="Liberation Serif, serif">Warning</font>:
+<p align="left" style="margin-bottom: 0cm; line-height: 100%">†
+<font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Warning</span></span></font></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">:
 Do not chain relational operators like 2&lt;5&lt;8, since it will
 make false positives, much due to the conversion of each element to a
 single number. ERYA macro language only recognizes double precision
 numbers as elements, not true boolean variables. In fact the previous
 example will render, 2&lt;5&lt;8, turns 1&lt;8, and 1. But 7&gt;5&gt;2,
-will gives 1&gt;2, turning 0.</font></p>
+will gives 1&gt;2, turning 0.</span></span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -593,9 +594,9 @@ at last be placed under a pair of parenthesis, like sqrt(4) . </font>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%">†
 <font face="Liberation Serif, serif"><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">Tip:</span></span></font></font>
 <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">To
-avoid mistakes and potential </span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">syntax</span></span></font><font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">
-errors, it is a good advise to separate the numbers, operators,
-functions and variables with at least one empty space.</span></span></font></p>
+avoid mistakes and potential syntax</span></span></font> <font size="3" style="font-size: 12pt"><span lang="en-US"><span style="font-weight: normal">errors,
+it is a good advise to separate the numbers, operators, functions and
+variables with at least one empty space.</span></span></font></p>
 <p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
@@ -611,17 +612,15 @@ custom parser that read several groups of characters and groups to
 form a dynamic vector of strings. Then the vector of strings are
 subject to a special algorithm derived from the Shunting-Yard
 Algorithm in order to optimize, classify and make an error check.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">Once completed, it makes a
+<font size="3" style="font-size: 12pt">Once completed, it makes a
 vector of variables, parameters and constants. Finally, the original
 algebraic function are stored as a sequence of string elements in the
 RPN format (Reversed Polish Notation or postfix).</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -629,8 +628,7 @@ RPN format (Reversed Polish Notation or postfix).</font></p>
 parsing, and optimization successfully, the algebraic function can
 now evaluate several values, once the ERYA numerical code call the
 function with an input value, and returns the output.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
@@ -639,12 +637,11 @@ numerical evaluation in postfix notation is now a straightforward
 method, since the original function was been optimized, and the
 operators with different precedence order was switched to minimize
 the numerical evaluation complexity.</font></p>
-<p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
-<br/>
+<p align="left" style="margin-bottom: 0cm; line-height: 100%"><br/>
 
 </p>
 <p lang="en-US" align="left" style="margin-bottom: 0cm; font-weight: normal; line-height: 100%">
- <font size="3" style="font-size: 12pt">If during the compilation or
+<font size="3" style="font-size: 12pt">If during the compilation or
 execution of macro code found any error, it will trigger a stop
 signal to halt any numerical simulations, placing an error message to
 the user about the problem found.</font></p>
