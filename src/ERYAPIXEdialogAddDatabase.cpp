@@ -19,9 +19,9 @@
 
 #include "ERYAPIXEdialogAddDatabase.h"
 #include "ERYAPIXEdialogDatabaseManager.h"
-#include "ERYAPIXEdialogHelp.h"
 #include "ERYAPIXEdialogR33DataImport.h"
 #include "ERYAPIXEdialogXlsxDataImport.h"
+#include "ERYAPIXEdialogRemark.h"
 #include "R33Library.h"
 #include "DatabaseLibrary.h"
 #include "ParserLibrary.h"
@@ -40,7 +40,7 @@ dialogAddDatabase( parent )
  {
    ElementDatabase OpenActualElement;
    Parent->GetElement(OpenActualElement);
-   OpenActualElement.GetAllElementInfo(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,tableDataEditor);
+   OpenActualElement.GetAllElementInfo(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor);
  }
 }
 
@@ -131,7 +131,7 @@ wxFileName file(CurrentIBANDLFilePath);
 if(file.GetExt() == wxT("r33"))
 {
  R33File openfile(CurrentIBANDLFilePath);
- if(openfile.IBANDLFileLoad(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic))
+ if(openfile.IBANDLFileLoad(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark))
  {
  wxMessageDialog *info = new wxMessageDialog(NULL, wxT("Cross-Section of selected IBANDL file,\nalong some additional data,\nwas successfully imported.") , wxT("Import Successful!"), wxOK);
  info->ShowModal();
@@ -253,6 +253,7 @@ else if (file.GetExt() == wxT("xlsx"))
     dial->ShowModal();
     tableDataEditor->ClearGrid();
    }
+  infoRemark = wxT("Element's original data extracted from an Excel file.");
  }
  else
  {
@@ -266,7 +267,7 @@ else
  ERYAPIXEdialogR33DataImport* datapanel = new ERYAPIXEdialogR33DataImport(this);
  datapanel->ShowModal();
  ITNFile openfile(CurrentIBANDLFilePath,Units,Angles,IgnoreLine);
- if(openfile.ITNFileLoad(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic))
+ if(openfile.ITNFileLoad(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark))
  {
  wxMessageDialog *info = new wxMessageDialog(NULL, wxT("Cross-Section of selected ASCII file,\nwas successfully imported.") , wxT("Import Successful!"), wxOK);
  info->ShowModal();
@@ -283,7 +284,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Export current element ta
 if (SaveDialog->ShowModal() == wxID_OK) // If the user clicked "OK"
 {
  // Get the current local frame data
- ElementDatabase TestElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,tableDataEditor);
+ ElementDatabase TestElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor);
 // Check if their contents are valid
 if(!(TestElement.CheckElement()))
 {
@@ -299,7 +300,7 @@ wxFileName file(CurrentIBANDLFilePath);
 if(file.GetExt() == wxT("r33"))
 {
  R33File savefile(CurrentIBANDLFilePath);
- if(savefile.IBANDLFileSave(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic)) // Save the IBANDL file to the built-in data editor
+ if(savefile.IBANDLFileSave(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark)) // Save the IBANDL file to the built-in data editor
  {
  wxMessageDialog *info = new wxMessageDialog(NULL, wxT("Current Element exported to file successfully!") , wxT("Export Successful!"), wxOK);
  info->ShowModal();
@@ -385,7 +386,7 @@ else if (file.GetExt() == wxT("xlsx"))
 else
 {
  ITNFile savefile(CurrentIBANDLFilePath);
- if(savefile.ITNFileSave(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic))
+ if(savefile.ITNFileSave(tableDataEditor,textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark))
  {
  wxMessageDialog *info = new wxMessageDialog(NULL, wxT("Current Element exported to file successfully!") , wxT("Export Successful!"), wxOK);
  info->ShowModal();
@@ -405,6 +406,7 @@ textEditNumber->Clear();
 textEditAbundance->Clear();
 textEditAtomic->Clear();
 textEditIsotopic->Clear();
+infoRemark.Clear();
 }
 
 void ERYAPIXEdialogAddDatabase::OnEditSave( wxCommandEvent& event )
@@ -412,7 +414,7 @@ void ERYAPIXEdialogAddDatabase::OnEditSave( wxCommandEvent& event )
  if(textEditElement->GetValue() != wxEmptyString && textEditGamma->GetValue() != wxEmptyString  && textEditNumber->GetValue() != wxEmptyString && textEditAbundance->GetValue() != wxEmptyString && textEditAtomic->GetValue() != wxEmptyString && textEditIsotopic->GetValue() != wxEmptyString)
  {
   // Get the current local frame data
- ElementDatabase EditElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,tableDataEditor);
+ ElementDatabase EditElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor);
   // Check if their contents are valid
   if(!(EditElement.CheckElement()))
   {
@@ -449,6 +451,6 @@ Close();
 
 void ERYAPIXEdialogAddDatabase::OnEditHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Element.html"));
- help->ShowModal();
+ ERYAPIXEdialogRemark *remark = new ERYAPIXEdialogRemark(this,infoRemark,0);
+ remark->ShowModal();
 }

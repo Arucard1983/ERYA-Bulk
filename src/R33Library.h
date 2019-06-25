@@ -20,8 +20,8 @@ class R33File
  wxString R33FileName;
  public:
  R33File(wxString IBANDLFilePath){ R33FileName = IBANDLFilePath; };
- bool IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic);
- bool IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic);
+ bool IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic, wxString &infoRemark);
+ bool IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic, wxString infoRemark);
 };
 
 class ITNFile
@@ -33,8 +33,8 @@ class ITNFile
  public:
  ITNFile(wxString ITNFilePath){ ITNFileName = ITNFilePath; SelectUnits = 0; SelectAngles = 0; IgnoreParsingErrors = false;};
  ITNFile(wxString ITNFilePath, int SigmaUnit, int SigmaAngle, bool IgnoreErrors){ ITNFileName = ITNFilePath; SelectUnits = SigmaUnit; SelectAngles = SigmaAngle; IgnoreParsingErrors = IgnoreErrors;};
- bool ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic);
- bool ITNFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic);
+ bool ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic, wxString &infoRemark);
+ bool ITNFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic, wxString infoRemark);
 };
 
 class SRIMFile

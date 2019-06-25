@@ -9,7 +9,6 @@
 
  #include "ERYAPIXEdialogXlsxDataImport.h"
  #include "ERYAPIXEdialogAddDatabase.h"
- #include "ERYAPIXEdialogHelp.h"
 
 ERYAPIXEdialogXlsxDataImport::ERYAPIXEdialogXlsxDataImport( wxWindow* parent)
 :
@@ -45,6 +44,5 @@ void ERYAPIXEdialogXlsxDataImport::OnDataImportReset( wxCommandEvent& event )
 
 void ERYAPIXEdialogXlsxDataImport::OnDataImportHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Element.html"));
- help->ShowModal();
+ Close();
 }

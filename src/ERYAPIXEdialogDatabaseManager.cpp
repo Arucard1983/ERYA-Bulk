@@ -19,8 +19,8 @@
 
 #include "ERYAPIXEdialogAddDatabase.h"
 #include "ERYAPIXEdialogDatabaseManager.h"
-#include "ERYAPIXEdialogHelp.h"
 #include "ERYAPIXEMainFrame.h"
+#include "ERYAPIXEdialogRemark.h"
 #include "PlotLibrary.h"
 #include "FileLibrary.h"
 
@@ -124,7 +124,7 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseEdit( wxCommandEvent& event )
 
 void ERYAPIXEdialogDatabaseManager::OnDatabaseRemove( wxCommandEvent& event )
 {
- wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Delete the displayed element of the database?"), wxT("Confirm deletation."), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+ wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Delete the displayed element of the database?"), wxT("Confirm delectation."), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
  if (dial->ShowModal() == wxID_YES)
  {
   int i = choiceElementName->GetSelection();
@@ -159,6 +159,7 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseClear( wxCommandEvent& event )
    textIsotopicMass->Clear();
    tableElementViewer->ClearGrid();
    renderElementViewer->DelAllLayers(false,true);
+   infoRemark.Clear();
   }
 }
 
@@ -167,7 +168,7 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseLoad( wxCommandEvent& event )
 ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
 wxString DefaultDatabaseDirectory;
 Parent->GetConfig(DefaultDatabaseDirectory);
-wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Database to open"), DefaultDatabaseDirectory, wxEmptyString, wxT("ERYA database (*.epd)|*.epd|LabView ERYA database (*.txt)|*.txt"), wxFD_OPEN, wxDefaultPosition);
+wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Database to open"), DefaultDatabaseDirectory, wxEmptyString, wxT("ERYA database (*.epd)|*.epd|Legacy ERYA database (*.txt)|*.txt"), wxFD_OPEN, wxDefaultPosition);
 if (OpenDialog->ShowModal() == wxID_OK)
 {
 MainDatabaseFile = OpenDialog->GetPath();
@@ -242,6 +243,8 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseCancel( wxCommandEvent& event )
 
 void ERYAPIXEdialogDatabaseManager::OnDatabaseHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Database.html"));
- help->ShowModal();
+ infoRemark = MainDatabase.GetInfo();
+ ERYAPIXEdialogRemark *remark = new ERYAPIXEdialogRemark(this,infoRemark,1);
+ remark->ShowModal();
+ MainDatabase.SetInfo(infoRemark);
 }

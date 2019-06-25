@@ -24,7 +24,7 @@ WX_DEFINE_OBJARRAY(ElementDatabaseList);
 WX_DEFINE_OBJARRAY(ElementSRIMList);
 
 // Element Database main constructor
-ElementDatabase::ElementDatabase(wxString Name, wxString Gamma, wxString Number, wxString Abundance, wxString Atomic, wxString Isotopic, wxArrayString Energy, wxArrayString EnergyError, wxArrayString Sigma, wxArrayString SigmaError)
+ElementDatabase::ElementDatabase(wxString Name, wxString Gamma, wxString Number, wxString Abundance, wxString Atomic, wxString Isotopic, wxArrayString Energy, wxArrayString EnergyError, wxArrayString Sigma, wxArrayString SigmaError, wxString Info)
 {
   dataEditElement = Name;
   dataEditGamma = Gamma;
@@ -36,6 +36,34 @@ ElementDatabase::ElementDatabase(wxString Name, wxString Gamma, wxString Number,
   dataEnergyError = EnergyError;
   dataSigma = Sigma;
   dataSigmaError = SigmaError;
+  infoElement = Info;
+}
+
+// Element Database standard constructor
+ElementDatabase::ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxString EditInfo, wxGrid* DataEditor)
+{
+   dataEditElement = EditElement->GetValue();
+   dataEditGamma = EditGamma->GetValue();
+   dataEditNumber = EditNumber->GetValue();
+   dataEditAbundance = EditAbundance->GetValue();
+   dataEditAtomic = EditAtomic->GetValue();
+   dataEditIsotopic = EditIsotopic->GetValue();
+   infoElement = EditInfo;
+   dataEnergy.Clear();
+   dataEnergyError.Clear();
+   dataSigma.Clear();
+   dataSigmaError.Clear();
+   for(int i=0;i<DataEditor->GetNumberRows();i++)
+   {
+   wxString temp0 = DataEditor->GetCellValue(i,0);
+   wxString temp1 = DataEditor->GetCellValue(i,1);
+   wxString temp2 = DataEditor->GetCellValue(i,2);
+   wxString temp3 = DataEditor->GetCellValue(i,3);
+   dataEnergy.Add(temp0);
+   dataEnergyError.Add(temp1);
+   dataSigma.Add(temp2);
+   dataSigmaError.Add(temp3);
+   }
 }
 
 // Enforce a strict name convention for Elements:
@@ -73,7 +101,7 @@ bool ElementDatabase::CheckElement()
 }
 
 // Obtain the relevant Element information to the Element Editor
-bool ElementDatabase::GetAllElementInfo(wxTextCtrl* &SetElement, wxTextCtrl* &SetGammaPeak, wxTextCtrl* &SetNumber, wxTextCtrl* &SetAbundance, wxTextCtrl* &SetMass, wxTextCtrl* &SetIsotopic, wxGrid* &SetEnergySigmaErrorTable)
+bool ElementDatabase::GetAllElementInfo(wxTextCtrl* &SetElement, wxTextCtrl* &SetGammaPeak, wxTextCtrl* &SetNumber, wxTextCtrl* &SetAbundance, wxTextCtrl* &SetMass, wxTextCtrl* &SetIsotopic, wxString &SetInfo, wxGrid* &SetEnergySigmaErrorTable)
 {
      SetElement->SetValue(this->GetElement());
      SetGammaPeak->SetValue(this->GetGamma());
@@ -81,6 +109,7 @@ bool ElementDatabase::GetAllElementInfo(wxTextCtrl* &SetElement, wxTextCtrl* &Se
      SetAbundance->SetValue(this->GetAbundance());
      SetMass->SetValue(this->GetAtomic());
      SetIsotopic->SetValue(this->GetIsotopic());
+     SetInfo = this->GetInfo();
     for (int i=0; i<this->GetEnergy().GetCount(); i++)
    {
     wxString temp1 = this->GetEnergy().Item(i);
@@ -444,7 +473,7 @@ bool ElementDatabaseArray::RemoveElement(wxString GetElement, wxString GetGammaP
         SetEnergyPlot->DelAllLayers(false,true);
         wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The Element Database consistency are damaged. Please, reload with a new one."), wxT("Database is Corrupted!"), wxOK | wxICON_ERROR);
         dial->ShowModal();
-        return true; // Database error.
+        return false; // Database error.
         }
      }
      else // Delete the contents of the Database Manager, since it was empty!
@@ -652,11 +681,12 @@ wxArrayString ElementDatabaseArray::GetAllListGammaPeaks(wxString SearchElement)
 }
 
 // Detector Parameters main constructor
-DetectorParameters::DetectorParameters(wxTextCtrl* textFunctionEficiency, wxGrid* tableConstantEficiency)
+DetectorParameters::DetectorParameters(wxTextCtrl* textFunctionEficiency, wxGrid* tableConstantEficiency, wxString &info)
 {
    DetectorFunction = textFunctionEficiency->GetValue();
    DetectorEnergy.Clear();
    DetectorEfficiency.Clear();
+   infoDetector = info;
    for(int i=0;i<tableConstantEficiency->GetNumberRows();i++)
    {
    wxString temp0 = tableConstantEficiency->GetCellValue(i,0);
@@ -852,8 +882,9 @@ int  ElementSRIMArray::GetElementAdress(int Number)
 }
 
 // Ziegler Parameters main constructor
-ZieglerParameters::ZieglerParameters( wxChoice* choiceZieglerVersion, wxGrid* tableZieglerParameters)
+ZieglerParameters::ZieglerParameters( wxChoice* choiceZieglerVersion, wxGrid* tableZieglerParameters, wxString &info)
 {
+   infoZiegler = info;
    ZieglerVersion = wxString::Format("%d",choiceZieglerVersion->GetSelection());
    ZieglerElements.Clear();
    ZieglerValues1.Clear();
@@ -903,8 +934,9 @@ ZieglerParameters::ZieglerParameters( wxChoice* choiceZieglerVersion, wxGrid* ta
 }
 
 // Ziegler Parameters main constructor
-ZieglerParameters::ZieglerParameters( wxTextCtrl* textZieglerFunction, wxChoice* choiceZieglerVersion, wxGrid* tableZieglerParameters)
+ZieglerParameters::ZieglerParameters( wxTextCtrl* textZieglerFunction, wxChoice* choiceZieglerVersion, wxGrid* tableZieglerParameters, wxString &info)
 {
+   infoZiegler = info;
    ZieglerVersion = wxString::Format("%d",choiceZieglerVersion->GetSelection());
    ZieglerFunction = textZieglerFunction->GetValue();
    ZieglerElements.Clear();
@@ -1093,30 +1125,4 @@ bool ZieglerParameters::FixElementNames()
  return true;
 }
 
-
-// Element Database standard constructor
-ElementDatabase::ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxGrid* DataEditor)
-{
-   dataEditElement = EditElement->GetValue();
-   dataEditGamma = EditGamma->GetValue();
-   dataEditNumber = EditNumber->GetValue();
-   dataEditAbundance = EditAbundance->GetValue();
-   dataEditAtomic = EditAtomic->GetValue();
-   dataEditIsotopic = EditIsotopic->GetValue();
-   dataEnergy.Clear();
-   dataEnergyError.Clear();
-   dataSigma.Clear();
-   dataSigmaError.Clear();
-   for(int i=0;i<DataEditor->GetNumberRows();i++)
-   {
-   wxString temp0 = DataEditor->GetCellValue(i,0);
-   wxString temp1 = DataEditor->GetCellValue(i,1);
-   wxString temp2 = DataEditor->GetCellValue(i,2);
-   wxString temp3 = DataEditor->GetCellValue(i,3);
-   dataEnergy.Add(temp0);
-   dataEnergyError.Add(temp1);
-   dataSigma.Add(temp2);
-   dataSigmaError.Add(temp3);
-   }
-}
 

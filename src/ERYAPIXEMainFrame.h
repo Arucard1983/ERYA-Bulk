@@ -40,7 +40,6 @@ class ERYAPIXEMainFrame : public MainFrame
 		void OnDatabaseElements( wxCommandEvent& event );
 		void OnDatabaseZiegler( wxCommandEvent& event );
         void OnDatabaseSetup( wxCommandEvent& event );
-		void OnHelpGuide( wxCommandEvent& event );
 		void OnHelpAbout( wxCommandEvent& event );
 		void OnElement( wxCommandEvent& event );
 		void OnGammaPeak( wxCommandEvent& event );

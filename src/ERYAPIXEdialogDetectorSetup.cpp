@@ -8,8 +8,8 @@
  **************************************************************/
 
 #include "ERYAPIXEdialogDetectorSetup.h"
-#include "ERYAPIXEdialogHelp.h"
 #include "ERYAPIXEMainFrame.h"
+#include "ERYAPIXEdialogRemark.h"
 
 
 ERYAPIXEdialogDetectorSetup::ERYAPIXEdialogDetectorSetup( wxWindow* parent )
@@ -116,7 +116,7 @@ if (OpenDialog->ShowModal() == wxID_OK)
 {
 wxString ERYAPIXESetupPath = OpenDialog->GetPath();
 wxFileName file(ERYAPIXESetupPath);
-DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency);
+DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency, infoRemark);
 DetectorFile localfile(ERYAPIXESetupPath,file.GetExt(),LocalDetector);
 if (localfile.DetectorFileLoad())
  {
@@ -147,7 +147,7 @@ if (SaveDialog->ShowModal() == wxID_OK)
 wxString ERYAPIXESetupPath = SaveDialog->GetPath();
 // If the user choose the legacy version, the custom function are ignored.
 wxFileName file(ERYAPIXESetupPath);
-DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency);
+DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency, infoRemark);
 DetectorFile localfile(ERYAPIXESetupPath,file.GetExt(),LocalDetector);
 if (!(localfile.DetectorFileSave()))
  {
@@ -177,7 +177,7 @@ void ERYAPIXEdialogDetectorSetup::OnEficiencyOK( wxCommandEvent& event )
   // Call the parent frame
  ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
  // Get the current local frame data
- DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency);
+ DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency, infoRemark);
  // Store the local data from child frame to parent frame
  Parent->SaveDetector(LocalDetector);
  // Return to parent frame
@@ -193,7 +193,7 @@ void ERYAPIXEdialogDetectorSetup::OnEficiencyOK( wxCommandEvent& event )
       // Call the parent frame
       ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
       // Get the current local frame data
-      DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency);
+      DetectorParameters LocalDetector(textFunctionEficiency, tableConstantEficiency, infoRemark);
       // Store the local data from child frame to parent frame
       Parent->SaveDetector(LocalDetector);
       // Return to parent frame
@@ -220,6 +220,6 @@ void ERYAPIXEdialogDetectorSetup::OnEficiencyCancel( wxCommandEvent& event )
 
 void ERYAPIXEdialogDetectorSetup::OnEficiencyHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Detector.html"));
- help->ShowModal();
+ ERYAPIXEdialogRemark *remark = new ERYAPIXEdialogRemark(this,infoRemark,2);
+ remark->ShowModal();
 }

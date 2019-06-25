@@ -22,7 +22,6 @@
 #include "ERYAPIXEdialogDetectorSetup.h"
 #include "ERYAPIXEdialogZieglerParameters.h"
 #include "ERYAPIXEdialogSetup.h"
-#include "ERYAPIXEdialogHelp.h"
 #include "ERYAPIXEdialogAdvanced.h"
 #include "ERYAPIXEwizardFirstRun.h"
 
@@ -662,11 +661,6 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
  }
 }
 
-void ERYAPIXEMainFrame::OnHelpGuide( wxCommandEvent& event )
-{
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Main.html"));
- help->ShowModal();
-}
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
@@ -878,8 +872,24 @@ void ERYAPIXEMainFrame::OnMainAdvanced( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnMainHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Fit.html"));
- help->ShowModal();
+ for(int k=0; k<textSG.GetCount(); k++)
+ {
+    wxString temp = textSG.Item(k)->GetValue();
+    if(temp.Len()==0) // Empty values are equal to one, by default.
+        temp = wxT("1");
+    AlgebraicFunction test(temp);
+    if(test.GetErrorString().Trim().Len()==0)
+    {
+      double value = test.GetAnsEval();
+      textSG.Item(k)->SetValue(wxString::Format("%f",value));
+    }
+    else
+    {
+      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Stoichiometry Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
+      dial->ShowModal();
+      barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
+    }
+ }
 }
 
 void ERYAPIXEMainFrame::OnMainNew( wxCommandEvent& event )

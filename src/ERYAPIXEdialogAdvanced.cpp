@@ -10,7 +10,6 @@
 
 #include "ERYAPIXEdialogAdvanced.h"
 #include "ERYAPIXEMainFrame.h"
-#include "ERYAPIXEdialogHelp.h"
 
 
 ERYAPIXEdialogAdvanced::ERYAPIXEdialogAdvanced( wxWindow* parent )
@@ -63,7 +62,7 @@ void ERYAPIXEdialogAdvanced::OnAdvancedReset( wxCommandEvent& event )
  ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
  // Sync the local data from parent frame to child frame
  Parent->SyncFitParameters(LocalIterations,LocalTau,LocalYield,LocalStoichiometry);
- // Set the apropriate selectors
+ // Set the appropriate selectors
  spinNumberIterations->SetValue(100);
  spinDampingFactor->SetValue(3);
  spinYieldConvergence->SetValue(3);
@@ -72,6 +71,5 @@ void ERYAPIXEdialogAdvanced::OnAdvancedReset( wxCommandEvent& event )
 
 void ERYAPIXEdialogAdvanced::OnAdvancedHelp( wxCommandEvent& event )
 {
-  ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Fitextra.html"));
-  help->ShowModal();
+ Close();
 }

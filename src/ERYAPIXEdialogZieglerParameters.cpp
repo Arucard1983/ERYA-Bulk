@@ -8,9 +8,8 @@
  **************************************************************/
 
 #include "ERYAPIXEdialogZieglerParameters.h"
-#include "ERYAPIXEdialogHelp.h"
 #include "ERYAPIXEMainFrame.h"
-
+#include "ERYAPIXEdialogRemark.h"
 
 ERYAPIXEdialogZieglerParameters::ERYAPIXEdialogZieglerParameters( wxWindow* parent )
 :
@@ -185,7 +184,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select the desired Ziegle
  wxString ERYAPIXEZieglerPath = OpenDialog->GetPath();
  wxFileName ZieglerFileName(ERYAPIXEZieglerPath);
  wxString Version = ZieglerFileName.GetExt();
- ZieglerParameters LocalParameters(textZieglerFunction, choiceZieglerVersion, tableZieglerParameters);
+ ZieglerParameters LocalParameters(textZieglerFunction, choiceZieglerVersion, tableZieglerParameters, infoRemark);
  int DefaultMode;
  if (tabZieglerTables->GetSelection()==1)
     DefaultMode = 0;
@@ -213,7 +212,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save the current Ziegler 
  if (SaveDialog->ShowModal() == wxID_OK)
  {
   wxString ERYAPIXEZieglerPath = SaveDialog->GetPath();
-  ZieglerParameters LocalZiegler(textZieglerFunction, choiceZieglerVersion,tableZieglerParameters);
+  ZieglerParameters LocalZiegler(textZieglerFunction, choiceZieglerVersion,tableZieglerParameters, infoRemark);
   wxFileName ZieglerFileName(ERYAPIXEZieglerPath);
   wxString Version = ZieglerFileName.GetExt();
   int DefaultMode;
@@ -256,7 +255,7 @@ void ERYAPIXEdialogZieglerParameters::OnZieglerOK( wxCommandEvent& event )
   // Call the parent frame
  ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
  // Get the current local frame data
- ZieglerParameters LocalZiegler(textZieglerFunction,choiceZieglerVersion,tableZieglerParameters);
+ ZieglerParameters LocalZiegler(textZieglerFunction,choiceZieglerVersion,tableZieglerParameters,infoRemark);
  // Store the local data from child frame to parent frame
  Parent->SaveZiegler(LocalZiegler);
  Parent->SaveSRIM(LocalSRIMTable);
@@ -273,7 +272,7 @@ void ERYAPIXEdialogZieglerParameters::OnZieglerOK( wxCommandEvent& event )
     // Call the parent frame
     ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
     // Get the current local frame data
-    ZieglerParameters LocalZiegler(textZieglerFunction,choiceZieglerVersion,tableZieglerParameters);
+    ZieglerParameters LocalZiegler(textZieglerFunction,choiceZieglerVersion,tableZieglerParameters,infoRemark);
     // Store the local data from child frame to parent frame
     Parent->SaveZiegler(LocalZiegler);
     Parent->SaveSRIM(LocalSRIMTable);
@@ -302,6 +301,6 @@ Close();
 
 void ERYAPIXEdialogZieglerParameters::OnZieglerHelp( wxCommandEvent& event )
 {
- ERYAPIXEdialogHelp* help = new ERYAPIXEdialogHelp(this,wxT("Ziegler.html"));
- help->ShowModal();
+ ERYAPIXEdialogRemark *remark = new ERYAPIXEdialogRemark(this,infoRemark,3);
+ remark->ShowModal();
 }

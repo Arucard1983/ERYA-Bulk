@@ -95,9 +95,6 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	mMainMenu->Append( menuDatabase, wxT("Database") );
 
 	menuHelp = new wxMenu();
-	wxMenuItem* menuHelpGuide;
-	menuHelpGuide = new wxMenuItem( menuHelp, wxID_ANY, wxString( wxT("User Guide") ) , wxEmptyString, wxITEM_NORMAL );
-	menuHelp->Append( menuHelpGuide );
 
 	wxMenuItem* menuHelpAbout;
 	menuHelpAbout = new wxMenuItem( menuHelp, wxID_ANY, wxString( wxT("About ERYA") ) , wxEmptyString, wxITEM_NORMAL );
@@ -403,15 +400,16 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     buttonMainCheck->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainCheck, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
+    buttonMainHelp = new wxButton( this, wxID_ANY, wxT("Norm Table"), wxDefaultPosition, wxDefaultSize, 0 );
+    buttonMainHelp->SetFont(TableFont);
+    buttonMainHelp->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+	sizerMainButtons->Add( buttonMainHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
     buttonMainAdvanced = new wxButton( this, wxID_ANY, wxT("Advanced"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainAdvanced->SetFont(TableFont);
     buttonMainAdvanced->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainAdvanced, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-    buttonMainHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
-    buttonMainHelp->SetFont(TableFont);
-    buttonMainHelp->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
-	sizerMainButtons->Add( buttonMainHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	buttonMainFit = new wxButton( this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
 	buttonMainFit->SetFont(TableFont);
@@ -446,7 +444,6 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->Connect( menuDatabaseElements->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseElements ) );
 	this->Connect( menuDatabaseZiegler->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseZiegler ) );
     this->Connect( menuDatabaseSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseSetup ) );
-	this->Connect( menuHelpGuide->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpGuide ) );
 	this->Connect( menuHelpAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpAbout ) );
 	choiceElement.Last()->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnElement ), NULL, this );
 	choiceGP.Last()->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnGammaPeak ), NULL, this );
@@ -472,7 +469,6 @@ MainFrame::~MainFrame()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseElements ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseZiegler ) );
     this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseSetup ) );
-	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpGuide ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpAbout ) );
 	choiceElement.Last()->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnElement ), NULL, this );
 	choiceGP.Last()->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnGammaPeak ), NULL, this );
@@ -623,7 +619,7 @@ dialogDatabaseManager::dialogDatabaseManager( wxWindow* parent, wxWindowID id, c
 	buttonCancel = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerButtons->Add( buttonCancel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonHelp = new wxButton( this, wxID_ANY, wxT("Get Info"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerButtons->Add( buttonHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -717,7 +713,6 @@ dialogAddDatabase::dialogAddDatabase( wxWindow* parent, wxWindowID id, const wxS
 	textEditIsotopic = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	sizerEditor->Add( textEditIsotopic, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-
 	sizerDatabaseEditor->Add( sizerEditor, 0, wxEXPAND, 5 );
 
 	separatorEditor = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
@@ -790,7 +785,7 @@ dialogAddDatabase::dialogAddDatabase( wxWindow* parent, wxWindowID id, const wxS
 	buttonEditCancel = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerEditButtons->Add( buttonEditCancel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonEditHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonEditHelp = new wxButton( this, wxID_ANY, wxT("Get Info"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerEditButtons->Add( buttonEditHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -912,7 +907,7 @@ dialogDetectorSetup::dialogDetectorSetup( wxWindow* parent, wxWindowID id, const
 	buttonEficiencyCancel = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerButtonSetup->Add( buttonEficiencyCancel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonEficiencyHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonEficiencyHelp = new wxButton( this, wxID_ANY, wxT("Get Info"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerButtonSetup->Add( buttonEficiencyHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -1157,7 +1152,7 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	buttonZieglerCancel = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerZieglerButtons->Add( buttonZieglerCancel, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonZieglerHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonZieglerHelp = new wxButton( this, wxID_ANY, wxT("Get Info"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerZieglerButtons->Add( buttonZieglerHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
@@ -1310,71 +1305,6 @@ dialogSetup::~dialogSetup()
 }
 
 
-dialogHelp::dialogHelp( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
-{
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
-
-	wxBoxSizer* sizerHelpViewer;
-	sizerHelpViewer = new wxBoxSizer( wxVERTICAL );
-
-	pageHelpViewer = new wxHtmlWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO );
-	sizerHelpViewer->Add( pageHelpViewer, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxEXPAND, 5 );
-
-	lineHelpViewer = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
-	sizerHelpViewer->Add( lineHelpViewer, 0, wxEXPAND | wxALL, 5 );
-
-	wxGridSizer* sizerHelpButtons;
-	sizerHelpButtons = new wxGridSizer( 1, 6, 0, 0 );
-
-	buttonHelpMain = new wxButton( this, wxID_ANY, wxT("Main Page"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpMain, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	buttonHelpIndex = new wxButton( this, wxID_ANY, wxT("Index"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpIndex, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	buttonHelpReadme = new wxButton( this, wxID_ANY, wxT("Read Me"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpReadme, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	buttonHelpBack = new wxButton( this, wxID_ANY, wxT("Back"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpBack, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	buttonHelpForward = new wxButton( this, wxID_ANY, wxT("Forward"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpForward, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-	buttonHelpClose = new wxButton( this, wxID_ANY, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0 );
-	sizerHelpButtons->Add( buttonHelpClose, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-
-	sizerHelpViewer->Add( sizerHelpButtons, 0, wxEXPAND, 5 );
-
-
-	this->SetSizer( sizerHelpViewer );
-	this->Layout();
-
-	this->Centre( wxBOTH );
-
-    this->SetIcon(ERYA_xpm);
-
-	// Connect Events
-	buttonHelpMain->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpMain ), NULL, this );
-	buttonHelpIndex->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpIndex ), NULL, this );
-	buttonHelpReadme->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpReadme ), NULL, this );
-	buttonHelpBack->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpBack ), NULL, this );
-	buttonHelpForward->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpForward ), NULL, this );
-	buttonHelpClose->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpClose ), NULL, this );
-}
-
-dialogHelp::~dialogHelp()
-{
-	// Disconnect Events
-	buttonHelpMain->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpMain ), NULL, this );
-	buttonHelpIndex->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpIndex ), NULL, this );
-	buttonHelpReadme->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpReadme ), NULL, this );
-	buttonHelpBack->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpBack ), NULL, this );
-	buttonHelpForward->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpForward ), NULL, this );
-	buttonHelpClose->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogHelp::OnHelpClose ), NULL, this );
-
-}
 
 wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style )
 {
@@ -1570,7 +1500,7 @@ dialogAdvancedFit::dialogAdvancedFit( wxWindow* parent, wxWindowID id, const wxS
 	buttonAdvancedReset = new wxButton( this, wxID_ANY, wxT("Default"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerAdvancedButtons->Add( buttonAdvancedReset, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonAdvancedHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonAdvancedHelp = new wxButton( this, wxID_ANY, wxT("Close"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerAdvancedButtons->Add( buttonAdvancedHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	sizerAdvanced->Add( sizerAdvancedButtons, 0, wxEXPAND, 5 );
@@ -1649,7 +1579,7 @@ dialogR33DataImport::dialogR33DataImport( wxWindow* parent, wxWindowID id, const
 	buttonR33DataReset = new wxButton( this, wxID_ANY, wxT("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerR33DataButtons->Add( buttonR33DataReset, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonR33DataHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonR33DataHelp = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerR33DataButtons->Add( buttonR33DataHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	sizerDataImport->Add( sizerR33DataButtons, 0, wxEXPAND, 5 );
@@ -1729,7 +1659,7 @@ dialogXlsxDataImport::dialogXlsxDataImport( wxWindow* parent, wxWindowID id, con
 	buttonXlsxDataReset = new wxButton( this, wxID_ANY, wxT("Reset"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerXlsxDataButtons->Add( buttonXlsxDataReset, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	buttonXlsxDataHelp = new wxButton( this, wxID_ANY, wxT("Help"), wxDefaultPosition, wxDefaultSize, 0 );
+	buttonXlsxDataHelp = new wxButton( this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerXlsxDataButtons->Add( buttonXlsxDataHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	sizerDataImport->Add( sizerXlsxDataButtons, 0, wxEXPAND, 5 );
@@ -1757,3 +1687,48 @@ dialogXlsxDataImport::~dialogXlsxDataImport()
 
 }
 
+dialogRemark::dialogRemark( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* sizerRemark;
+	sizerRemark = new wxBoxSizer( wxVERTICAL );
+
+	textRemark = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxTE_MULTILINE|wxTE_RICH|wxTE_WORDWRAP );
+	sizerRemark->Add( textRemark, 1, wxALL|wxEXPAND, 5 );
+
+	wxGridSizer* sizerRemarkButton;
+	sizerRemarkButton = new wxGridSizer( 1, 3, 0, 0 );
+
+	buttonSave = new wxButton( this, wxID_ANY, wxT("Save"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerRemarkButton->Add( buttonSave, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonClear = new wxButton( this, wxID_ANY, wxT("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerRemarkButton->Add( buttonClear, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonQuit = new wxButton( this, wxID_ANY, wxT("Quit"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerRemarkButton->Add( buttonQuit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	sizerRemark->Add( sizerRemarkButton, 0, wxEXPAND, 5 );
+
+
+	this->SetSizer( sizerRemark );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	buttonSave->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkSave ), NULL, this );
+	buttonClear->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkClear ), NULL, this );
+	buttonQuit->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkQuit ), NULL, this );
+}
+
+dialogRemark::~dialogRemark()
+{
+	// Disconnect Events
+	buttonSave->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkSave ), NULL, this );
+	buttonClear->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkClear ), NULL, this );
+	buttonQuit->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogRemark::OnRemarkQuit ), NULL, this );
+
+}

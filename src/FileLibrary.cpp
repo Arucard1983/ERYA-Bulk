@@ -640,7 +640,7 @@ bool DatabaseFile::ElementBlockParsing(wxArrayString ElementBlock)
      // Add a new element
      if (CurrentElement.Len()>0)
      {
-     ElementDatabase StoreNewElement(CurrentElement, CurrentGammaStack.Item(k), CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError);
+     ElementDatabase StoreNewElement(CurrentElement, CurrentGammaStack.Item(k), CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError, wxEmptyString);
      ParsedDatabase.Add(StoreNewElement);
      }
      else
@@ -653,7 +653,7 @@ bool DatabaseFile::ElementBlockParsing(wxArrayString ElementBlock)
    // And finishes the procedure
    if(CurrentGammaStack.GetCount() == 0)
    {
-    ElementDatabase StoreNewElement(CurrentElement, wxT("0"), CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError);
+    ElementDatabase StoreNewElement(CurrentElement, wxT("0"), CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError, wxEmptyString);
     ParsedDatabase.Add(StoreNewElement);
     return true;
    }
@@ -682,6 +682,8 @@ bool DatabaseFile::ERYAPIXEDatabaseFileLoad()
     wxString CurrentAbundance;
     wxString CurrentAtomic;
     wxString CurrentIsotopic;
+    wxString CurrentRemark;
+    wxString FileInfo, FileProgram, FileVersion, FileDateTime;
     wxArrayString CurrentEnergy;
     wxArrayString CurrentEnergyError;
     wxArrayString CurrentSigma;
@@ -709,10 +711,42 @@ bool DatabaseFile::ERYAPIXEDatabaseFileLoad()
    wxXmlNode *DatabaseNode = LocalDatabaseFile.GetRoot()->GetChildren();
    while(DatabaseNode)
    {
-    if(DatabaseNode->GetName() == wxT("Database_Data"))
+    if(DatabaseNode->GetName() == wxT("File_Details")) //Load header file
     {
-      wxXmlNode *DatabaseData = DatabaseNode->GetChildren();
-      if(DatabaseData->GetName() == wxT("Database_Element"))
+      wxXmlNode *DatabaseFileInfo = DatabaseNode->GetChildren();
+      if(DatabaseFileInfo->GetName() == wxT("Contents"))
+      {
+        wxXmlNode *DatabaseFileContents = DatabaseFileInfo->GetChildren();
+        while(DatabaseFileContents)
+        {
+         if(DatabaseFileContents->GetName() == wxT("Program_Name"))
+          {
+            FileProgram = DatabaseFileContents->GetNodeContent();
+          }
+          if(DatabaseFileContents->GetName() == wxT("Program_Version"))
+          {
+            FileVersion = DatabaseFileContents->GetNodeContent();
+          }
+          if(DatabaseFileContents->GetName() == wxT("Date_File_Creation"))
+          {
+            FileDateTime = DatabaseFileContents->GetNodeContent();
+          }
+          if(DatabaseFileContents->GetName() == wxT("Remark"))
+          {
+            FileInfo = DatabaseFileContents->GetNodeContent();
+            ParsedDatabase.SetInfo(FileInfo);
+          }
+          DatabaseFileContents = DatabaseFileContents->GetNext();
+        }
+      }
+    }
+    DatabaseNode = DatabaseNode->GetNext();
+    if(DatabaseNode->GetName() == wxT("Database_Data")) // Read the data section of Element's database
+    {
+     wxXmlNode *DatabaseData = DatabaseNode->GetChildren();
+     while(DatabaseData)
+     {
+      if(DatabaseData->GetName() == wxT("Database_Element")) // Element's data main root
       {
         wxXmlNode *DatabaseSector = DatabaseData->GetChildren();
         while(DatabaseSector)
@@ -731,7 +765,10 @@ bool DatabaseFile::ERYAPIXEDatabaseFileLoad()
             CurrentAtomic = DatabaseSector->GetAttribute(wxT("Atomic_Mass"),wxT("0"));
             CurrentIsotopic = DatabaseSector->GetAttribute(wxT("Isotopic_Mass"),wxT("0"));
           }
-          DatabaseSector = DatabaseSector->GetNext();
+         if(DatabaseSector->GetName() == wxT("Element_Remark"))
+          {
+            CurrentRemark = DatabaseSector->GetNodeContent();
+          }
           if(DatabaseSector->GetName() == wxT("Cross-Section"))
           {
             wxXmlNode *DatabaseSigma = DatabaseSector->GetChildren();
@@ -751,11 +788,14 @@ bool DatabaseFile::ERYAPIXEDatabaseFileLoad()
              DatabaseSigma = DatabaseSigma->GetNext();
             }
           }
-          ElementDatabase StoreNewElement(CurrentElement, CurrentGamma, CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError);
-          ParsedDatabase.Add(StoreNewElement);
           DatabaseSector = DatabaseSector->GetNext();
         }
+        // Store the loaded element to the Database array memory
+        ElementDatabase StoreNewElement(CurrentElement, CurrentGamma, CurrentNumber, CurrentAbundance, CurrentAtomic, CurrentIsotopic, CurrentEnergy, CurrentEnergyError, CurrentSigma, CurrentSigmaError, CurrentRemark);
+        ParsedDatabase.Add(StoreNewElement);
       }
+      DatabaseData = DatabaseData->GetNext(); // Next Element's sector
+     }
     }
     DatabaseNode = DatabaseNode->GetNext();
    }
@@ -836,9 +876,9 @@ bool DatabaseFile::ERYAPIXEDatabaseFileSave()
   wxXmlNode* database = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, "ERYA-Bulk_Database");
   LocalDatabase.SetRoot(database);
   wxXmlNode* data = new wxXmlNode(database, wxXML_ELEMENT_NODE, "Database_Data");
-  wxXmlNode* block = new wxXmlNode(data, wxXML_ELEMENT_NODE, "Database_Element");
   for(int i=0; i<ParsedDatabase.GetCount(); i++)
   {
+   wxXmlNode* block = new wxXmlNode(data, wxXML_ELEMENT_NODE, "Database_Element");
    // Get the current values
    int CurrentValue = ParsedDatabase.GetCount()-i;
    wxString c0 = ParsedDatabase.Item(CurrentValue-1).GetElement();
@@ -847,6 +887,7 @@ bool DatabaseFile::ERYAPIXEDatabaseFileSave()
    wxString c3 = ParsedDatabase.Item(CurrentValue-1).GetAbundance();
    wxString c4 = ParsedDatabase.Item(CurrentValue-1).GetAtomic();
    wxString c5 = ParsedDatabase.Item(CurrentValue-1).GetIsotopic();
+   wxString c6 = ParsedDatabase.Item(CurrentValue-1).GetInfo();
    // Allocate the cross-section data
      wxXmlNode* cross = new wxXmlNode(block, wxXML_ELEMENT_NODE, "Cross-Section");
      for(int j=0; j<ParsedDatabase.Item(CurrentValue-1).GetEnergy().GetCount(); j++)
@@ -866,6 +907,9 @@ bool DatabaseFile::ERYAPIXEDatabaseFileSave()
        sigma->AddAttribute(wxT("Sigma_Error"),s3);
       }
      }
+    // Allocate the remark header
+    wxXmlNode* elementremark = new wxXmlNode(block, wxXML_ELEMENT_NODE, "Element_Remark");
+     elementremark->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, c6));
     // Allocate the elements
     wxXmlNode* header = new wxXmlNode(block, wxXML_ELEMENT_NODE, "register");
     header->AddAttribute(wxT("n"),wxString::Format("%i",CurrentValue));
@@ -879,6 +923,8 @@ bool DatabaseFile::ERYAPIXEDatabaseFileSave()
   // Save file header
   wxXmlNode* fileversion = new wxXmlNode(database, wxXML_ELEMENT_NODE, "File_Details");
    wxXmlNode* details = new wxXmlNode(fileversion, wxXML_ELEMENT_NODE, "Contents");
+   wxXmlNode* programremark = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Remark");
+     programremark->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ParsedDatabase.GetInfo()));
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
@@ -938,6 +984,7 @@ DetectorFile::DetectorFile(wxString DetectorFilePath, wxString Version, Detector
 // Loads the Detector settings from the file, which can be the default standard, or the old version from ITN
 bool DetectorFile::DetectorFileLoad()
 {
+ wxString FileProgram, FileVersion, FileDateTime, FileInfo;
  ParsedParameters.Clear();
  if (DetectorFileVersion == wxT("epsd"))
   {
@@ -965,7 +1012,37 @@ bool DetectorFile::DetectorFileLoad()
    wxXmlNode *DetectorNode = LocalDetectorFile.GetRoot()->GetChildren();
    while(DetectorNode)
    {
-     if(DetectorNode->GetName() == wxT("Detector_Data")) //Main data entry point
+    if(DetectorNode->GetName() == wxT("File_Details")) //Load header file
+    {
+      wxXmlNode *DetectorFileInfo = DetectorNode->GetChildren();
+      if(DetectorFileInfo->GetName() == wxT("Contents"))
+      {
+        wxXmlNode *DetectorFileContents = DetectorFileInfo->GetChildren();
+        while(DetectorFileContents)
+        {
+         if(DetectorFileContents->GetName() == wxT("Program_Name"))
+          {
+            FileProgram = DetectorFileContents->GetNodeContent();
+          }
+          if(DetectorFileContents->GetName() == wxT("Program_Version"))
+          {
+            FileVersion = DetectorFileContents->GetNodeContent();
+          }
+          if(DetectorFileContents->GetName() == wxT("Date_File_Creation"))
+          {
+            FileDateTime = DetectorFileContents->GetNodeContent();
+          }
+          if(DetectorFileContents->GetName() == wxT("Remark"))
+          {
+            FileInfo = DetectorFileContents->GetNodeContent();
+            ParsedParameters.SetInfo(FileInfo);
+          }
+          DetectorFileContents = DetectorFileContents->GetNext();
+        }
+      }
+    }
+    DetectorNode = DetectorNode->GetNext();
+    if(DetectorNode->GetName() == wxT("Detector_Data")) //Main data entry point
     {
      wxXmlNode *DetectorData = DetectorNode->GetChildren();
      while(DetectorData)
@@ -1108,6 +1185,8 @@ bool DetectorFile::DetectorFileSave()
   // Save file header
   wxXmlNode* fileversion = new wxXmlNode(detector, wxXML_ELEMENT_NODE, "File_Details");
    wxXmlNode* details = new wxXmlNode(fileversion, wxXML_ELEMENT_NODE, "Contents");
+   wxXmlNode* programremark = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Remark");
+     programremark->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ParsedParameters.GetInfo()));
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
@@ -1173,6 +1252,7 @@ bool ZieglerFile::ZieglerFileLoad()
  {
   ParsedParameters.Clear();
   ParsedTables.Clear();
+  wxString FileProgram, FileVersion, FileDateTime, FileInfo;
   wxXmlDocument LocalZieglerFile;
   if(!(LocalZieglerFile.Load(ZieglerFileName)))
   {
@@ -1189,6 +1269,36 @@ bool ZieglerFile::ZieglerFileLoad()
   wxXmlNode *ZieglerNode = LocalZieglerFile.GetRoot()->GetChildren();
   while(ZieglerNode)
   {
+    if(ZieglerNode->GetName() == wxT("File_Details")) //Load header file
+    {
+      wxXmlNode *ZieglerFileInfo = ZieglerNode->GetChildren();
+      if(ZieglerFileInfo->GetName() == wxT("Contents"))
+      {
+        wxXmlNode *ZieglerFileContents = ZieglerFileInfo->GetChildren();
+        while(ZieglerFileContents)
+        {
+         if(ZieglerFileContents->GetName() == wxT("Program_Name"))
+          {
+            FileProgram = ZieglerFileContents->GetNodeContent();
+          }
+          if(ZieglerFileContents->GetName() == wxT("Program_Version"))
+          {
+            FileVersion = ZieglerFileContents->GetNodeContent();
+          }
+          if(ZieglerFileContents->GetName() == wxT("Date_File_Creation"))
+          {
+            FileDateTime = ZieglerFileContents->GetNodeContent();
+          }
+          if(ZieglerFileContents->GetName() == wxT("Remark"))
+          {
+            FileInfo = ZieglerFileContents->GetNodeContent();
+            ParsedParameters.SetInfo(FileInfo);
+          }
+          ZieglerFileContents = ZieglerFileContents->GetNext();
+        }
+      }
+    }
+    ZieglerNode = ZieglerNode->GetNext();
     if(ZieglerNode->GetName() == wxT("Ziegler_Data")) //Main data entry point
     {
      wxXmlNode *ZieglerData = ZieglerNode->GetChildren();
@@ -1691,6 +1801,8 @@ bool ZieglerFile::ZieglerFileSave()
    version->AddAttribute(wxT("zv"),ParsedParameters.GetZieglerVersion());
   wxXmlNode* fileversion = new wxXmlNode(ziegler, wxXML_ELEMENT_NODE, "File_Details");
    wxXmlNode* details = new wxXmlNode(fileversion, wxXML_ELEMENT_NODE, "Contents");
+   wxXmlNode* programremark = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Remark");
+     programremark->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ParsedParameters.GetInfo()));
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");

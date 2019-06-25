@@ -10,10 +10,10 @@
 #include "R33Library.h"
 
 // R33File class implementation
-bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic)
+bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic, wxString &infoRemark)
 {
  // Our IBANDL file parsing is a very simple one, and only dedicated to search and find the relevant values.
- // A more robust implementation would require to create several classes to handle the diffrent parameters and data blocks.
+ // A more robust implementation would require to create several classes to handle the different parameters and data blocks.
  // Since our recipe works, it just begin with the file loading
  tableDataEditor->ClearGrid();
  wxTextFile database(R33FileName);
@@ -23,6 +23,19 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
  wxString SigmaUnits = wxT("mb"); //default value
  double EnergyFactor = 1.0; //default value
  double SigmaFactor = 1.0; //default value
+ infoRemark.Clear(); // Copy IBANDL's comment filed to the remark section
+ infoRemark = wxT("Element's original data extracted from IBANDL file...\n");
+ for(int z=0; z<database.GetLineCount(); z++)
+ {
+  if(database.GetLine(z).Trim().Len() == 0)
+  {
+    break;
+  }
+  else
+  {
+    infoRemark = infoRemark + database.GetLine(z) + wxT("\n");
+  }
+ }
  for(int k=0; k<database.GetLineCount(); k++)
   {
     if(database.GetLine(k).Trim() == wxT("Data:"))
@@ -173,7 +186,7 @@ bool R33File::IBANDLFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElem
   return true;
 }
 
-bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic)
+bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic, wxString infoRemark)
 {
  // Get the elements parameters
  wxString valueEditElement = textEditElement->GetValue();
@@ -229,7 +242,7 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
 }
 
 // ITNFile class implementation
-bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic)
+bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement, wxTextCtrl* &textEditGamma, wxTextCtrl* &textEditNumber, wxTextCtrl* &textEditAbundance, wxTextCtrl* &textEditAtomic, wxTextCtrl* &textEditIsotopic, wxString &infoRemark)
 {
  tableDataEditor->ClearGrid();
  // Start initial parameters
@@ -294,10 +307,11 @@ bool ITNFile::ITNFileLoad(wxGrid* &tableDataEditor, wxTextCtrl* &textEditElement
    }
   }
  file.Close();
+ infoRemark = wxT("Element's original data exported from ASCII file.");
  return true;
 }
 
-bool ITNFile::ITNFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic)
+bool ITNFile::ITNFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElement, wxTextCtrl* textEditGamma, wxTextCtrl* textEditNumber, wxTextCtrl* textEditAbundance, wxTextCtrl* textEditAtomic, wxTextCtrl* textEditIsotopic, wxString infoRemark)
 {
  // Store only the cross-section data, since it don-t contain any reference of the element
  wxTextFile file(ITNFileName);
@@ -981,7 +995,7 @@ ElementDatabaseArray LabViewElements::GetElementsFromLabView()
         LabViewElementName = TestNewName;
       }
       // And store the data to the Database class
-      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError);
+      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxEmptyString);
       ElementRecords.Add(StoreNewElement);
      }
     }
@@ -1028,7 +1042,7 @@ ElementDatabaseArray LabViewElements::GetElementsFromLabView()
         LabViewElementName = TestNewName;
       }
       // And store the data to the Database class
-      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError);
+      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxEmptyString);
       ElementRecords.Add(StoreNewElement);
     }
     // Clean temporary vectors
@@ -1038,5 +1052,6 @@ ElementDatabaseArray LabViewElements::GetElementsFromLabView()
     // Final file record cycle
   }
   FileTest.Close();
+  ElementRecords.SetInfo(wxT("Legacy Database converted from LabView ERYA"));
   return ElementRecords;
 }
