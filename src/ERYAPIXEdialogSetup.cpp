@@ -178,7 +178,7 @@ void ERYAPIXEdialogSetup::OnDefaultSave( wxCommandEvent& event )
 // Clears the database names on main widget, but not change the config file!
 void ERYAPIXEdialogSetup::OnDefaultReset( wxCommandEvent& event )
 {
-  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reset the current editions?\nThe actual config files content will not be changed."), wxT("Clear Edited Selection"), wxYES_NO | wxNO_DEFAULT | wxICON_WARNING);
+  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reset the current editions?\nThe actual configuration files content will not be changed."), wxT("Clear Edited Selection"), wxYES_NO | wxNO_DEFAULT | wxICON_WARNING);
   if (dial->ShowModal() == wxID_YES)
   {
    wxString SetupPath = ::wxStandardPaths::Get().GetUserLocalDataDir();

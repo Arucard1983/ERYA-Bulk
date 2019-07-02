@@ -168,7 +168,7 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseLoad( wxCommandEvent& event )
 ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
 wxString DefaultDatabaseDirectory;
 Parent->GetConfig(DefaultDatabaseDirectory);
-wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Database to open"), DefaultDatabaseDirectory, wxEmptyString, wxT("ERYA database (*.epd)|*.epd|Legacy ERYA database (*.txt)|*.txt"), wxFD_OPEN, wxDefaultPosition);
+wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Database to open"), DefaultDatabaseDirectory, wxEmptyString, wxT("ERYA database (*.epd)|*.epd|Legacy ASCII database (*.txt)|*.txt"), wxFD_OPEN, wxDefaultPosition);
 if (OpenDialog->ShowModal() == wxID_OK)
 {
 MainDatabaseFile = OpenDialog->GetPath();
@@ -205,7 +205,7 @@ void ERYAPIXEdialogDatabaseManager::OnDatabaseSave( wxCommandEvent& event )
 ERYAPIXEMainFrame *Parent = (ERYAPIXEMainFrame *) GetParent();
 wxString DefaultDatabaseDirectory;
 Parent->GetConfig(DefaultDatabaseDirectory);
-wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Database As..."), DefaultDatabaseDirectory, wxEmptyString,wxT("ERYA database (*.epd)|*.epd|LabView ERYA Source database (*.txt)|*.txt"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
+wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Database As..."), DefaultDatabaseDirectory, wxEmptyString,wxT("ERYA database (*.epd)|*.epd|Legacy ASCII Database (*.txt)|*.txt"), wxFD_SAVE | wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
 if (SaveDialog->ShowModal() == wxID_OK)
 {
 MainDatabaseFile = SaveDialog->GetPath();

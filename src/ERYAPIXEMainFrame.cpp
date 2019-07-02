@@ -45,41 +45,37 @@ void ERYAPIXEMainFrame::OnFileNew( wxCommandEvent& event )
  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to clear all current contents?"), wxT("New file?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
  if (dial->ShowModal() == wxID_YES)
  {
- for(int k=0; k<choiceElement.GetCount(); k++)
- {
-  if(OpenDatabase.RebuildElementGammaMenu(choiceElement.Item(k), choiceGP.Item(k), 0))
+  spinNumberElements->SetValue(1);
+  this->GenerateTable(1);
+  this->GenerateLog();
+  if(OpenDatabase.RebuildElementGammaMenu(choiceElement.Item(0), choiceGP.Item(0), 0))
    {
-    choiceElement.Item(k)->SetSelection(0);
-    choiceGP.Item(k)->SetSelection(0);
+    choiceElement.Item(0)->SetSelection(0);
+    choiceGP.Item(0)->SetSelection(0);
    }
-  checkFit.Item(k)->SetValue(false);
-  textZ.Item(k)->Clear();
-  textCP.Item(k)->Clear();
-  textCP.Item(k)->SetValue(wxT("1"));
-  textSG.Item(k)->Clear();
-  textYS.Item(k)->Clear();
-  textYE.Item(k)->Clear();
-  textYF.Item(k)->Clear();
-  textSF.Item(k)->Clear();
-  textSM.Item(k)->Clear();
-  textSE.Item(k)->Clear();
-  textMinimumEnergy->Clear();
-  textMaximumEnergy->Clear();
-  textStepSize->Clear();
-  textCharge->Clear();
-  textThickness->Clear();
-  textMinimumEnergy->SetValue(wxT("0"));
-  textStepSize->SetValue(wxT("1"));
-  textDetectorAngle->SetValue(wxT("1"));
-  textCharge->SetValue(wxT("1"));
-  textThickness->SetValue(wxT("0"));
- }
+  choiceElement.Item(0)->SetSelection(0);
+  choiceGP.Item(0)->SetSelection(0);
+  checkFit.Item(0)->SetValue(false);
+  textZ.Item(0)->Clear();
+  textCP.Item(0)->Clear();
+  textSG.Item(0)->Clear();
+  textYS.Item(0)->Clear();
+  textYE.Item(0)->Clear();
+  textYF.Item(0)->Clear();
+  textSF.Item(0)->Clear();
+  textSM.Item(0)->Clear();
+  textSE.Item(0)->Clear();
   renderYield->DelAllLayers(false,true);
   renderStoichiometry->DelAllLayers(false,true);
   renderError->DelAllLayers(false,true);
   renderDetectorFitting->DelAllLayers(false,true);
   SucefulFit = false;
   barMainStatus->SetStatusText(wxT("ERYA is Ready...") ,0);
+  // A little hack to clean the table
+  int i = choiceElement.Item(0)->GetSelection();
+  int j = choiceGP.Item(0)->GetSelection();
+  wxString temp = wxT("Yield ") + choiceElement.Item(0)->GetString(i) + wxT(" (") + choiceGP.Item(0)->GetString(j) + wxT(" keV)");
+  tableLogProfiling->SetColLabelValue(1,temp);
  }
 }
 
@@ -93,137 +89,13 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
   wxArrayString ListElement,ListGammaPeak,ListFit,ListZ,ListCP,ListSG,ListYS,ListYE,ListYF,ListSF,ListSM,ListSE,ProfilingDataTable;
   if(file.ERYAPIXEFileLoad(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness, ListElement, ListGammaPeak, ListFit, ListZ, ListCP, ListSG, ListYS, ListYE, ListYF, ListSF, ListSM, ListSE, ProfilingDataTable, OpenDatabase, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield))
   {
-    // Clear the current screen
-   choiceElement.Clear();
-   choiceGP.Clear();
-   checkFit.Clear();
-   textZ.Clear();
-   textCP.Clear();
-   textSG.Clear();
-   textYS.Clear();
-   textYE.Clear();
-   textYF.Clear();
-   textSF.Clear();
-   textSM.Clear();
-   textSE.Clear();
-   sizerButtons->Clear(true); // It need to be true to erase all child attachments!
-   int NumberElements = ListElement.GetCount();
 
-   // Rebuild the labels
+   // Clear screen and allocate room for the loaded file
 
-    wxFont TableFont(70, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString, wxFONTENCODING_DEFAULT);
+    int NumberElements = ListElement.GetCount();
+    spinNumberElements->SetValue(NumberElements);
+    this->GenerateTable(NumberElements);
 
-    labelElements = new wxStaticText( scrollButtons, wxID_ANY, wxT("Element"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelElements->Wrap( -1 );
-    labelElements->SetFont(TableFont);
-	sizerButtons->Add( labelElements, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelGammaPeak = new wxStaticText( scrollButtons, wxID_ANY, wxT("Gamma Peak (keV)"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelGammaPeak->Wrap( -1 );
-    labelGammaPeak->SetFont(TableFont);
-	sizerButtons->Add( labelGammaPeak, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelFit = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fit"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelFit->Wrap( -1 );
-    labelFit->SetFont(TableFont);
-	sizerButtons->Add( labelFit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelZ = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fixed Ratio\nGroup Number"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelZ->Wrap( -1 );
-    labelZ->SetFont(TableFont);
-	sizerButtons->Add( labelZ, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-        labelElementCalibrationParameter = new wxStaticText( scrollButtons, wxID_ANY, wxT("Cross-Section\nCalibration Parameter"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelElementCalibrationParameter->Wrap( -1 );
-        labelElementCalibrationParameter->SetFont(TableFont);
-	sizerButtons->Add( labelElementCalibrationParameter, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelStoichiometricGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Stoichiometric\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelStoichiometricGuess->Wrap( -1 );
-    labelStoichiometricGuess->SetFont(TableFont);
-	sizerButtons->Add( labelStoichiometricGuess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelYieldSimulation = new wxStaticText(scrollButtons, wxID_ANY, wxT("Yield\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelYieldSimulation->Wrap( -1 );
-    labelYieldSimulation->SetFont(TableFont);
-	sizerButtons->Add( labelYieldSimulation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelYieldExperimental = new wxStaticText( scrollButtons, wxID_ANY, wxT("Experimental\nYield"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelYieldExperimental->Wrap( -1 );
-    labelYieldExperimental->SetFont(TableFont);
-	sizerButtons->Add( labelYieldExperimental, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelYieldFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted\nYield"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelYieldFitted->Wrap( -1 );
-    labelYieldFitted->SetFont(TableFont);
-	sizerButtons->Add( labelYieldFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelStoichiometricFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted\nStoichiometry"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelStoichiometricFitted->Wrap( -1 );
-    labelStoichiometricFitted->SetFont(TableFont);
-	sizerButtons->Add( labelStoichiometricFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelStoichiometricMass = new wxStaticText( scrollButtons, wxID_ANY, wxT("Stoichiometric\nFitted Mass"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelStoichiometricMass->Wrap( -1 );
-    labelStoichiometricMass->SetFont(TableFont);
-	sizerButtons->Add( labelStoichiometricMass, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	labelStoichiometricError = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitting\nError"), wxDefaultPosition, wxDefaultSize, 0 );
-	labelStoichiometricError->Wrap( -1 );
-    labelStoichiometricError->SetFont(TableFont);
-	sizerButtons->Add( labelStoichiometricError, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-	// Complete additional global variables
-	choiceElementChoices = OpenDatabase.GetAllListElements();
-	choiceGPChoices = OpenDatabase.GetAllListGammaPeaks(choiceElementChoices.Item(0));
-	spinNumberElements->SetValue(NumberElements);
-
-   // Build the new tab
- for (int k=0; k<NumberElements; k++)
- {
-
-  choiceElement.Add( new wxChoice( scrollButtons, wxID_ANY, wxDefaultPosition, wxSize(120,-1), choiceElementChoices, 0 ));
-  choiceElement.Last()->SetSelection( 0 );
-  sizerButtons->Add( choiceElement.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  choiceGP.Add(new wxChoice( scrollButtons, wxID_ANY, wxDefaultPosition, wxSize(120,-1), choiceGPChoices, 0 ));
-  choiceGP.Last()->SetSelection( 0 );
-  sizerButtons->Add( choiceGP.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  checkFit.Add(new wxCheckBox( scrollButtons, wxID_ANY, wxT("Fit ?"), wxDefaultPosition, wxDefaultSize, 0 ));
-  sizerButtons->Add( checkFit.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textZ.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListZ.Item(k), wxDefaultPosition, wxSize(120,-1), 0 ));
-  sizerButtons->Add( textZ.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textCP.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListCP.Item(k), wxDefaultPosition, wxSize(120,-1), 0 ));
-  sizerButtons->Add( textCP.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textSG.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListSG.Item(k), wxDefaultPosition, wxSize(120,-1), 0 ));
-  sizerButtons->Add( textSG.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textYS.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListYS.Item(k), wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
-  sizerButtons->Add( textYS.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textYE.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListYE.Item(k), wxDefaultPosition, wxSize(120,-1), 0 ));
-  sizerButtons->Add( textYE.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textYF.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListYF.Item(k), wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
-  sizerButtons->Add( textYF.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textSF.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListSF.Item(k), wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
-  sizerButtons->Add( textSF.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textSM.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListSM.Item(k), wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
-  sizerButtons->Add( textSM.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  textSE.Add(new wxTextCtrl( scrollButtons, wxID_ANY, ListSE.Item(k), wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
-  sizerButtons->Add( textSE.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
-
-  choiceElement.Item(k)->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( ERYAPIXEMainFrame::OnElement ), NULL, this );
-  choiceGP.Item(k)->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( ERYAPIXEMainFrame::OnGammaPeak ), NULL, this );
-
- }
   // Set the correct values for the pull-downs menus, and also for the check-box
   for (int k=0; k<NumberElements; k++)
   {
@@ -237,23 +109,22 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
      GammaPosition = choiceGP.Item(k)->FindString(ListGammaPeak.Item(k));
      choiceGP.Item(k)->SetSelection(GammaPosition);
     }
+
     if(ListFit.Item(k) == wxT("0"))
      checkFit.Item(k)->SetValue(false);
     else
      checkFit.Item(k)->SetValue(true);
+
+    textZ.Item(k)->SetValue(ListZ.Item(k));
+    textCP.Item(k)->SetValue(ListCP.Item(k));
+    textSG.Item(k)->SetValue(ListSG.Item(k));
+    textYS.Item(k)->SetValue(ListYS.Item(k));
+    textYE.Item(k)->SetValue(ListYE.Item(k));
+    textYF.Item(k)->SetValue(ListYF.Item(k));
+    textSF.Item(k)->SetValue(ListSF.Item(k));
+    textSM.Item(k)->SetValue(ListSM.Item(k));
+    textSE.Item(k)->SetValue(ListSE.Item(k));
   }
-
- // Redraw the new elements on screen
-    scrollButtons->SetSizer( sizerButtons );
-	scrollButtons->Layout();
-    sizerButtons->Fit( scrollButtons );
-
-	tabElements->SetSizer( sizerElements );
-	tabElements->Layout();
-	sizerElements->Fit( tabElements );
-   // Win32 API require external sizer refitting to correctly redraw the Elements tab, unlike the GTK which is irrelevant.
-    this->SetSizer( sizerMainFrame );
-	this->Layout();
 
    //Fill the Profiling table
    this->GenerateLog();
@@ -265,7 +136,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
       tableLogProfiling->SetCellValue(i,j,ProfilingDataTable.Item(k));
      }
 
-
+   // Delete previous renders
    barMainStatus->SetStatusText(wxT("File loaded successfully..."),0);
    renderDetectorFitting->DelAllLayers(false,true);
    renderError->DelAllLayers(false,true);
@@ -273,7 +144,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
    renderYield->DelAllLayers(false,true);
 
    // Make an optional recalculation
-   wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reavaluate the sample defined by this file?\nYou can press \"Run\" later if necessary..."), wxT("Reavaluate the loaded file?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+   wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reevaluate the sample defined by this file?\nYou can press \"Run\" later if necessary..."), wxT("Reevaluate the loaded file?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
    if(dial->ShowModal() == wxID_YES)
    {
      // Store the elements as arrays
@@ -344,7 +215,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
   if(SucefulFit)
   {
    barMainStatus->SetStatusText(wxT("Fitting Requires ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps..."),0);
-    wxMessageDialog *dialcopy = new wxMessageDialog(NULL, wxT("Fitting was sucefull within ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps...\n") + wxT("Do you want to update the original stoichiometry guess to the fitted stoichiometry ?") , wxT("Copy the Fitting Stoichiometry to Guess Stoichiometry?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+    wxMessageDialog *dialcopy = new wxMessageDialog(NULL, wxT("Fitting was successful within ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps...\n") + wxT("Do you want to update the original stoichiometry guess to the fitted stoichiometry ?") , wxT("Copy the Fitting Stoichiometry to Guess Stoichiometry?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
    if(dialcopy->ShowModal() == wxID_YES)
    {
     for(int z=0; z<YSList.GetCount(); z++) // Copy the values
@@ -458,7 +329,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Composition Fitted")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Atomic")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Mass")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Error")));
     for(int z=0; z<AdditionalColumns; z++)
@@ -651,7 +522,7 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
   if(this->StartUpProgram())
     {
      barMainStatus->SetStatusText(wxT("ERYA-Bulk is ready...") ,0);
-      wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("A new ERYA-Bulk Configuration was done!\nThe new settings are now in use!"), wxT("Reset Complete!"), wxOK);
+      wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The new ERYA-Bulk configuration file are in use.\nThe new default databases are also reloaded automatically."), wxT("Reset Complete!"), wxOK);
       dial->ShowModal();
     }
     else
@@ -664,7 +535,7 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.30\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2018 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version 4.30\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )
@@ -791,7 +662,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
   if(SucefulFit)
   {
    barMainStatus->SetStatusText(wxT("Fitting Requires ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps..."),0);
-    wxMessageDialog *dialcopy = new wxMessageDialog(NULL, wxT("Fitting was sucefull within ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps...\n") + wxT("Do you want to update the original stoichiometry guess to the fitted stoichiometry ?") , wxT("Copy the Fitting Stoichiometry to Guess Stoichiometry?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+    wxMessageDialog *dialcopy = new wxMessageDialog(NULL, wxT("Fitting was successful within ") + wxString::Format( "%i" , MainReactionYield.GetNumberIteractions()) + wxT(" steps...\n") + wxT("Do you want to update the original stoichiometry guess to the fitted stoichiometry ?") , wxT("Copy the Fitting Stoichiometry to Guess Stoichiometry?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
    if(dialcopy->ShowModal() == wxID_YES)
    {
     for(int z=0; z<YSList.GetCount(); z++) // Copy the values
@@ -836,9 +707,9 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
   DisplayYields.Add(YEList,wxT("Experimental Nuclear Yield"));
   DisplayYields.Add(YFList,wxT("Fitted Nuclear Yield"));
   DisplayYields.GeneratePlotPolygonal(renderYield);
-  PlotPolygonal DisplayStoichiometry(wxT("Element Number"),wxT("Stoichiometry"),true);
-  DisplayStoichiometry.Add(SGList,wxT("Experimental Normalized Stoichiometry"));
-  DisplayStoichiometry.Add(SFList,wxT("Fitted Normalized Stoichiometry"));
+  PlotPolygonal DisplayStoichiometry(wxT("Element Number"),wxT("Composition"),true);
+  DisplayStoichiometry.Add(SGList,wxT("Experimental Normalized Composition"));
+  DisplayStoichiometry.Add(SFList,wxT("Fitted Normalized Composition"));
   DisplayStoichiometry.GeneratePlotPolygonal(renderStoichiometry);
   PlotPolygonal DisplayError(wxT("Element Number"),wxT("Fitting Error"),false);
   DisplayError.Add(SEList,wxT("Stoichiometry Fitting Error"));
@@ -885,7 +756,7 @@ void ERYAPIXEMainFrame::OnMainHelp( wxCommandEvent& event )
     }
     else
     {
-      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Stoichiometry Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
+      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
       dial->ShowModal();
       barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
     }
@@ -951,7 +822,7 @@ void ERYAPIXEMainFrame::OnMainCheck( wxCommandEvent& event )
     }
     else
     {
-      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Stoichiometry Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
+      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
       dial->ShowModal();
       barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
     }
@@ -988,7 +859,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
-    CurrentYieldTable.Add(TableNode(wxT("Composition Fitted")));
+    CurrentYieldTable.Add(TableNode(wxT("Composition Atomic")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Mass")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Error")));
     for(int z=0; z<AdditionalColumns; z++)
@@ -1427,7 +1298,7 @@ bool ERYAPIXEMainFrame::StartUpProgram()
   renderDetectorFitting->DelAllLayers(false,true);
   this->GenerateTable();
  this->GenerateLog();
- return true; //Init sucefull
+ return true; //Init successful
 }
 
 bool ERYAPIXEMainFrame::StartUpDatabases()

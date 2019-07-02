@@ -75,7 +75,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	menuDatabase = new wxMenu();
 	wxMenuItem* menuDatabaseDetector;
-	menuDatabaseDetector = new wxMenuItem( menuDatabase, wxID_ANY, wxString( wxT("Detector Eficiency") ) , wxEmptyString, wxITEM_NORMAL );
+	menuDatabaseDetector = new wxMenuItem( menuDatabase, wxID_ANY, wxString( wxT("Detector Efficiency") ) , wxEmptyString, wxITEM_NORMAL );
 	menuDatabase->Append( menuDatabaseDetector );
 
 	wxMenuItem* menuDatabaseElements;
@@ -148,7 +148,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     labelStoichiometricGuess->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricGuess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelYieldSimulation = new wxStaticText(scrollButtons, wxID_ANY, wxT("Yield\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelYieldSimulation = new wxStaticText(scrollButtons, wxID_ANY, wxT("Theoretical\nYield"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelYieldSimulation->Wrap( -1 );
     labelYieldSimulation->SetFont(TableFont);
 	sizerButtons->Add( labelYieldSimulation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -163,12 +163,12 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     labelYieldFitted->SetFont(TableFont);
 	sizerButtons->Add( labelYieldFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted\nComposition"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometricFitted = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted Atomic\nComposition"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricFitted->Wrap( -1 );
     labelStoichiometricFitted->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricFitted, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricMass = new wxStaticText( scrollButtons, wxID_ANY, wxT("Composition\nFitted Mass"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometricMass = new wxStaticText( scrollButtons, wxID_ANY, wxT("Fitted Mass\nComposition"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricMass->Wrap( -1 );
     labelStoichiometricMass->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricMass, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -987,7 +987,7 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	lineZieglerTables = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
 	sizerZieglerParameters->Add( lineZieglerTables, 0, wxEXPAND | wxALL, 5 );
 
-	labelZieglerFunction = new wxStaticText( this, wxID_ANY, wxT("To override the built-in Ziegler Functions and SRIM tables, while reading the tables values, you can insert on the box blow, a custom ERYA macro function (See \"Help\" for more details)."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelZieglerFunction = new wxStaticText( this, wxID_ANY, wxT("To override the built-in Ziegler Functions and SRIM tables, while reading the tables values, you can insert on the box blow, a custom ERYA macro function (Read the manual for more details)."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelZieglerFunction->Wrap( -1 );
 	sizerZieglerParameters->Add( labelZieglerFunction, 1, wxALL|wxEXPAND, 5 );
 
@@ -1038,7 +1038,7 @@ dialogZieglerParameters::dialogZieglerParameters( wxWindow* parent, wxWindowID i
 	tableZieglerSRIM->EnableDragColSize( true );
 	tableZieglerSRIM->SetColLabelSize( 30 );
 	tableZieglerSRIM->SetColLabelValue( 0, wxT("Energy (keV)") );
-	tableZieglerSRIM->SetColLabelValue( 1, wxT("Stopping Power (ev*10^15 atm/cm^2)") );
+	tableZieglerSRIM->SetColLabelValue( 1, wxT("Stopping Power (eV*10^15 at/cm^2)") );
 	tableZieglerSRIM->SetColLabelAlignment( wxALIGN_CENTRE, wxALIGN_CENTRE );
 
 	// Rows
@@ -1331,7 +1331,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun2;
 	sizerFirstRun2 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun2 = new wxStaticText( wizardFirstRun2, wxID_ANY, wxT("Select the Detector Efficiency Profile file, from the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceding."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun2 = new wxStaticText( wizardFirstRun2, wxID_ANY, wxT("Select the Detector Efficiency Profile file, from the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceeding."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun2->Wrap( -1 );
 	sizerFirstRun2->Add( labelFirstRun2, 1, wxALL|wxEXPAND, 5 );
 
@@ -1348,7 +1348,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun3;
 	sizerFirstRun3 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun3 = new wxStaticText( wizardFirstRun3, wxID_ANY, wxT("Select the Elements Database compatible with ERYA Bulk, from the widget below.\n\nNote: If you have Databases from LabView ERYA,\nplease use the \"Import LabView ERYA\" wizard first to convert them.\n\nIf necessary, read the User Guide for further details."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun3 = new wxStaticText( wizardFirstRun3, wxID_ANY, wxT("Select the Elements Database compatible with ERYA Bulk, from the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceeding."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun3->Wrap( -1 );
 	sizerFirstRun3->Add( labelFirstRun3, 1, wxALL|wxEXPAND, 5 );
 
@@ -1365,7 +1365,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun4;
 	sizerFirstRun4 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun4 = new wxStaticText( wizardFirstRun4, wxID_ANY, wxT("Select a compatible ERYA Ziegler Parameters file,\nfrom the widget below.\n\nNote: Use the Database Management tools to convert the LabView ERYA file formats if necessary, before continue.\n\nPlease read the User Guide, before continue."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun4 = new wxStaticText( wizardFirstRun4, wxID_ANY, wxT("Select a compatible ERYA Ziegler Parameters file,\nfrom the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceeding."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun4->Wrap( -1 );
 	sizerFirstRun4->Add( labelFirstRun4, 1, wxALL|wxEXPAND, 5 );
 
@@ -1382,7 +1382,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun5;
 	sizerFirstRun5 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun5 = new wxStaticText( wizardFirstRun5, wxID_ANY, wxT("Select where the ERYA Bulk Configuration file should be placed.\n\nThe default Databases will also be placed at the same Configuration directory.\n\nThe recomended setting is to choose the default folder defined by the operating system itself.\n\nRead the manual for more information."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun5 = new wxStaticText( wizardFirstRun5, wxID_ANY, wxT("Select where the ERYA Bulk Configuration file should be placed.\n\nThe default Databases will also be placed at the same Configuration directory.\n\nThe recommended setting is to choose the default folder defined by the operating system itself.\n\nRead the manual for more information."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun5->Wrap( -1 );
 	sizerFirstRun5->Add( labelFirstRun5, 1, wxALL|wxEXPAND, 5 );
 
@@ -1402,7 +1402,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun6;
 	sizerFirstRun6 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun6 = new wxStaticText( wizardFirstRun6, wxID_ANY, wxT("ERYA Bulk Setup Complete!\n\nThe default configuration file was stored, and the default Databases will be loaded automatically at next start-ups.\n\nYou can reset the configurations using the \"Reset Settings\" option menu, and it will repeat the same process again."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun6 = new wxStaticText( wizardFirstRun6, wxID_ANY, wxT("ERYA Bulk Setup Complete!\n\nThe configuration file are created, and the default Databases will be loaded automatically at next start-ups.\n\nYou can reset the configurations using the \"Reset Settings\" option menu, that will repeat the same process again."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun6->Wrap( -1 );
 	sizerFirstRun6->Add( labelFirstRun6, 1, wxALL|wxEXPAND, 5 );
 
@@ -1475,7 +1475,7 @@ dialogAdvancedFit::dialogAdvancedFit( wxWindow* parent, wxWindowID id, const wxS
 	spinYieldConvergence = new wxSpinCtrl( this, wxID_ANY, wxT("3"), wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, 0, 6, 3 );
 	sizerAdvancedOptions->Add( spinYieldConvergence, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	labelStoichiometryConvergence = new wxStaticText( this, wxID_ANY, wxT("Stoichiometry Convergence Criteria, in Number of Significant Digits"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelStoichiometryConvergence = new wxStaticText( this, wxID_ANY, wxT("Composition Convergence Criteria, in Number of Significant Digits"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometryConvergence->Wrap( -1 );
 	sizerAdvancedOptions->Add( labelStoichiometryConvergence, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
