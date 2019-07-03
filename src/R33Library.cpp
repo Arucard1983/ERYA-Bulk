@@ -210,7 +210,7 @@ bool R33File::IBANDLFileSave(wxGrid *tableDataEditor, wxTextCtrl* textEditElemen
  file.AddLine( wxEmptyString);
  file.AddLine( wxT("Version: R33") );
  file.AddLine( wxT("Source: ERYA") );
- file.AddLine( wxT("Name: ERYA v4.30") );
+ file.AddLine( wxT("Name: ERYA v4.40") );
  file.AddLine( wxT("Address1:") );
  file.AddLine( wxT("SubFile:" ) );
  file.AddLine( wxT("Serial Number:") );
@@ -995,7 +995,7 @@ ElementDatabaseArray LabViewElements::GetElementsFromLabView()
         LabViewElementName = TestNewName;
       }
       // And store the data to the Database class
-      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxEmptyString);
+      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxT("Element ") + LabViewElementName + wxT(" (") + ActualGammaPeak + wxT(") exported from legacy LabView."));
       ElementRecords.Add(StoreNewElement);
      }
     }
@@ -1042,7 +1042,7 @@ ElementDatabaseArray LabViewElements::GetElementsFromLabView()
         LabViewElementName = TestNewName;
       }
       // And store the data to the Database class
-      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxEmptyString);
+      ElementDatabase StoreNewElement(LabViewElementName, ActualGammaPeak, ActualElementNumber, ActualAbundance, ActualAtomic, ActualIsotopic, ImportElementEnergy, ImportElementEnergyError, ImportElementSigma, ImportElementSigmaError, wxT("Element ") + LabViewElementName + wxT(" (") + ActualGammaPeak + wxT(") exported from legacy LabView."));
       ElementRecords.Add(StoreNewElement);
     }
     // Clean temporary vectors

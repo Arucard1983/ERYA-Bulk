@@ -535,7 +535,7 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.30\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version 4.40\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )
@@ -1265,7 +1265,7 @@ bool ERYAPIXEMainFrame::StartUpProgram()
  // Some Default Values
  for(int k=0; k<choiceElement.GetCount(); k++)
  {
-  if(OpenDatabase.RebuildElementGammaMenu(choiceElement.Item(k), choiceGP.Item(k), 0))
+  if(OpenDatabase.ResetElementGammaMenu(choiceElement.Item(k), choiceGP.Item(k)))
    {
     choiceElement.Item(k)->SetSelection(0);
     choiceGP.Item(k)->SetSelection(0);
@@ -1558,7 +1558,7 @@ bool ERYAPIXEMainFrame::SaveSetupFile(wxString MainDirectory, wxString MainDetec
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.30")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.40")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
   // Save the file
