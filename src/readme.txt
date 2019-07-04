@@ -1,4 +1,4 @@
-ERYA-Bulk Version 4.30 ReadMe
+ERYA-Bulk Version 4.40 ReadMe
 
 ----------------------------------------------------
 
@@ -75,11 +75,11 @@ $ rm -rf ~/.ERYA-Bulk
 
 5. About files compability
 
-This software can export the Ziegler, Detector and Element database from an ERYA software built with the LabView Runtime.
-- Binary database format is partial supported, and this software only import them. You cannot export the current database on LabView format, since the LabView DataLog format is not documented!
-- Text-form databases can be exported (very good support), and imported(some issues). Please, check the on-line help about some particular supported files.
-- The user can import IBANDL files to edit Element's characteristics, but saving is limited. However, you can use third-party tools to edit the exported IBANDL file, if necessary.
-- Experimental support of Microsoft Office Excel Xlsx files (2007,2010,2013, and beyond) at very basic level was implemented.
+# This software can export the Ziegler, Detector and Element database from an ERYA software built with the LabView Runtime:
+- Binary database format importation from LabView as supported for Ziegler's and Elements databases. The user should select "Legacy txt" format, and ERYA will convert automatically to the native ERYA Database format. 
+# Text-form databases can be imported (very good support), and exported (some issues). Further details can be obtained from the user manual.
+# The user can import IBANDL files to edit Element's characteristics, and also export them. However some edition of IBANDL files created by ERTA may be needed.
+# Experimental support of Microsoft Office Excel Xlsx files (2007,2010,2013, and beyond) at very basic level was implemented.
 # Note: ERYA-Bulk will use internally the native file format, and makes automatically the conversions if it loads any supported third-party file format.
 
 6. Bugfixes
@@ -99,6 +99,8 @@ This software can export the Ziegler, Detector and Element database from an ERYA
 # The widget dialogs can now be resized by mouse.
 # SRIM tables are the default setting for the Stopping-Power model.
 # References about Stoichiometry are replaced to Composition.
+# Help files was removed from code.
+# ERYA Databases had a Comment field that can be edited by a built-in text editor. This editor are avaliable when the user click "Get Info" on the Databases Tools.
 
 7. Troubleshooting and Issues
 
