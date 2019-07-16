@@ -23,7 +23,7 @@ WX_DEFINE_OBJARRAY( AlgebraicVariableArray);
 WX_DEFINE_OBJARRAY( TokenArray);
 WX_DEFINE_OBJARRAY( ParameterArray);
 
-// An internal funcion (cannot access directly) to find the real array adress of a given variable
+// An internal function (cannot access directly) to find the real array address of a given variable
 int AlgebraicVariableVector::FindVariableAdress(wxString varname)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -34,7 +34,7 @@ int AlgebraicVariableVector::FindVariableAdress(wxString varname)
   return wxNOT_FOUND;
 }
 
-// Try to find a variable on the array with the same name as argument. Return the sucefulness.
+// Try to find a variable on the array with the same name as argument. Return the successfulness.
 bool AlgebraicVariableVector::Find(wxString name)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -56,7 +56,7 @@ double AlgebraicVariableVector::FindGet(wxString name)
   return NAN;
 }
 
-// Try to find a variable on the array with the same name as argument, while changes their numeric value. Return the sucefulness.
+// Try to find a variable on the array with the same name as argument, while changes their numeric value. Return the successfulness.
 bool AlgebraicVariableVector::FindReplace(wxString name, double newvalue)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -70,7 +70,7 @@ bool AlgebraicVariableVector::FindReplace(wxString name, double newvalue)
   return false;
 }
 
-// An internal funcion (cannot access directly) to find the real array adress of a given parameter
+// An internal function (cannot access directly) to find the real array address of a given parameter
 int ParameterVector::FindParameterAdress(wxString varname)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -81,7 +81,7 @@ int ParameterVector::FindParameterAdress(wxString varname)
   return wxNOT_FOUND;
 }
 
-// Try to find a parameter on the array with the same name as argument. Return the sucefulness.
+// Try to find a parameter on the array with the same name as argument. Return the successfulness.
 bool ParameterVector::Find(wxString name)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -103,7 +103,7 @@ wxString ParameterVector::FindGet(wxString name)
   return wxEmptyString;
 }
 
-// Try to find a parameter on the array with the same name as argument, while changes their numeric value. Return the sucefulness.
+// Try to find a parameter on the array with the same name as argument, while changes their numeric value. Return the successfulness.
 bool ParameterVector::FindReplace(wxString name, wxString newvalue)
 {
   for (int i=0; i<this->GetCount(); i++)
@@ -118,11 +118,11 @@ bool ParameterVector::FindReplace(wxString name, wxString newvalue)
 }
 
 
-// Check the array of Tokens and classify along thier types.
+// Check the array of Tokens and classify along their types.
 // The priority rules are the following:
 // 0: For numbers, variables, parenthesis, commas and colons, since it had special rules
 // 1: For assignment operator "="
-// 2: The less "<" and more ">" operators.
+// 2: The less "<" and more ">" operators. Also equal "==", different "<>", strict-less "<=", strict-more ">=" operators.
 // 3: For sum "+" and minus "-"
 // 4: For product "*" and division "/"
 // 5: For power "^", where it have right (false flag) associativity
@@ -149,9 +149,17 @@ bool TokenVector::ClassifyAndCheck()
     else if (this->Item(i).GetValue() == wxT("^"))
      this->Item(i).SetAllFlags(5,false,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("<"))
-     this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT(">"))
-     this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
+    else if (this->Item(i).GetValue() == wxT("<="))
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
+    else if (this->Item(i).GetValue() == wxT(">="))
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
+    else if (this->Item(i).GetValue() == wxT("<>"))
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
+    else if (this->Item(i).GetValue() == wxT("=="))
+     this->Item(i).SetAllFlags(2,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("="))
      this->Item(i).SetAllFlags(1,true,false,false,false,true,false);
     else if (this->Item(i).GetValue() == wxT("("))
@@ -168,37 +176,37 @@ bool TokenVector::ClassifyAndCheck()
    else if (this->CheckIsValidVariable(i)) // If the token is a valid variable, first we need to check against the list of built-in functions, and special words
    {
     if (this->Item(i).GetValue() == wxT("asin"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sin"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("asinh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sinh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("acos"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("cos"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("acosh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("cosh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("atan"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("tan"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("atanh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("tanh"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("exp"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("log"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("ln"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("sqrt"))
-     this->Item(i).SetAllFlags(5,true,false,false,true,false,false);
+     this->Item(i).SetAllFlags(6,true,false,false,true,false,false);
     else if (this->Item(i).GetValue() == wxT("fxvar"))
      this->Item(i).SetAllFlags(0,true,false,false,false,false,true);
     else if (this->Item(i).GetValue() == wxT("fyvar"))
@@ -351,10 +359,35 @@ bool AlgebraicFunction::AlgebraicParser()
        if(InternalFunctionTokens.NewToken(cache))
         {
          cache.Clear();
-         if(!(InternalFunctionTokens.NewToken(character)))
+         // Since some operators had two characters, pick the next character.
+         wxString nextchar,symbol;
+         bool IsTwoCharSymbol = false;
+         symbol = character; //by default
+         if (InternalFunctionString.Len()-i>1)
+           nextchar = InternalFunctionString.GetChar(i+1);
+         // Check if the first character had only the symbols "<",">","="; in order to find the same thing for the second character.
+         if(character == wxT("<") || character == wxT(">") || character == wxT("="))
          {
-         ErrorCode = wxT("Syntax Error: Invalid Operator Symbol \"") + character + wxT("\"");
+           if(nextchar == wxT("<") || nextchar == wxT(">") || nextchar == wxT("="))
+           {
+             symbol = character + nextchar; //A valid two character operator
+             IsTwoCharSymbol = true;
+           }
+           else
+           {
+             symbol = character; //A valid single character operator
+             IsTwoCharSymbol = false;
+           }
+         }
+         if(!(InternalFunctionTokens.NewToken(symbol)))
+         {
+         ErrorCode = wxT("Syntax Error: Invalid Operator Symbol \"") + symbol + wxT("\"");
          return false;
+         }
+         else
+         {
+           if(IsTwoCharSymbol)
+            i=i+1; //shift the parsing character main cycle
          }
         }
        else
@@ -366,11 +399,36 @@ bool AlgebraicFunction::AlgebraicParser()
      else
      {
       cache.Clear();
-      if(!(InternalFunctionTokens.NewToken(character)))
-       {
-         ErrorCode = wxT("Syntax Error: Invalid Operator Symbol \"") + character + wxT("\"");
+         // Since some operators had two characters, pick the next character.
+         wxString nextchar,symbol;
+         bool IsTwoCharSymbol = false;
+         symbol = character; //by default
+         if (InternalFunctionString.Len()-i>1)
+           nextchar = InternalFunctionString.GetChar(i+1);
+         // Check if the first character had only the symbols "<",">","="; in order to find the same thing for the second character.
+         if(character == wxT("<") || character == wxT(">") || character == wxT("="))
+         {
+           if(nextchar == wxT("<") || nextchar == wxT(">") || nextchar == wxT("="))
+           {
+             symbol = character + nextchar; //A valid two character operator
+             IsTwoCharSymbol = true;
+           }
+           else
+           {
+             symbol = character; //A valid single character operator
+             IsTwoCharSymbol = false;
+           }
+         }
+         if(!(InternalFunctionTokens.NewToken(symbol)))
+         {
+         ErrorCode = wxT("Syntax Error: Invalid Operator Symbol \"") + symbol + wxT("\"");
          return false;
-       }
+         }
+         else
+         {
+           if(IsTwoCharSymbol)
+            i=i+1; //shift the parsing character main cycle
+         }
      }
    }
    // Next case will handle the little fry when the current character is a "-" or "+" symbol
@@ -382,7 +440,7 @@ bool AlgebraicFunction::AlgebraicParser()
       nextchar = InternalFunctionString.GetChar(i+1);
      if(cache.Len()>0)
      {
-       // Testing for number compability, i.e., (123.5e)(+/-)(0)
+       // Testing for number compatibility, i.e., (123.5e)(+/-)(0)
        Token *testsci = new Token(cache + character + nextchar);
        if (testsci->CheckIsValidNumber())
        {
@@ -410,11 +468,11 @@ bool AlgebraicFunction::AlgebraicParser()
      }
      else
      {
-      // Testing for number compability, i.e., (+/-)(0)
+      // Testing for number compatibility, i.e., (+/-)(0)
        Token *testnum = new Token(character + nextchar);
        if (testnum->CheckIsValidNumber())
        {
-         if(InternalFunctionTokens.GetCount()>0) //Check if the previous token are a variable, function or a symbol, as long it wasn't the right parenthesis ")"
+         if(InternalFunctionTokens.GetCount()>0) //Check if the previous token are a variable, function or a symbol, as long it wans't the right parenthesis ")"
          {
            if(InternalFunctionTokens.Last().GetPriority()>0 || InternalFunctionTokens.Last().GetValue() == wxT("(") ) //On higher priority tokens, or the left parenthesis "(" any plus and minus sign should be the beginning of a number token.
            {
@@ -424,7 +482,7 @@ bool AlgebraicFunction::AlgebraicParser()
            {
             if(InternalFunctionTokens.Last().GetValue() == wxT(")") || InternalFunctionTokens.Last().CheckIsValidNumber() || InternalFunctionTokens.Last().CheckIsValidSymbol())
             {
-               // The sign should be an indepenentent token, since it was an arithmetic operatior
+               // The sign should be an independent token, since it was an arithmetic operator
                cache.Clear();
               if(!(InternalFunctionTokens.NewToken(character)))
               {
@@ -544,16 +602,24 @@ double AlgebraicFunction::EvaluateOperator(Token o, double arg1, double arg2)
   return (arg2 < arg1) ? 1.0 : 0.0;
  else if(o.GetValue() == wxT(">"))
   return (arg2 > arg1) ? 1.0 : 0.0;
+ else if(o.GetValue() == wxT("<="))
+  return (arg2 <= arg1) ? 1.0 : 0.0;
+ else if(o.GetValue() == wxT(">="))
+  return (arg2 >= arg1) ? 1.0 : 0.0;
+ else if(o.GetValue() == wxT("<>"))
+  return (arg2 != arg1) ? 1.0 : 0.0;
+ else if(o.GetValue() == wxT("=="))
+  return (arg2 == arg1) ? 1.0 : 0.0;
  else
   return NAN;
 }
 
-// Convert the token array to the RPN format, which is more manegable to evaluate numerical data.
+// Convert the token array to the RPN format, which is more manageable to evaluate numerical data.
 bool AlgebraicFunction::AlgebraicCompiler()
 {
  RPNTokenStack.Clear();
  TokenVector LocalOperatorStack;
- // Start the Shunting-Yard main cicle
+ // Start the Shunting-Yard main cycle
  for(int i=0; i<InternalFunctionTokens.GetCount(); i++)
  {
   // If the current toke is a number, just copy to the output stack
@@ -653,7 +719,7 @@ bool AlgebraicFunction::AlgebraicCompiler()
   {
    LocalOperatorStack.Add(InternalFunctionTokens.Item(i));
   }
-  // A right parenthesis will flush the operator stack until a left parenthesis are found, and both discarded. Also, it should not cross with commas, colons and assigments
+  // A right parenthesis will flush the operator stack until a left parenthesis are found, and both discarded. Also, it should not cross with commas, colons and assignments
   else if (InternalFunctionTokens.Item(i).GetValue() == wxT(")"))
   {
    int OriginalStackSize = LocalOperatorStack.GetCount();
@@ -662,7 +728,7 @@ bool AlgebraicFunction::AlgebraicCompiler()
    {
     if (LocalOperatorStack.Last().GetValue() == wxT("("))
      {
-      // If found a left parenthesis, delete it and finishes the flusing cycle
+      // If found a left parenthesis, delete it and finishes the flushing cycle
       LocalOperatorStack.RemoveAt(LocalOperatorStack.GetCount()-1);
        j = OriginalStackSize;
        FoundLeftParenthesis = true;
@@ -678,12 +744,12 @@ bool AlgebraicFunction::AlgebraicCompiler()
      }
      else if (LocalOperatorStack.Last().GetValue() == wxT("="))
      {
-      ErrorCode = wxT("Syntax Error: Assigment operator \"=\" out-of-place");
+      ErrorCode = wxT("Syntax Error: Assignment operator \"=\" out-of-place");
       return false;
      }
      else if (LocalOperatorStack.Last().GetValue() == wxT(":"))
      {
-      ErrorCode = wxT("Syntax Error: Multistatement operator \":\" out-of-place");
+      ErrorCode = wxT("Syntax Error: Multi-statement operator \":\" out-of-place");
       return false;
      }
      else if (LocalOperatorStack.Last().GetValue() == wxT(","))
@@ -917,7 +983,7 @@ bool AlgebraicFunction::AlgebraicCalculator()
      }
      else // Invalid number of arguments
      {
-      ErrorCode = wxT("Declaration Error: Assigment operator \"=\" without valid arguments");
+      ErrorCode = wxT("Declaration Error: Assignment operator \"=\" without valid arguments");
       return false;
      }
    }
@@ -1120,12 +1186,12 @@ double AlgebraicFunction::FunctionCalculator()
    {
     FunctionStack.NewConstant(RPNFunctionStack.Item(i).GetValue(),1.0);
    }
-   // The assigment operator expect two arguments from the register stack, where the is the independent variable will assing the function valur to the dependent variable
+   // The assignment operator expect two arguments from the register stack, where the is the independent variable will assign the function value to the dependent variable
    else if (RPNFunctionStack.Item(i).GetValue() == wxT("="))
    {
      if(FunctionStack.GetCount()>1) // Requires at least two arguments
      {
-        // Declare the temporay variables for easy management
+        // Declare the temporary variables for easy management
         wxString tempvar;
         double temp;
         // Check the validity of the first argument, which can be a number or an already known variable
@@ -1161,7 +1227,7 @@ double AlgebraicFunction::FunctionCalculator()
      }
      else
      {
-      ErrorCode = wxT("Function Error: Assigment operator \"=\" without valid arguments!"); // Invalid syntax format.
+      ErrorCode = wxT("Function Error: Assignment operator \"=\" without valid arguments!"); // Invalid syntax format.
       return NAN;
      }
    }

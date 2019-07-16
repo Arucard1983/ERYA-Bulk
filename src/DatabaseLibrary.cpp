@@ -591,7 +591,11 @@ bool ElementDatabaseArray::FindGetAllElementInfo(wxString GetElement, wxString G
 bool ElementDatabaseArray::RebuildElementGammaMenu(wxChoice* &ElementList, wxChoice* &GammaPeakList, int SelectedElementIndex)
 {
  if (this->GetCount() == 0)
+ {
+  ElementList->Clear();
+  GammaPeakList->Clear();
   return false;
+ }
  if(SelectedElementIndex < 0) // Recycle the Element menu
  {
   SelectedElementIndex = 0;

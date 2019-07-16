@@ -22,7 +22,7 @@ WX_DECLARE_OBJARRAY( Parameter, ParameterArray);
 /***************************************************************
  * Define a dual variable/content in a single object, to handle
  * numerical variables
- * An aditional boolean flag enables to set a variable(true),
+ * An additional boolean flag enables to set a variable(true),
  * or a fixed constant (false)
  **************************************************************/
 class AlgebraicVariable

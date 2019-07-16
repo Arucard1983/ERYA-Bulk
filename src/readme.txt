@@ -1,11 +1,11 @@
-ERYA-Bulk Version 4.40 ReadMe
+ERYA-Bulk Version 4.50 ReadMe
 
 ----------------------------------------------------
 
 1. Minimum Requirements
 
 ERYA-Bulk requires a computer with an supported operating system or architecture.
-- Windows 7, 10 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux Debian 9 or Ubuntu 18.04 or greater.
+- Windows 7, 10 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux Debian 10 or Ubuntu 18.04 or greater.
 - 64-bit x86-64 is the default suported architecture for all operating systems listed before. Windows and Linux 32-bit versions are provided for legacy systems.
 - ARM binary versions are also provided for Linux systems.
 - The minimum usefull screen resolution is 1280*720, but it is highly recommended to use a FullHD display (1920*1080) for better view.
@@ -21,8 +21,7 @@ ERYA-Bulk requires a computer with an supported operating system or architecture
 3. Installation from Binary Package.
 
 # Linux Instructions
-3.1. Check first if your Linux distribution are compatible with Debian 9 or Ubuntu 18.04 codebase.
-- Debian 9 Stretch require to enable the stretch-backports in order to install the updated wxWidgets libraries.
+3.1. Check first if your Linux distribution are compatible with Debian 10 or Ubuntu 18.04 codebase.
 
 3.2. Download the correct arch version to your computer, then open a Terminal window on the same folder of the downloaded package.
 - For Ubuntu systems, it's not necessary to open a root shell before install programs:
@@ -30,7 +29,7 @@ $ sudo apt update
 $ sudo apt dist-upgrade
 $ sudo dpkg -i *.deb
 $ sudo apt -f install
-- On Debian 9, due to higher security restrictions, it is necessary to open a root shell first:
+- On Debian 10, due to higher security restrictions, it is necessary to open a root shell first:
 $ su [Ask for your root password...]
 $ apt update
 $ apt dist-upgrade
@@ -115,6 +114,6 @@ $ rm -rf ~/.ERYA-Bulk
 
 Copyrights
 
-Group: 2018 LibPhys
+Group: 2019 LibPhys
 Programmer e-mail: vm.manteigas@campus.fct.unl.pt
 wxMathPlot/wxWidgets licence:  https://github.com/wxWidgets/wxWidgets/blob/master/docs/licence.txt

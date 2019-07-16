@@ -1365,11 +1365,11 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 	wxBoxSizer* sizerFirstRun4;
 	sizerFirstRun4 = new wxBoxSizer( wxVERTICAL );
 
-	labelFirstRun4 = new wxStaticText( wizardFirstRun4, wxID_ANY, wxT("Select a compatible ERYA Ziegler Parameters file,\nfrom the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceeding."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelFirstRun4 = new wxStaticText( wizardFirstRun4, wxID_ANY, wxT("Select a compatible ERYA Stopping-Power file,\nfrom the widget below.\n\nNote: It will only support native ERYA Bulk files.\nIf you had another file formats, \nplease use the Database Management tools to convert them first.\n\nIf necessary, read the User Guide before proceeding."), wxDefaultPosition, wxDefaultSize, 0 );
 	labelFirstRun4->Wrap( -1 );
 	sizerFirstRun4->Add( labelFirstRun4, 1, wxALL|wxEXPAND, 5 );
 
-	fileZieglerFirstRun = new wxFilePickerCtrl( wizardFirstRun4, wxID_ANY, wxEmptyString, wxT("Select a Compatible File for the ERYA Ziegler Parameters"), wxT("ERYA Profiling Ziegler Parameters (*.epsz)|*.epsz"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
+	fileZieglerFirstRun = new wxFilePickerCtrl( wizardFirstRun4, wxID_ANY, wxEmptyString, wxT("Select a Compatible File for the ERYA Stopping-Power"), wxT("ERYA Profiling Ziegler Parameters (*.epsz)|*.epsz"), wxDefaultPosition, wxDefaultSize, wxFLP_DEFAULT_STYLE );
 	sizerFirstRun4->Add( fileZieglerFirstRun, 0, wxALL|wxEXPAND, 5 );
 
 
