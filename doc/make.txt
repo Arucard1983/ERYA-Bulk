@@ -8,7 +8,7 @@ In this scenario, it will explain how to use a Linux computer to build ERYA-Bulk
 
 Before you start, you will need:
 1. ERYA-Bulk source-code
-2. wxWidgets 3.0.4 source-code library
+2. wxWidgets 3.0.2 source-code library
 3. wxMathPlot 0.13 source-code library
 4. GCC toolchain from your Linux distro.
 5. MinGW toolchain for Windows versions.
@@ -39,6 +39,13 @@ $ g++ *.cpp `wx-config --cxxflags --libs` -std=c++11 -o ERYA-Bulk
 4. Running ERYA-Bulk
 $ ./ERYA-Bulk
 
+Linux Compilation on Intel and ARM (32 and 64 bits):
+- Replace the step 3 with the following commands:
+$ g++ -m32 *.cpp `/usr/lib/i386-linux-gnu/wx/config/gtk2-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+$ aarch64-linux-gnu-g++ *.cpp `/usr/lib/aarch64-linux-gnu/wx/config/gtk2-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+$ arm-linux-gnueabihf-g++ *.cpp `/usr/lib/arm-linux-gnueabihf/wx/config/gtk2-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+
+- If qemu-user-static are installed, then it should run the programs directly, since the binary translator emulators are automatically loaded.
 
 Windows Cross-Compiling on Linux:
 
@@ -46,10 +53,10 @@ Windows Cross-Compiling on Linux:
 # On Debian systems, just apply:
 $ sudo apt-get install mingw-w64 wine
 
-2. Build wxWidgets 3.0.4 from source.
+2. Build wxWidgets 3.0.2 from source.
 $ wget -nc --no-check-certificate https://sourceforge.net/projects/wxwindows/files/3.0.2/wxWidgets-3.0.2.tar.bz2
-$ tar xjf wxWidgets-3.0.4.tar.bz2
-$ cd wxWidgets-3.0.4
+$ tar xjf wxWidgets-3.0.2.tar.bz2
+$ cd wxWidgets-3.0.2
 $ ./configure --prefix=/usr/x86_64-w64-mingw32/ --host=x86_64-w64-mingw32 --build=x86_64-linux --disable-shared --enable-unicode --with-msw --without-subdirs
 $ make
 $ sudo make install
@@ -108,18 +115,29 @@ And change the following line:
 -#include <WebKit/WebKit.h>
 +#include <WebKit/WebKitLegacy.h> 
 
-10. Build the library as static, using the following parameters:
+10. Edit the following source-file: src/osx/choice_osx.cpp
+Change the following function to the following snippet code:
+
+wxString wxChoice::GetString(unsigned int n) const
+{
+ if( n < m_strings.size() )
+     return m_strings[n];
+ else
+     return wxEmptyString;
+}
+
+11. Build the library as static, using the following parameters:
 $ ./configure --prefix=/home/username/osxcross/opt/wxWidgets/ --host=x86_64-apple-darwin15  CC=o64-clang CXX=o64-clang++ --build=x86_64-linux --with-osx_cocoa --with-macosx-version-min=10.11  --disable-shared --enable-monolithic --enable-unicode --without-subdirs --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin --with-zlib=builtin --with-expat=builtin --with-opengl
 $ make
 $ make install
 
-11. Build ERYA-Bulk 
+12. Build ERYA-Bulk 
 $ o64-clang++ *.cpp `/home/username/osxcross/opt/wxWidgets/bin/wx-config --cxxflags --libs` -stdlib=libc++ -std=c++11 -o ERYA-Bulk-OSX
 (Compilation may spam a lot of warnings, but it's fine)
 
-12. On Linux, Darling may be used to run the binary (At this moment, Darling still cannot run GUI applications on Linux), otherwise run on a real Mac OS X machine.
+13. On Linux, Darling may be used to run the binary (At this moment, Darling still cannot run GUI applications on Linux), otherwise run on a real Mac OS X machine.
 
-13. Using Darling tools, specialy motool, you can get the program library dependencies:
+14. Using Darling tools, specialy motool, you can get the program library dependencies:
 $ motool ERYA-Bulk-OSX -d
 Processing file: ERYA-Bulk-OSX
 Platform: x86-64
