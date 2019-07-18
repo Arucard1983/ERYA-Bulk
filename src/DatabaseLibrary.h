@@ -35,7 +35,7 @@ class ElementDatabase
    public:
    ElementDatabase() {};
    ElementDatabase(wxString Name, wxString Gamma, wxString Number, wxString Abundance, wxString Atomic, wxString Isotopic, wxArrayString Energy, wxArrayString EnergyError, wxArrayString Sigma, wxArrayString SigmaError, wxString Info);
-   ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxString EditInfo, wxGrid* DataEditor);
+   ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxString EditInfo, wxGrid* DataEditor, wxString Info);
    bool SetElement(wxString NewName){ dataEditElement = NewName; return true;};
    bool CheckElement();
    wxString GetElement(){return dataEditElement;};

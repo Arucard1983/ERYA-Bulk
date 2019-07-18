@@ -45,6 +45,10 @@ dialogDatabaseManager( parent )
            wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The Element Database consistency are damaged. Please, reload with a new one."), wxT("Database is Corrupted!"), wxOK | wxICON_ERROR);
            dial->ShowModal();
            }
+           else
+           {
+            infoRemark = MainDatabase.GetInfo();
+           }
  }
 }
 
@@ -187,6 +191,10 @@ wxString DatabaseVersion = DatabaseFileName.GetExt();
            {
            wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The Element Database consistency are damaged. Please, reload with a new one."), wxT("Database is Corrupted!"), wxOK | wxICON_ERROR);
            dial->ShowModal();
+           }
+           else
+           {
+            infoRemark = MainDatabase.GetInfo();
            }
    }
   }

@@ -24,6 +24,8 @@ dialogDetectorSetup( parent )
  Parent->GetDetector(LocalDetector);
  // And display the content
  LocalDetector.GetDisplay(textFunctionEficiency, tableConstantEficiency);
+ // Finally, refresh the remark field
+ infoRemark = LocalDetector.GetInfo();
 }
 
 // Event trigger by user selection of a certain range of grid cells
@@ -125,6 +127,10 @@ if (localfile.DetectorFileLoad())
    {
     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Fatal Error: Invalid format file!"), wxT("Import Error"), wxOK | wxICON_ERROR);
     dial->ShowModal();
+   }
+   else
+   {
+     infoRemark = LocalDetector.GetInfo();
    }
  }
  else

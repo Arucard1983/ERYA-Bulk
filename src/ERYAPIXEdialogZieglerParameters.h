@@ -32,7 +32,7 @@ class ERYAPIXEdialogZieglerParameters : public dialogZieglerParameters
 		void OnZieglerSelectElement( wxSpinEvent& event );
 		void OnZieglerSelectElementText( wxCommandEvent& event );
 		void OnZieglerSelectElementEnter( wxCommandEvent& event );
-                void OnUpdateZieglerSRIM( wxCommandEvent& event );
+        void OnUpdateZieglerSRIM( wxCommandEvent& event );
 		void OnEraseZieglerSRIM( wxCommandEvent& event );
 		void OnZieglerSelect( wxGridRangeSelectEvent& event );
                 void OnZieglerCopy( wxCommandEvent& event );

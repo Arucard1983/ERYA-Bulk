@@ -40,7 +40,7 @@ ElementDatabase::ElementDatabase(wxString Name, wxString Gamma, wxString Number,
 }
 
 // Element Database standard constructor
-ElementDatabase::ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxString EditInfo, wxGrid* DataEditor)
+ElementDatabase::ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma, wxTextCtrl* EditNumber, wxTextCtrl* EditAbundance, wxTextCtrl* EditAtomic, wxTextCtrl* EditIsotopic, wxString EditInfo, wxGrid* DataEditor, wxString Info)
 {
    dataEditElement = EditElement->GetValue();
    dataEditGamma = EditGamma->GetValue();
@@ -53,6 +53,7 @@ ElementDatabase::ElementDatabase(wxTextCtrl* EditElement, wxTextCtrl* EditGamma,
    dataEnergyError.Clear();
    dataSigma.Clear();
    dataSigmaError.Clear();
+   infoElement = Info;
    for(int i=0;i<DataEditor->GetNumberRows();i++)
    {
    wxString temp0 = DataEditor->GetCellValue(i,0);

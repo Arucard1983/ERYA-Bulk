@@ -284,7 +284,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Export current element ta
 if (SaveDialog->ShowModal() == wxID_OK) // If the user clicked "OK"
 {
  // Get the current local frame data
- ElementDatabase TestElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor);
+ ElementDatabase TestElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor,infoRemark);
 // Check if their contents are valid
 if(!(TestElement.CheckElement()))
 {
@@ -414,7 +414,7 @@ void ERYAPIXEdialogAddDatabase::OnEditSave( wxCommandEvent& event )
  if(textEditElement->GetValue() != wxEmptyString && textEditGamma->GetValue() != wxEmptyString  && textEditNumber->GetValue() != wxEmptyString && textEditAbundance->GetValue() != wxEmptyString && textEditAtomic->GetValue() != wxEmptyString && textEditIsotopic->GetValue() != wxEmptyString)
  {
   // Get the current local frame data
- ElementDatabase EditElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor);
+ ElementDatabase EditElement(textEditElement,textEditGamma,textEditNumber,textEditAbundance,textEditAtomic,textEditIsotopic,infoRemark,tableDataEditor,infoRemark);
   // Check if their contents are valid
   if(!(EditElement.CheckElement()))
   {
