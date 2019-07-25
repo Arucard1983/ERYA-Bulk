@@ -3,47 +3,54 @@
 <File_Details>
 <Contents>
 <Program_Name>ERYA-Bulk</Program_Name>
-<Program_Version>4.30</Program_Version>
-<Date_File_Creation>2019-07-03T16:14:31.00Z</Date_File_Creation>
-<Remark>Efficiency Profile of Germanium Detector of CTN (Lisbon).</Remark>
+<Program_Version>4.50</Program_Version>
+<Date_File_Creation>2019-07-22T17:15:53.00Z</Date_File_Creation>
+<Remark></Remark>
 </Contents>
 </File_Details>
 <Detector_Data>
 <Detector_Function>
-<macro>fxvar = E, fyvar = F: a3=1.01001e6, a2=-52882.639, a1=539.85405, a0=0.07225: x=1/E, G=a3*x^3+a2*x^2+a1*x+a0, F = G/100</macro>
+<macro>fxvar = E, fyvar = F: a3=-2078.4, a2=-312.84, a1=5.006, a0=0.001: x=1/E, F=a3*x^3+a2*x^2+a1*x+a0</macro>
 </Detector_Function>
 <Energy_Efficiency>
-<register n="1" Energy="80.997900000000001" Efficiency="5.7727999999999998E-3"/>
-<register n="2" Energy="121.7817" Efficiency="1.5009399999999999E-2"/>
-<register n="3" Energy="244.69739999999999" Efficiency="1.41575E-2"/>
-<register n="4" Energy="276.39890000000003" Efficiency="1.43832E-2"/>
-<register n="5" Energy="302.85079999999999" Efficiency="1.3529800000000002E-2"/>
-<register n="6" Energy="344.27850000000001" Efficiency="1.1448E-2"/>
-<register n="7" Energy="356.0129" Efficiency="1.2178E-2"/>
-<register n="8" Energy="383.8485" Efficiency="1.1546099999999998E-2"/>
-<register n="9" Energy="411.11649999999997" Efficiency="1.0039299999999999E-2"/>
-<register n="10" Energy="443.96499999999997" Efficiency="9.3393E-3"/>
-<register n="11" Energy="778.90449999999998" Efficiency="6.301600000000001E-3"/>
-<register n="12" Energy="846.76379999999995" Efficiency="6.2838000000000008E-3"/>
-<register n="13" Energy="867.38" Efficiency="6.6479999999999994E-3"/>
-<register n="14" Energy="964.072" Efficiency="5.6211000000000004E-3"/>
-<register n="15" Energy="1037.8333" Efficiency="5.4468000000000008E-3"/>
-<register n="16" Energy="1086.40617" Efficiency="5.1803999999999991E-3"/>
-<register n="17" Energy="1112.076" Efficiency="5.2407E-3"/>
-<register n="18" Energy="1175.0878" Efficiency="5.2500999999999997E-3"/>
-<register n="19" Energy="1212.9480000000001" Efficiency="4.6744999999999998E-3"/>
-<register n="20" Energy="1238.2736" Efficiency="4.8554000000000002E-3"/>
-<register n="21" Energy="1299.1420000000001" Efficiency="4.6372999999999996E-3"/>
-<register n="22" Energy="1360.1959999999999" Efficiency="4.7293000000000005E-3"/>
-<register n="23" Energy="1408.0129999999999" Efficiency="4.3225E-3"/>
-<register n="24" Energy="1771.327" Efficiency="3.8544E-3"/>
-<register n="25" Energy="2015.1759999999999" Efficiency="3.4887E-3"/>
-<register n="26" Energy="2034.752" Efficiency="3.4091999999999998E-3"/>
-<register n="27" Energy="2598.4380000000001" Efficiency="2.8722999999999999E-3"/>
-<register n="28" Energy="3201.93" Efficiency="2.3086999999999999E-3"/>
-<register n="29" Energy="3253.402" Efficiency="2.2401999999999999E-3"/>
-<register n="30" Energy="3272.9780000000001" Efficiency="2.1641999999999998E-3"/>
-<register n="31" Energy="3451.1190000000001" Efficiency="1.8623000000000001E-3"/>
+<register n="1" Energy="3451.152" Efficiency="0.002234752"/>
+<register n="2" Energy="3272.99" Efficiency="0.002316666"/>
+<register n="3" Energy="3253.416" Efficiency="0.002326201"/>
+<register n="4" Energy="3201.962" Efficiency="0.002351812"/>
+<register n="5" Energy="2598.458" Efficiency="0.002726009"/>
+<register n="6" Energy="2034.755" Efficiency="0.00326954"/>
+<register n="7" Energy="2015.181" Efficiency="0.003293695"/>
+<register n="8" Energy="1771.351" Efficiency="0.003637642"/>
+<register n="9" Energy="1408.011" Efficiency="0.004360555"/>
+<register n="10" Energy="1360.25" Efficiency="0.004482848"/>
+<register n="11" Energy="1298.6" Efficiency="0.00465329"/>
+<register n="12" Energy="1238.282" Efficiency="0.004835545"/>
+<register n="13" Energy="1212.95" Efficiency="0.004917178"/>
+<register n="14" Energy="1175.102" Efficiency="0.005045307"/>
+<register n="15" Energy="1112.116" Efficiency="0.005276634"/>
+<register n="16" Energy="1087" Efficiency="0.005375862"/>
+<register n="17" Energy="1037.84" Efficiency="0.005583019"/>
+<register n="18" Energy="964.131" Efficiency="0.005930237"/>
+<register n="19" Energy="867.388" Efficiency="0.006467974"/>
+<register n="20" Energy="846.772" Efficiency="0.006597056"/>
+<register n="21" Energy="778.903" Efficiency="0.00706562"/>
+<register n="22" Energy="688.678" Efficiency="0.007815736"/>
+<register n="23" Energy="443.976" Efficiency="0.011114434"/>
+<register n="24" Energy="411.115" Efficiency="0.011794414"/>
+<register n="25" Energy="383.859" Efficiency="0.012425139"/>
+<register n="26" Energy="367.789" Efficiency="0.012829216"/>
+<register n="27" Energy="356.014" Efficiency="0.013141918"/>
+<register n="28" Energy="344.275" Efficiency="0.0134686"/>
+<register n="29" Energy="302.858" Efficiency="0.01475321"/>
+<register n="30" Energy="276.404" Efficiency="0.015693868"/>
+<register n="31" Energy="244.692" Efficiency="0.016955678"/>
+<register n="32" Energy="223.116" Efficiency="0.017894012"/>
+<register n="33" Energy="197" Efficiency="0.0190871"/>
+<register n="34" Energy="160.609" Efficiency="0.020643212"/>
+<register n="35" Energy="135" Efficiency="0.02118732"/>
+<register n="36" Energy="121.7824" Efficiency="0.020934518"/>
+<register n="37" Energy="110" Efficiency="0.019564305"/>
+<register n="38" Energy="80.999" Efficiency="0.011166223"/>
 </Energy_Efficiency>
 </Detector_Data>
 </ERYA-Bulk_Detector>
