@@ -1166,10 +1166,12 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
  double ThisMassFraction = ThoseElements.GetMassFraction(YieldElementPosition);
  double AvogradoNumber = 6.02214076e+23;
  double ElementaryCharge = 1.602176634e-19;
- double ZieglerFactor = 1.0e+24;
+ double ElectronVolt = 1.0e-3; // Convert eV to keV
+ double NumberAtoms = 1.0e+15; // Due to Ziegler Units: ev/10^15 at/cm^2
  double MicroColoumb = 1.0e-6; // Convert Colomb to Micro-Colomb
  double MiliBarnUnit = 1.0e-27; // Convert milibarn to sq.cm
  double MicroGram = 1.0e-6; // Convert micro-grams to grams.
+ double ZieglerFactor = NumberAtoms/(MicroGram*ElectronVolt); //Fix Ziegler Function Units
  double ThisNumberCharges = Charge; //Charge in micro-Coloumb
  double YieldFactor = AvogradoNumber * MicroColoumb * MiliBarnUnit * MicroGram / ElementaryCharge; // Set constant conversion
  double BraggFactor = AvogradoNumber / ZieglerFactor; // Set constant conversion
@@ -1178,13 +1180,29 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
   // Start the main yield evaluation cycle, where some values requires to inquire the entire array of Elements.
   double YieldSum = 0;
   int NumberLayers = std::ceil((Emax - Emin)/DE);
-  if(Thickness > 0)
+  double DepthSum = 0;
+  if(Thickness > 0) // For thick samples, the integration begins at maximum energy, while also accounts the beam depth
   {
-    double CurrentEnergy = Emax;
-    double CurrentSigma = ThoseElements.EvaluateCrossSection(YieldElementPosition,CurrentEnergy,0);
-    YieldSum = CurrentSigma * Thickness;
+   for (int i=0; i<NumberLayers; i++)
+   {
+    // Evaluate the cross-section and stopping power of all elements, on initial, middle and final interval boundaries.
+    double CurrentEnergy = Emax - i*DE;
+    double CurrentSigma = ThoseElements.EvaluateCrossSection(YieldElementPosition,CurrentEnergy-DE,DE);
+    double CurrentStoppingPower = ThoseElements.EvaluateBragg(CurrentEnergy-DE/2) * BraggFactor / ThoseElements.GetMolarMass();
+    double CurrentDepth = DE * CurrentStoppingPower;
+    // Evaluate the integral
+    double CurrentFunction;
+    if (CurrentStoppingPower == 0)
+      CurrentFunction = 0;
+    else
+      CurrentFunction = CurrentSigma / CurrentStoppingPower;
+    YieldSum = YieldSum + CurrentFunction;
+    DepthSum = DepthSum + CurrentDepth;
+    if(DepthSum > Thickness) // Reach the sample physical boundary
+        break;
+   }
   }
-  else
+  else // ulk samples are plain integration
   {
    for (int i=0; i<NumberLayers; i++)
    {
