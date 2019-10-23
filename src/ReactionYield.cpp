@@ -1189,7 +1189,7 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
     double CurrentEnergy = Emax - i*DE;
     double CurrentSigma = ThoseElements.EvaluateCrossSection(YieldElementPosition,CurrentEnergy-DE,DE);
     double CurrentStoppingPower = ThoseElements.EvaluateBragg(CurrentEnergy-DE/2) * BraggFactor / ThoseElements.GetMolarMass();
-    double CurrentDepth = DE * CurrentStoppingPower;
+    double CurrentDepth = DE / CurrentStoppingPower;
     // Evaluate the integral
     double CurrentFunction;
     if (CurrentStoppingPower == 0)
