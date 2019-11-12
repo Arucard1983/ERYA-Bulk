@@ -1310,6 +1310,7 @@ wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString&
 {
 	this->Create( parent, id, title, bitmap, pos, style );
 	this->SetSizeHints( wxDefaultSize, wxDefaultSize);
+	this->SetPageSize(wxSize( 700,400 ));
 
 	wxWizardPageSimple* wizardFirstRun1 = new wxWizardPageSimple( this );
 	m_pages.Add( wizardFirstRun1 );
