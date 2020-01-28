@@ -357,6 +357,7 @@ Element::Element(ElementDatabase ThisElement, ZieglerParameters ThisZiegler, Ele
    Sucess = true;
 }
 
+
 // Calculate the cross-section from the table of data
 double Element::EvaluateSigma(double AtEnergy)
 {
@@ -643,13 +644,32 @@ Vector ElementExtra::GetAllMass()
  return results;
 }
 
+// Evaluate the weight stoichiometry ratio
+double ElementExtra::GetWeightStoichiometry(int i)
+{
+ double WeightStoichiometry = 0;
+ for(int k=0; k<this->GetCount(); k++)
+ {
+   WeightStoichiometry = WeightStoichiometry + this->Item(k).GetStoichiometry() * this->Item(k).GetAtomicMass();
+ }
+ if(std::abs(WeightStoichiometry)>0)
+ {
+   return this->Item(i).GetStoichiometry() * this->Item(i).GetAtomicMass() / WeightStoichiometry;
+ }
+ else
+ {
+   return 0;
+ }
+}
+
+
 // Evaluate the stopping power of all Elements, combined with the Bragg´s Law.
 double ElementExtra::EvaluateBragg(double AtEnergy)
 {
  double StoppingPowerSum = 0;
  for (int i=0; i<this->GetCount(); i++)
  {
-  StoppingPowerSum = StoppingPowerSum + this->Item(i).EvaluateZiegler(AtEnergy) * this->Item(i).GetStoichiometry();
+  StoppingPowerSum = StoppingPowerSum + this->Item(i).EvaluateZiegler(AtEnergy) * this->GetWeightStoichiometry(i);
  }
  return StoppingPowerSum;
 }

@@ -99,6 +99,7 @@ public:
 ElementExtra(){};
 double GetTotalStoichiometry();
 double GetTotalMass();
+double GetWeightStoichiometry(int i);
 double EvaluateCrossSection(int ElementID, double AtEnergy, double DeltaEnergy);
 double GetEnergyMinimum(int ElementID){return this->Item(ElementID).GetEnergyMinimum();};
 double GetEnergyMaximum(int ElementID){return this->Item(ElementID).GetEnergyMaximum();};
