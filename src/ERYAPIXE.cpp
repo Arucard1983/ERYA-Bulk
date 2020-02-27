@@ -31,6 +31,7 @@ WX_DEFINE_OBJARRAY( ArrayGP);
 WX_DEFINE_OBJARRAY( ArrayFit);
 WX_DEFINE_OBJARRAY( ArrayZ);
 WX_DEFINE_OBJARRAY( ArrayCP);
+WX_DEFINE_OBJARRAY( ArrayMG);
 WX_DEFINE_OBJARRAY( ArraySG);
 WX_DEFINE_OBJARRAY( ArrayYS);
 WX_DEFINE_OBJARRAY( ArrayYE);
@@ -94,6 +95,18 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	mMainMenu->Append( menuDatabase, wxT("Database") );
 
+	menuERYATool = new wxMenu();
+
+	wxMenuItem* menuERYAToolCalculator;
+	menuERYAToolCalculator = new wxMenuItem( menuERYATool, wxID_ANY, wxString( wxT("ERYA Macro Calculator") ) , wxT("Access the ERYA Macro Interpreter"), wxITEM_NORMAL );
+	menuERYATool->Append( menuERYAToolCalculator );
+
+	wxMenuItem* menuERYAToolReset;
+	menuERYAToolReset = new wxMenuItem( menuERYATool, wxID_ANY, wxString( wxT("Reset ERYA Settings") ) , wxT("Restore ERYA to initial default."), wxITEM_NORMAL );
+	menuERYATool->Append( menuERYAToolReset );
+
+	mMainMenu->Append( menuERYATool, wxT("Tools") );
+
 	menuHelp = new wxMenu();
 
 	wxMenuItem* menuHelpAbout;
@@ -114,7 +127,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     scrollButtons = new wxScrolledWindow( tabElements, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	scrollButtons->SetScrollRate( 5, 5 );
 
-	sizerButtons = new wxFlexGridSizer( 0, 12, 30, 30 );
+	sizerButtons = new wxFlexGridSizer( 0, 13, 30, 30 );
 
 	wxFont TableFont(70, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString, wxFONTENCODING_DEFAULT);
 
@@ -138,12 +151,17 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     labelZ->SetFont(TableFont);
 	sizerButtons->Add( labelZ, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-        labelElementCalibrationParameter = new wxStaticText( scrollButtons, wxID_ANY, wxT("Cross-Section\nCalibration Parameter"), wxDefaultPosition, wxDefaultSize, 0 );
+    labelElementCalibrationParameter = new wxStaticText( scrollButtons, wxID_ANY, wxT("Cross-Section\nCalibration Parameter"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelElementCalibrationParameter->Wrap( -1 );
-        labelElementCalibrationParameter->SetFont(TableFont);
+    labelElementCalibrationParameter->SetFont(TableFont);
 	sizerButtons->Add( labelElementCalibrationParameter, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-	labelStoichiometricGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Composition\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelMassGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Mass Composition\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelMassGuess->Wrap( -1 );
+    labelMassGuess->SetFont(TableFont);
+	sizerButtons->Add( labelMassGuess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	labelStoichiometricGuess = new wxStaticText( scrollButtons, wxID_ANY, wxT("Atomic Composition\nInitial Guess"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelStoichiometricGuess->Wrap( -1 );
     labelStoichiometricGuess->SetFont(TableFont);
 	sizerButtons->Add( labelStoichiometricGuess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -195,6 +213,9 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
     textCP.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(120,-1), 0 ));
     sizerButtons->Add( textCP.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+    textMG.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0 ));
+    sizerButtons->Add( textMG.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     textSG.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0 ));
     sizerButtons->Add( textSG.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -390,20 +411,15 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	textThickness = new wxTextCtrl( this, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0 );
 	sizerMainButtons->Add( textThickness, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-    buttonMainNew = new wxButton( this, wxID_ANY, wxT("Clear Table"), wxDefaultPosition, wxDefaultSize, 0 );
+    buttonMainNew = new wxButton( this, wxID_ANY, wxT("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainNew->SetFont(TableFont);
     buttonMainNew->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainNew, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
-    buttonMainCheck = new wxButton( this, wxID_ANY, wxT("Check Table"), wxDefaultPosition, wxDefaultSize, 0 );
+    buttonMainCheck = new wxButton( this, wxID_ANY, wxT("Check Input"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainCheck->SetFont(TableFont);
     buttonMainCheck->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainCheck, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
-
-    buttonMainHelp = new wxButton( this, wxID_ANY, wxT("Norm Table"), wxDefaultPosition, wxDefaultSize, 0 );
-    buttonMainHelp->SetFont(TableFont);
-    buttonMainHelp->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
-	sizerMainButtons->Add( buttonMainHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     buttonMainAdvanced = new wxButton( this, wxID_ANY, wxT("Advanced"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainAdvanced->SetFont(TableFont);
@@ -420,6 +436,11 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	buttonMainStop->SetFont(TableFont);
     buttonMainStop->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainStop, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonMainHelp = new wxButton( this, wxID_ANY, wxT("Quit ERYA"), wxDefaultPosition, wxDefaultSize, 0 );
+    buttonMainHelp->SetFont(TableFont);
+    buttonMainHelp->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+	sizerMainButtons->Add( buttonMainHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     sizerMainButtons->Fit(this);
 	sizerMainFrame->Add( sizerMainButtons, 0, wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -444,6 +465,8 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->Connect( menuDatabaseElements->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseElements ) );
 	this->Connect( menuDatabaseZiegler->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseZiegler ) );
     this->Connect( menuDatabaseSetup->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseSetup ) );
+    this->Connect( menuERYAToolCalculator->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnToolCalculator ) );
+    this->Connect( menuERYAToolReset->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnToolReset ) );
 	this->Connect( menuHelpAbout->GetId(), wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpAbout ) );
 	choiceElement.Last()->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnElement ), NULL, this );
 	choiceGP.Last()->Connect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnGammaPeak ), NULL, this );
@@ -469,6 +492,8 @@ MainFrame::~MainFrame()
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseElements ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseZiegler ) );
     this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnDatabaseSetup ) );
+    this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnToolCalculator ) );
+    this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnToolReset ) );
 	this->Disconnect( wxID_ANY, wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( MainFrame::OnHelpAbout ) );
 	choiceElement.Last()->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnElement ), NULL, this );
 	choiceGP.Last()->Disconnect( wxEVT_COMMAND_CHOICE_SELECTED, wxCommandEventHandler( MainFrame::OnGammaPeak ), NULL, this );
@@ -1304,6 +1329,328 @@ dialogSetup::~dialogSetup()
 
 }
 
+dialogERYACalculator::dialogERYACalculator( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxDialog( parent, id, title, pos, size, style )
+{
+	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+	wxBoxSizer* sizerERYACalculator;
+	sizerERYACalculator = new wxBoxSizer( wxVERTICAL );
+
+	labelCalculatorInput = new wxStaticText( this, wxID_ANY, wxT("Use the keyboard, or the button to manually input a valid ERYA Macro function, or simply paste to the input field."), wxDefaultPosition, wxDefaultSize, 0 );
+	labelCalculatorInput->Wrap( -1 );
+	sizerERYACalculator->Add( labelCalculatorInput, 0, wxALL|wxEXPAND, 5 );
+
+	textCalculatorInput = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	sizerERYACalculator->Add( textCalculatorInput, 0, wxALL|wxEXPAND, 5 );
+
+	lineCalculatorInput = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	sizerERYACalculator->Add( lineCalculatorInput, 0, wxEXPAND | wxALL, 5 );
+
+	labelCalculatorOutput = new wxStaticText( this, wxID_ANY, wxT("Macro Evaluation Results:"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelCalculatorOutput->Wrap( -1 );
+	sizerERYACalculator->Add( labelCalculatorOutput, 0, wxALL|wxEXPAND, 5 );
+
+	textCalculatorOutput = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
+	sizerERYACalculator->Add( textCalculatorOutput, 0, wxALL|wxEXPAND, 5 );
+
+	lineCalculatorOutput = new wxStaticLine( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL );
+	sizerERYACalculator->Add( lineCalculatorOutput, 0, wxEXPAND | wxALL, 5 );
+
+	wxGridSizer* sizerCalculatorTools;
+	sizerCalculatorTools = new wxGridSizer( 5, 11, 0, 0 );
+
+	buttonAcos = new wxButton( this, wxID_ANY, wxT("acos"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAcos, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAsin = new wxButton( this, wxID_ANY, wxT("asin"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAsin, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAtan = new wxButton( this, wxID_ANY, wxT("atan"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAtan, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFxvar = new wxButton( this, wxID_ANY, wxT("fxvar"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFxvar, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonLeftParenthesis = new wxButton( this, wxID_ANY, wxT("("), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonLeftParenthesis, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonRightParanthesis = new wxButton( this, wxID_ANY, wxT(")"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonRightParanthesis, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSqrt = new wxButton( this, wxID_ANY, wxT("sqrt"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSqrt, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonPower = new wxButton( this, wxID_ANY, wxT("^"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonPower, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonLess = new wxButton( this, wxID_ANY, wxT("<"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonLess, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonClearInput = new wxButton( this, wxID_ANY, wxT("ClrProg"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonClearInput, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonHelp = new wxButton( this, wxID_ANY, wxT("Quit"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAsinh = new wxButton( this, wxID_ANY, wxT("asinh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAsinh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAcosh = new wxButton( this, wxID_ANY, wxT("acosh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAcosh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAtanh = new wxButton( this, wxID_ANY, wxT("atanh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAtanh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFyvar = new wxButton( this, wxID_ANY, wxT("fyvar"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFyvar, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSeven = new wxButton( this, wxID_ANY, wxT("7"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSeven, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonEight = new wxButton( this, wxID_ANY, wxT("8"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonEight, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonNine = new wxButton( this, wxID_ANY, wxT("9"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonNine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonPlus = new wxButton( this, wxID_ANY, wxT("+"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonPlus, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonMore = new wxButton( this, wxID_ANY, wxT(">"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonMore, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonClearOutput = new wxButton( this, wxID_ANY, wxT("ClrAns"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonClearOutput, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonBackSpace = new wxButton( this, wxID_ANY, wxT("BckSpc"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonBackSpace, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonCos = new wxButton( this, wxID_ANY, wxT("cos"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonCos, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSin = new wxButton( this, wxID_ANY, wxT("sin"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSin, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonTan = new wxButton( this, wxID_ANY, wxT("tan"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonTan, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFxmin = new wxButton( this, wxID_ANY, wxT("fxmin"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFxmin, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFour = new wxButton( this, wxID_ANY, wxT("4"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFour, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFive = new wxButton( this, wxID_ANY, wxT("5"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFive, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSix = new wxButton( this, wxID_ANY, wxT("6"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSix, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonMinus = new wxButton( this, wxID_ANY, wxT("-"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonMinus, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonComma = new wxButton( this, wxID_ANY, wxT(","), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonComma, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonDisplayProgram = new wxButton( this, wxID_ANY, wxT("DspVars"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonDisplayProgram, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSetDecimals = new wxButton( this, wxID_ANY, wxT("SetDec"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSetDecimals, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonCosh = new wxButton( this, wxID_ANY, wxT("cosh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonCosh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonSinh = new wxButton( this, wxID_ANY, wxT("sinh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonSinh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonTanh = new wxButton( this, wxID_ANY, wxT("tanh"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonTanh, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFxmax = new wxButton( this, wxID_ANY, wxT("fxmax"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFxmax, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonOne = new wxButton( this, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonOne, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonTwo = new wxButton( this, wxID_ANY, wxT("2"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonTwo, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonThree = new wxButton( this, wxID_ANY, wxT("3"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonThree, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonTimes = new wxButton( this, wxID_ANY, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonTimes, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonColon = new wxButton( this, wxID_ANY, wxT(":"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonColon, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonDisplayAnswer = new wxButton( this, wxID_ANY, wxT("InpVec"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonDisplayAnswer, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonFunctionVar = new wxButton( this, wxID_ANY, wxT("f(x=?)"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonFunctionVar, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonExp = new wxButton( this, wxID_ANY, wxT("exp"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonExp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonLog = new wxButton( this, wxID_ANY, wxT("log"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonLog, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonLn = new wxButton( this, wxID_ANY, wxT("ln"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonLn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonVectorMacro = new wxButton( this, wxID_ANY, wxT("fnvar"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonVectorMacro, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonZero = new wxButton( this, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonZero, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonDecimal = new wxButton( this, wxID_ANY, wxT("."), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonDecimal, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonExponential = new wxButton( this, wxID_ANY, wxT("EE"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonExponential, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonDivide = new wxButton( this, wxID_ANY, wxT("/"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonDivide, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonAssign = new wxButton( this, wxID_ANY, wxT("="), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonAssign, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonInputVariable = new wxButton( this, wxID_ANY, wxT("InpVar"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonInputVariable, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	buttonReturn = new wxButton( this, wxID_ANY, wxT("Return"), wxDefaultPosition, wxDefaultSize, 0 );
+	sizerCalculatorTools->Add( buttonReturn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
+
+
+	sizerERYACalculator->Add( sizerCalculatorTools, 1, wxEXPAND, 5 );
+
+
+	this->SetSizer( sizerERYACalculator );
+	this->Layout();
+
+	this->Centre( wxBOTH );
+
+	// Connect Events
+	buttonAcos->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAcos ), NULL, this );
+	buttonAsin->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAsin ), NULL, this );
+	buttonAtan->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAtan ), NULL, this );
+	buttonFxvar->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxvar ), NULL, this );
+	buttonLeftParenthesis->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLeftParenthesis ), NULL, this );
+	buttonRightParanthesis->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnRightParenthesis ), NULL, this );
+	buttonSqrt->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSqrt ), NULL, this );
+	buttonPower->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnPower ), NULL, this );
+	buttonHelp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnHelp ), NULL, this );
+	buttonClearInput->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnClearInput ), NULL, this );
+	buttonAsinh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAsinh ), NULL, this );
+	buttonAcosh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAcosh ), NULL, this );
+	buttonAtanh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAtanh ), NULL, this );
+	buttonFyvar->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFyvar ), NULL, this );
+	buttonSeven->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSeven ), NULL, this );
+	buttonEight->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnEight ), NULL, this );
+	buttonNine->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnNine ), NULL, this );
+	buttonPlus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnPlus ), NULL, this );
+	buttonLess->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLess ), NULL, this );
+	buttonMore->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnMore ), NULL, this );
+	buttonBackSpace->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnBackSpace ), NULL, this );
+	buttonClearOutput->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnClearOutput ), NULL, this );
+	buttonCos->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnCos ), NULL, this );
+	buttonSin->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSin ), NULL, this );
+	buttonTan->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTan ), NULL, this );
+	buttonFxmin->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxmin ), NULL, this );
+	buttonFour->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFour ), NULL, this );
+	buttonFive->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFive ), NULL, this );
+	buttonSix->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSix ), NULL, this );
+	buttonMinus->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnMinus ), NULL, this );
+	buttonComma->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnComma ), NULL, this );
+	buttonDisplayProgram->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDisplayProgram ), NULL, this );
+	buttonCosh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnCosh ), NULL, this );
+	buttonSinh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSinh ), NULL, this );
+	buttonTanh->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTanh ), NULL, this );
+	buttonFxmax->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxmax ), NULL, this );
+	buttonOne->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnOne ), NULL, this );
+	buttonTwo->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTwo ), NULL, this );
+	buttonThree->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnThree ), NULL, this );
+	buttonTimes->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTimes ), NULL, this );
+	buttonColon->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnColon ), NULL, this );
+	buttonDisplayAnswer->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDisplayAnswer ), NULL, this );
+	buttonExp->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnExp ), NULL, this );
+	buttonLog->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLog ), NULL, this );
+	buttonLn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLn ), NULL, this );
+	buttonFunctionVar->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFunctionVar ), NULL, this );
+	buttonZero->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnZero ), NULL, this );
+	buttonDecimal->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDecimal ), NULL, this );
+	buttonExponential->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnExponential ), NULL, this );
+	buttonDivide->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDivide ), NULL, this );
+	buttonAssign->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAssign ), NULL, this );
+	buttonVectorMacro->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnVectorMacro ), NULL, this );
+	buttonInputVariable->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnInputVariable ), NULL, this );
+	buttonSetDecimals->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSetDecimals ), NULL, this );
+	buttonReturn->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnReturn ), NULL, this );
+}
+
+dialogERYACalculator::~dialogERYACalculator()
+{
+	// Disconnect Events
+	buttonAcos->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAcos ), NULL, this );
+	buttonAsin->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAsin ), NULL, this );
+	buttonAtan->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAtan ), NULL, this );
+	buttonFxvar->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxvar ), NULL, this );
+	buttonLeftParenthesis->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLeftParenthesis ), NULL, this );
+	buttonRightParanthesis->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnRightParenthesis ), NULL, this );
+	buttonSqrt->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSqrt ), NULL, this );
+	buttonPower->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnPower ), NULL, this );
+	buttonHelp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnHelp ), NULL, this );
+	buttonClearInput->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnClearInput ), NULL, this );
+	buttonAsinh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAsinh ), NULL, this );
+	buttonAcosh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAcosh ), NULL, this );
+	buttonAtanh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAtanh ), NULL, this );
+	buttonFyvar->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFyvar ), NULL, this );
+	buttonSeven->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSeven ), NULL, this );
+	buttonEight->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnEight ), NULL, this );
+	buttonNine->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnNine ), NULL, this );
+	buttonPlus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnPlus ), NULL, this );
+	buttonLess->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLess ), NULL, this );
+	buttonMore->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnMore ), NULL, this );
+	buttonBackSpace->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnBackSpace ), NULL, this );
+	buttonClearOutput->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnClearOutput ), NULL, this );
+	buttonCos->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnCos ), NULL, this );
+	buttonSin->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSin ), NULL, this );
+	buttonTan->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTan ), NULL, this );
+	buttonFxmin->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxmin ), NULL, this );
+	buttonFour->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFour ), NULL, this );
+	buttonFive->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFive ), NULL, this );
+	buttonSix->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSix ), NULL, this );
+	buttonMinus->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnMinus ), NULL, this );
+	buttonComma->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnComma ), NULL, this );
+	buttonDisplayProgram->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDisplayProgram ), NULL, this );
+	buttonCosh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnCosh ), NULL, this );
+	buttonSinh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSinh ), NULL, this );
+	buttonTanh->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTanh ), NULL, this );
+	buttonFxmax->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFxmax ), NULL, this );
+	buttonOne->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnOne ), NULL, this );
+	buttonTwo->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTwo ), NULL, this );
+	buttonThree->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnThree ), NULL, this );
+	buttonTimes->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnTimes ), NULL, this );
+	buttonColon->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnColon ), NULL, this );
+	buttonDisplayAnswer->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDisplayAnswer ), NULL, this );
+	buttonExp->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnExp ), NULL, this );
+	buttonLog->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLog ), NULL, this );
+	buttonLn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnLn ), NULL, this );
+	buttonFunctionVar->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnFunctionVar ), NULL, this );
+	buttonZero->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnZero ), NULL, this );
+	buttonDecimal->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDecimal ), NULL, this );
+	buttonExponential->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnExponential ), NULL, this );
+	buttonDivide->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnDivide ), NULL, this );
+	buttonAssign->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnAssign ), NULL, this );
+	buttonVectorMacro->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnVectorMacro ), NULL, this );
+	buttonInputVariable->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnInputVariable ), NULL, this );
+	buttonSetDecimals->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnSetDecimals ), NULL, this );
+	buttonReturn->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( dialogERYACalculator::OnReturn ), NULL, this );
+
+}
 
 
 wizardFirstRun::wizardFirstRun( wxWindow* parent, wxWindowID id, const wxString& title, const wxBitmap& bitmap, const wxPoint& pos, long style )

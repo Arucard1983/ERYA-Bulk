@@ -24,6 +24,7 @@
 #include "ERYAPIXEdialogSetup.h"
 #include "ERYAPIXEdialogAdvanced.h"
 #include "ERYAPIXEwizardFirstRun.h"
+#include "ERYAPIXEdialogERYACalculator.h"
 
 ERYAPIXEMainFrame::ERYAPIXEMainFrame( wxWindow* parent )
 :
@@ -58,6 +59,7 @@ void ERYAPIXEMainFrame::OnFileNew( wxCommandEvent& event )
   checkFit.Item(0)->SetValue(false);
   textZ.Item(0)->Clear();
   textCP.Item(0)->Clear();
+  textMG.Item(0)->Clear();
   textSG.Item(0)->Clear();
   textYS.Item(0)->Clear();
   textYE.Item(0)->Clear();
@@ -532,6 +534,37 @@ void ERYAPIXEMainFrame::OnDatabaseSetup( wxCommandEvent& event )
  }
 }
 
+void ERYAPIXEMainFrame::OnToolCalculator( wxCommandEvent& event )
+{
+ ERYAPIXEdialogERYACalculator *calculator = new ERYAPIXEdialogERYACalculator(this);
+ calculator->ShowModal();
+}
+
+void ERYAPIXEMainFrame::OnToolReset( wxCommandEvent& event )
+{
+wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reset the ERYA-Profiling configuration files?\nIt will start a new Setup Wizard..."), wxT("Reset ERYA-Profiling configurations?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+ if (dial->ShowModal() == wxID_YES)
+ {
+  if(this->DeleteSetupFile())
+  {
+    if(this->StartUpProgram())
+    {
+     barMainStatus->SetStatusText(wxT("ERYA-Bulk is ready...") ,0);
+      wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("The new ERYA-Bulk configuration file are in use.\nThe new default databases are also reloaded automatically."), wxT("Reset Complete!"), wxOK);
+      dial->ShowModal();
+    }
+    else
+    {
+     barMainStatus->SetStatusText(wxT("Warning! ERYA Bulk starts in Default Mode") ,0);
+    }
+  }
+  else
+  {
+  wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Cannot reset ERYA Bulk.\nRefer to the User Guide about\nhow to perform a manual reset."), wxT("Reset Error!"), wxOK | wxICON_ERROR);
+  dial->ShowModal();
+  }
+ }
+}
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
@@ -743,23 +776,10 @@ void ERYAPIXEMainFrame::OnMainAdvanced( wxCommandEvent& event )
 
 void ERYAPIXEMainFrame::OnMainHelp( wxCommandEvent& event )
 {
- for(int k=0; k<textSG.GetCount(); k++)
+ wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to quit?\nAll opened data will be lost."), wxT("Quit?"), wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION);
+ if (dial->ShowModal() == wxID_YES)
  {
-    wxString temp = textSG.Item(k)->GetValue();
-    if(temp.Len()==0) // Empty values are equal to one, by default.
-        temp = wxT("1");
-    AlgebraicFunction test(temp);
-    if(test.GetErrorString().Trim().Len()==0)
-    {
-      double value = test.GetAnsEval();
-      textSG.Item(k)->SetValue(wxString::Format("%f",value));
-    }
-    else
-    {
-      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
-      dial->ShowModal();
-      barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
-    }
+ Close();
  }
 }
 
@@ -811,18 +831,35 @@ void ERYAPIXEMainFrame::OnMainCheck( wxCommandEvent& event )
 {
  for(int k=0; k<textSG.GetCount(); k++)
  {
-    wxString temp = textSG.Item(k)->GetValue();
-    if(temp.Len()==0) // Empty values are equal to one, by default.
-        temp = wxT("1");
-    AlgebraicFunction test(temp);
-    if(test.GetErrorString().Trim().Len()==0)
+    wxString temp1 = textMG.Item(k)->GetValue();
+    wxString temp2 = textSG.Item(k)->GetValue();
+    if(temp1.Len()==0) // Empty values for mass are equal to zero, by default.
+        temp1 = wxT("0");
+    if(temp2.Len()==0) // Empty values for atomic are equal to one, by default.
+        temp2 = wxT("1");
+
+    AlgebraicFunction test1(temp1);
+    if(test1.GetErrorString().Trim().Len()==0)
     {
-      double value = test.GetAnsEval();
-      textSG.Item(k)->SetValue(wxString::Format("%f",value));
+      double value = test1.GetAnsEval();
+      textMG.Item(k)->SetValue(wxString::Format("%f",value));
     }
     else
     {
-      wxMessageDialog *dial = new wxMessageDialog(NULL, test.GetErrorString() , wxT("Error at Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
+      wxMessageDialog *dial = new wxMessageDialog(NULL, test1.GetErrorString() , wxT("Error at Mass Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
+      dial->ShowModal();
+      barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
+    }
+
+    AlgebraicFunction test2(temp2);
+    if(test2.GetErrorString().Trim().Len()==0)
+    {
+      double value = test2.GetAnsEval();
+      textMG.Item(k)->SetValue(wxString::Format("%f",value));
+    }
+    else
+    {
+      wxMessageDialog *dial = new wxMessageDialog(NULL, test2.GetErrorString() , wxT("Error at Mass Composition Guess Entry #") + wxString::Format("%i",k+1), wxOK | wxICON_ERROR);
       dial->ShowModal();
       barMainStatus->SetStatusText(wxT("Warning! Invalid input entry, please check the values.") ,0);
     }

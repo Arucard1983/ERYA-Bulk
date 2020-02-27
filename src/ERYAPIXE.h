@@ -71,6 +71,7 @@
 #include <wx/busyinfo.h>
 #include <wx/progdlg.h>
 #include <wx/choicdlg.h>
+#include <wx/numdlg.h>
 #include "mathplot.h"
 #include "ERYA.xpm"
 #include "ERYA_Bulk.xpm"
@@ -82,6 +83,7 @@ WX_DECLARE_OBJARRAY( wxChoice*, ArrayGP);
 WX_DECLARE_OBJARRAY( wxCheckBox*, ArrayFit);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayZ);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayCP);
+WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayMG);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArraySG);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYS);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYE);
@@ -103,6 +105,7 @@ class MainFrame : public wxFrame
 		wxMenuBar* mMainMenu;
 		wxMenu* menuFile;
 		wxMenu* menuDatabase;
+                wxMenu* menuERYATool;
 		wxMenu* menuHelp;
         wxBoxSizer* sizerMainFrame;
 		wxNotebook* tabbedOutput;
@@ -112,6 +115,7 @@ class MainFrame : public wxFrame
 		wxStaticText* labelFit;
 		wxStaticText* labelZ;
         wxStaticText* labelElementCalibrationParameter;
+        wxStaticText* labelMassGuess;
 		wxStaticText* labelStoichiometricGuess;
 		wxStaticText* labelYieldSimulation;
 		wxStaticText* labelYieldExperimental;
@@ -128,6 +132,7 @@ class MainFrame : public wxFrame
 		ArrayFit checkFit;
 		ArrayZ textZ;
         ArrayCP textCP;
+        ArrayMG textMG;
 		ArraySG textSG;
 		ArrayYS textYS;
 		ArrayYE textYE;
@@ -178,6 +183,8 @@ class MainFrame : public wxFrame
 		virtual void OnDatabaseElements( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnDatabaseZiegler( wxCommandEvent& event ) { event.Skip(); }
         virtual void OnDatabaseSetup( wxCommandEvent& event ) { event.Skip(); }
+        virtual void OnToolCalculator( wxCommandEvent& event ) { event.Skip(); }
+        virtual void OnToolReset( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnHelpGuide( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnHelpAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnElement( wxCommandEvent& event ) { event.Skip(); }
@@ -446,6 +453,142 @@ class dialogSetup : public wxDialog
 		~dialogSetup();
 
 };
+
+///////////////////////////////////////////////////////////////////////////////
+/// Class dialogERYACalculator
+///////////////////////////////////////////////////////////////////////////////
+class dialogERYACalculator : public wxDialog
+{
+	private:
+
+	protected:
+		wxStaticText* labelCalculatorInput;
+		wxTextCtrl* textCalculatorInput;
+		wxStaticLine* lineCalculatorInput;
+		wxStaticText* labelCalculatorOutput;
+		wxTextCtrl* textCalculatorOutput;
+		wxStaticLine* lineCalculatorOutput;
+		wxButton* buttonAcos;
+		wxButton* buttonAsin;
+		wxButton* buttonAtan;
+		wxButton* buttonFxvar;
+		wxButton* buttonLeftParenthesis;
+		wxButton* buttonRightParanthesis;
+		wxButton* buttonSqrt;
+		wxButton* buttonPower;
+		wxButton* buttonLess;
+		wxButton* buttonHelp;
+		wxButton* buttonClearInput;
+		wxButton* buttonAsinh;
+		wxButton* buttonAcosh;
+		wxButton* buttonAtanh;
+		wxButton* buttonFyvar;
+		wxButton* buttonSeven;
+		wxButton* buttonEight;
+		wxButton* buttonNine;
+		wxButton* buttonPlus;
+		wxButton* buttonMore;
+		wxButton* buttonBackSpace;
+		wxButton* buttonClearOutput;
+		wxButton* buttonCos;
+		wxButton* buttonSin;
+		wxButton* buttonTan;
+		wxButton* buttonFxmin;
+		wxButton* buttonFour;
+		wxButton* buttonFive;
+		wxButton* buttonSix;
+		wxButton* buttonMinus;
+		wxButton* buttonComma;
+		wxButton* buttonDisplayProgram;
+		wxButton* buttonCosh;
+		wxButton* buttonSinh;
+		wxButton* buttonTanh;
+		wxButton* buttonFxmax;
+		wxButton* buttonOne;
+		wxButton* buttonTwo;
+		wxButton* buttonThree;
+		wxButton* buttonTimes;
+		wxButton* buttonColon;
+		wxButton* buttonDisplayAnswer;
+		wxButton* buttonInputVariable;
+		wxButton* buttonVectorMacro;
+		wxButton* buttonSetDecimals;
+		wxButton* buttonExp;
+		wxButton* buttonLog;
+		wxButton* buttonLn;
+		wxButton* buttonFunctionVar;
+		wxButton* buttonZero;
+		wxButton* buttonDecimal;
+		wxButton* buttonExponential;
+		wxButton* buttonDivide;
+		wxButton* buttonAssign;
+		wxButton* buttonReturn;
+
+		// Virtual event handlers, overide them in your derived class
+		virtual void OnAcos( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAsin( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAtan( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFxvar( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLeftParenthesis( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRightParenthesis( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSqrt( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPower( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnHelp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClearInput( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAsinh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAcosh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAtanh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFyvar( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSeven( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnEight( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNine( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnPlus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnBackSpace( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnClearOutput( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCos( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSin( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTan( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFxmin( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFour( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFive( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSix( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMinus( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnComma( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDisplayProgram( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnCosh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSinh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTanh( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFxmax( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOne( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTwo( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnThree( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnTimes( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnColon( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDisplayAnswer( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnExp( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLog( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLn( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnFunctionVar( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnZero( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDecimal( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnExponential( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnDivide( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAssign( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnLess( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnMore( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnVectorMacro( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnSetDecimals( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnInputVariable( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnReturn( wxCommandEvent& event ) { event.Skip(); }
+
+
+	public:
+
+		dialogERYACalculator( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("ERYA Simple Calculator"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 1024,640 ), long style = wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER );
+		~dialogERYACalculator();
+
+};
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
