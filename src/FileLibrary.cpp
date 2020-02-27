@@ -11,7 +11,7 @@
 
 
 // Load a ERYA Yield file (*.epz)
-bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &MaximumEnergy, wxTextCtrl* &EnergyStep, wxTextCtrl* &ProfilingStep, wxTextCtrl* &Charge, wxTextCtrl* &Thickness, wxArrayString& choiceElement, wxArrayString& choiceGP, wxArrayString& checkFit, wxArrayString& textZ, wxArrayString& textCP, wxArrayString& textSG, wxArrayString& textYS, wxArrayString& textYE, wxArrayString& textYF, wxArrayString& textSF, wxArrayString& textSM, wxArrayString& textSE, wxArrayString& TableData, ElementDatabaseArray CurrentDatabase, int&CI, int& MI, int& LT, int& LS, int& LY)
+bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &MaximumEnergy, wxTextCtrl* &EnergyStep, wxTextCtrl* &ProfilingStep, wxTextCtrl* &Charge, wxTextCtrl* &Thickness, wxArrayString& choiceElement, wxArrayString& choiceGP, wxArrayString& checkFit, wxArrayString& textZ, wxArrayString& textCP, wxArrayString& textMG, wxArrayString& textSG, wxArrayString& textYS, wxArrayString& textYE, wxArrayString& textYF, wxArrayString& textSF, wxArrayString& textSM, wxArrayString& textSE, wxArrayString& TableData, ElementDatabaseArray CurrentDatabase, int&CI, int& MI, int& LT, int& LS, int& LY)
 {
   // Begin processing
   TableData.Clear();
@@ -78,13 +78,14 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
      {
      if(YieldData->GetName() == wxT("Item"))
      {
-       wxString d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,d10,d11;
+       wxString d0,d1,d2,d3,d4,d4x,d5,d6,d7,d8,d9,d10,d11;
        // Set default values, for compability of previous ERYA versions;
        d0 = wxT("0");
        d1 = wxT("0");
        d2 = wxT("0");
        d3 = wxT("0");
        d4 = wxT("1");
+       d4x= wxT("0");
        d5 = wxT("1");
        d6 = wxT("0");
        d7 = wxT("0");
@@ -157,6 +158,18 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
                 if(d4.Len() == 0)
                 {
                   d4 = wxT("1");
+                }
+            }
+       }
+       if(YieldDataRegister->GetName() == wxT("Mass_Guess"))
+       {
+         wxXmlNode *Register4x = YieldDataRegister->GetChildren();
+         if(Register4x->GetName() == wxT("value"))
+            {
+                d4x = Register4x->GetNodeContent();
+                if(d4x.Len() == 0)
+                {
+                  d4x = wxT("0");
                 }
             }
        }
@@ -259,6 +272,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
       checkFit.Add(d2);
       textZ.Add(d3);
       textCP.Add(d4);
+      textMG.Add(d4x);
       textSG.Add(d5);
       textYS.Add(d6);
       textYE.Add(d7);
@@ -390,7 +404,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
 }
 
 // Save an ERYA Yield file (*.epz)
-bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* MaximumEnergy, wxTextCtrl* EnergyStep, wxTextCtrl* ProfilingStep, wxTextCtrl* Charge, wxTextCtrl* Thickness, ArrayElement choiceElement, ArrayGP choiceGP, ArrayFit checkFit, ArrayZ textZ, ArrayCP textCP, ArraySG textSG, ArrayYS textYS, ArrayYE textYE, ArrayYF textYF, ArraySF textSF, ArraySM textSM, ArraySE textSE, wxGrid* TableData, int CI, int MI, int LT, int LS, int LY)
+bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* MaximumEnergy, wxTextCtrl* EnergyStep, wxTextCtrl* ProfilingStep, wxTextCtrl* Charge, wxTextCtrl* Thickness, ArrayElement choiceElement, ArrayGP choiceGP, ArrayFit checkFit, ArrayZ textZ, ArrayCP textCP, ArrayMG textMG, ArraySG textSG, ArrayYS textYS, ArrayYE textYE, ArrayYF textYF, ArraySF textSF, ArraySM textSM, ArraySE textSE, wxGrid* TableData, int CI, int MI, int LT, int LS, int LY)
 {
   // Get the current time
   wxDateTime ThisTime = wxDateTime::Now();
@@ -437,6 +451,9 @@ bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* Maxim
     wxXmlNode* dataSG = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Stoichiometric_Guess");
      wxXmlNode* dataSGvalue = new wxXmlNode(dataSG, wxXML_ELEMENT_NODE, "value");
        dataSGvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textSG.Item(CurrentElement-1)->GetValue()));
+    wxXmlNode* dataMG = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Mass_Guess");
+     wxXmlNode* dataMGvalue = new wxXmlNode(dataMG, wxXML_ELEMENT_NODE, "value");
+       dataMGvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textMG.Item(CurrentElement-1)->GetValue()));
     wxXmlNode* dataCP = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Calibration_Parameter");
      wxXmlNode* dataCPvalue = new wxXmlNode(dataCP, wxXML_ELEMENT_NODE, "value");
        dataCPvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textCP.Item(CurrentElement-1)->GetValue()));

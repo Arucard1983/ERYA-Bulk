@@ -1552,9 +1552,9 @@ double YieldFitting::GetYieldAt(int Adress, double Emin, double Emax, double DE,
 }
 
 // Reaction Yield main constructor
-ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
+ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
 {
-  if(!(this->EvaluateYield(MainDatabase, DetectorSetup, ZieglerSetup, SRIMSetup, GetMinimumEnergy, GetMaximumEnergy, GetEnergyStep, GetProfilingStep, GetCharge, GetThickness, GetCalibrationArray, GetGroupArray, GetElementArray, GetFitArray, GetSG, SetYS, GetYE, SetYF, SetSF, SetSM, SetSE, mi, lt, ly, ls)))
+  if(!(this->EvaluateYield(MainDatabase, DetectorSetup, ZieglerSetup, SRIMSetup, GetMinimumEnergy, GetMaximumEnergy, GetEnergyStep, GetProfilingStep, GetCharge, GetThickness, GetCalibrationArray, GetGroupArray, GetElementArray, GetFitArray, GetMG, GetSG, SetYS, GetYE, SetYF, SetSF, SetSM, SetSE, mi, lt, ly, ls)))
   {
    SetYS.Clear();
    SetYF.Clear();
@@ -1570,7 +1570,7 @@ ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParamete
 }
 
 // The main-entry routine for Input/Output data. Notice this function had 20 parameters!
-bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
+bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
 {
  // Initial setup, and calculation of physical initial parameters
  double ElectricCharge,MinimumEnergy,MaximumEnergy,EnergyStep,Thickness,ProfilingStep;
@@ -1587,7 +1587,7 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
  {
   if (ElectricCharge > 0 && MinimumEnergy >= 0 && MaximumEnergy > 0 && EnergyStep > 0 && Thickness >= 0 && MinimumEnergy < MaximumEnergy && ProfilingStep >= 0)
   {
-    if (GetYE.GetCount() == GetSG.GetCount() && GetElementArray.GetCount() == GetSG.GetCount())
+    if (GetYE.GetCount() == GetSG.GetCount() && GetElementArray.GetCount() == GetSG.GetCount() && GetMG.GetCount() == GetSG.GetCount())
     {
      // 1. Define Detector Function
      Detector SomeDetector = Detector(DetectorSetup);
