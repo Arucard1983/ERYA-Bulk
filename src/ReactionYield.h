@@ -47,6 +47,7 @@ class Element
 private:
 wxString Symbol;
 bool ElementFit;
+double Mass;
 double Stoichiometry;
 long CompoundGroup;
 int ElementID;
@@ -67,7 +68,7 @@ Vector SRIMStoppingPower;
 AlgebraicFunction CustomZieglerFunction;
 bool Sucess;
 public:
-Element(ElementDatabase ThisElement, ZieglerParameters ThisZiegler, ElementSRIMArray ThisSRIM, wxString StoichiometricGuess, wxString Group, wxString YieldFit, wxString CalibrationFactor, int ElementCounter);
+Element(ElementDatabase ThisElement, ZieglerParameters ThisZiegler, ElementSRIMArray ThisSRIM, wxString MassFractionGuess, wxString StoichiometricGuess, wxString Group, wxString YieldFit, wxString CalibrationFactor, int ElementCounter);
 bool IsCorrect(){return Sucess;};
 double EvaluateSigma(double AtEnergy);
 double EvaluateZiegler(double AtEnergy);
@@ -77,6 +78,8 @@ wxString GetIsotopeSymbol() { return Symbol;};
 double GetGammaPeak() { return GammaPeak;};
 int GetAtomicNumber() { return Number;};
 double GetAbundance() { return Abundance;};
+double GetMassQuantity() { return Mass;};
+double SetMassQuantity(double value) { Mass = value; return Mass;};
 double GetAtomicMass() { return Atomic;};
 double GetIsotopicMass() { return Isotopic;};
 double GetStoichiometry() { return Stoichiometry;};
@@ -105,6 +108,7 @@ double GetEnergyMinimum(int ElementID){return this->Item(ElementID).GetEnergyMin
 double GetEnergyMaximum(int ElementID){return this->Item(ElementID).GetEnergyMaximum();};
 double EvaluateBragg(double AtEnergy);
 double GetMolarMass();
+int GetElementID(int i){return this->Item(i).GetElementID();};
 int GetNumberFittingParameters();
 int GetFittingElementItem(int FindValue);
 bool SetStoichiometryFromTo(IntegerVector ElementID, Vector NewValues);
@@ -133,8 +137,11 @@ int GetElementIDAt(int position) {return ChemicalFormula.Item(position).GetEleme
 bool GetElementFitAt(int position) {return ChemicalFormula.Item(position).GetElementFit();};
 bool CheckCompound()  {return Sucess;};
 long GetGroupNumber() {return CompoundGroupNumber;};
+double GetAtomicMassAt(int position) {return ChemicalFormula.Item(position).GetAtomicMass();};
 double GetStoichiometryAt(int position) {return ChemicalFormula.Item(position).GetStoichiometry();};
 double SetStoichiometryAt(int position, double value) {return ChemicalFormula.Item(position).SetStoichiometry(value);};
+double GetMassQuantityAt(int position) {return ChemicalFormula.Item(position).GetMassQuantity();};
+double SetMassQuantityAt(int position, double value) {return ChemicalFormula.Item(position).SetMassQuantity(value);};
 };
 
 // Handle a vector of compounds, specially if the sample had more than one compound.
@@ -142,6 +149,7 @@ class CompoundExtra : public CompoundArray
 {
 private:
 bool Sucess;
+int MassAtomicStoichiometryMode;
 public:
 CompoundExtra(ElementExtra CurrentSelectedElements);
 bool CheckCompoundArray(){return Sucess;};
@@ -150,6 +158,10 @@ double SetStoichiometryAt(int ElementID, double value);
 bool SetStoichiometryFromTo(IntegerVector ElementID, Vector NewValues);
 bool RenormStoichiometry();
 bool RenormStoichiometryTotal();
+bool CheckMassAtomicStoichiometry();
+bool ConvertMassAtomicToStoichiometry();
+IntegerVector GetElementsID();
+Vector GetAllStoichiometry();
 };
 
 // Handle a basic Fitting Parameter
