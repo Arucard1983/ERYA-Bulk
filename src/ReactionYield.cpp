@@ -163,7 +163,7 @@ Element::Element(ElementDatabase ThisElement, ZieglerParameters ThisZiegler, Ele
   }
   else
   {
-    Stoichiometry = 1.0;
+    Mass = 0.0;
   }
   AlgebraicFunction TestSG(StoichiometricGuess);
   if(TestSG.GetErrorString().Len()==0)
@@ -981,80 +981,43 @@ bool CompoundExtra::SetStoichiometryFromTo(IntegerVector ElementID, Vector NewVa
 }
 
 // Classify the user inputs according to the type:
-// 1. Only Atomic Fraction filled, which don't require conversion
-// 2. Only Mass Fraction filled, requiring a trivial conversion.
-// 3. Atomic Fraction filled with the a single Mass fraction value from each individual compound or independent element, requiring more conversion working.
-// 0. Otherwise, return with an error.
+// 0. Only Atomic Fraction filled, which don't require conversion
+// 1. Only Mass Fraction filled, requiring a trivial conversion.
+// 2. Atomic Fraction filled with the a single Mass fraction value from each individual compound or independent element, requiring more conversion working.
+// 3. Otherwise, return with an error.
 bool CompoundExtra::CheckMassAtomicStoichiometry()
 {
- // Create the counters and make a single run-check.
- int TotalMassZeros = 0;
- int TotalAtomicOnes = 0;
- int TotalMassNonZeros = 0;
- int TotalElements = 0;
- // An empty array return always false.
+ // Treat first the trivial cases
  if(this->GetCount() == 0)
   return false;
+ 
+ // Create the counters and make a single run-check.
+ double SumMass = 0;
+ double ProductMass = 0;
+ int TotalElements = 0;
+ 
  for(int i=0; i<this->GetCount(); i++)
  {
   for(int j=0; j<this->Item(i).GetNumberElements(); j++)
   {
-    double temp1 =  this->Item(i).GetStoichiometryAt(j); //Get Atomic Fraction
-    double temp2 =  this->Item(i).GetMassQuantityAt(j); //Get Atomic Fraction
+    double temp =  this->Item(i).GetMassQuantityAt(j); //Get Atomic Fraction
     // Sum the counters.
     TotalElements = TotalElements + 1;
-    if (temp1 == 1)
-        TotalAtomicOnes = TotalAtomicOnes + 1;
-    else if (temp2 == 0)
-        TotalMassZeros = TotalMassZeros + 1;
-    else if (temp2 != 0)
-        TotalMassNonZeros = TotalMassNonZeros + 1;
-    else
-        TotalMassNonZeros = TotalMassNonZeros * 1;
+    SumMass = SumMass + temp;
+    ProductMass = ProductMass * temp;
   }
  }
+
  // Classification
- if (TotalElements == TotalMassZeros)
+ if ((SumMass == 0) && (ProductMass == 0))
  {
-    MassAtomicStoichiometryMode = 0; // Both atomic and mass columns can be empty, since it is a particular case of the atomic filled column, and sets the default flag.
+    MassAtomicStoichiometryMode = 0; // Empty Mass Fraction column means the default mode, which is the sample was already defined by the atomic fraction column
     return true;
  }
- else if ((TotalElements == TotalAtomicOnes) && (TotalMassZeros == 0))
+ else 
  {
-    MassAtomicStoichiometryMode = 1; // Detect a fully mass fraction filled column
+    MassAtomicStoichiometryMode = 1; // Requires further control
     return true;
- }
- else if ((TotalMassNonZeros == this->GetCount()) && (TotalElements <= TotalAtomicOnes))
- {
-   bool UniqueMassCompound = true; // Requires to make a second check.
-   for(int p=0; p<this->GetCount(); p++)
-   {
-    UniqueMassCompound = false; // A new compound
-    for(int q=0; q<this->Item(p).GetNumberElements(); q++)
-    {
-      double temp3 =  this->Item(p).GetMassQuantityAt(q);
-      if ((temp3 != 0) && !UniqueMassCompound)
-      {
-        UniqueMassCompound = true; //OK
-      }
-      else if ((temp3 != 0) && UniqueMassCompound)
-      {
-        MassAtomicStoichiometryMode = 3; // Invalid input
-        return false;
-      }
-      else
-      {
-        temp3 = 0;
-      }
-    }
-   }
-   MassAtomicStoichiometryMode = 2; // A valid hybrid input
-    return true;
- }
- else
- {
-    MassAtomicStoichiometryMode = 3; // Invalid input
-    return false;
  }
 }
 
@@ -1067,36 +1030,29 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
  {
     return true;
  }
- else if(MassAtomicStoichiometryMode == 1) // Mass Fraction requires conversion to Atomic Fraction
- {
-   double TotalWeightMass = 0; // First find the total weight
-   for(int i=0; i<this->GetCount(); i++)
-   {
-    for(int j=0; j<this->Item(i).GetNumberElements(); j++)
-    {
-     TotalWeightMass = TotalWeightMass + this->Item(i).GetMassQuantityAt(j) / this->Item(i).GetAtomicMassAt(j);
-    }
-   }
-    // And the atomic fraction of each element are now evaluated.
-   for(int i=0; i<this->GetCount(); i++)
-   {
-    for(int j=0; j<this->Item(i).GetNumberElements(); j++)
-    {
-     double temp = this->Item(i).GetMassQuantityAt(j) / this->Item(i).GetAtomicMassAt(j);
-     this->Item(i).SetStoichiometryAt(j,temp/TotalWeightMass);
-    }
-   }
-  return true;
- }
- else if(MassAtomicStoichiometryMode == 2) // A mixture of compounds wityh fixed atomic ratios but with their mass known, along independent elements with their mass known
+ else if(MassAtomicStoichiometryMode == 1) // A mixture of compounds with fixed atomic ratios but with their mass known, along independent elements with their mass known
  {
    // For each independent element or compound find the absolute mass value, and convert the relative atomic ratios to mass ratios
    for(int i=0; i<this->GetCount(); i++)
    {
-    double CompoundMass = 0; // Then find the total weight
+    double CompoundMass = 0; // To retrieve the compound or independent element mass
+    bool UniqueMass = false;
     for(int j=0; j<this->Item(i).GetNumberElements(); j++)
     {
-     CompoundMass = CompoundMass + this->Item(i).GetMassQuantityAt(j);
+     double CompoundMassTemp = this->Item(i).GetMassQuantityAt(j);
+     if(CompoundMassTemp > 0 && !UniqueMass) // Found a non-zero value for the compound mass.
+      {
+        UniqueMass = true;
+        CompoundMass = CompoundMassTemp;
+      }
+     else if(CompoundMassTemp > 0 && UniqueMass)
+      {
+        return false; // Cannot accept dual input for atomic and massic fractions.
+      }
+     else
+      {
+        CompoundMassTemp = CompoundMassTemp * 1.0;
+      }
     }
     double CompoundStoichiometry = 0; // Convert the compound's atomic ratios back to mass fractions
     for(int j=0; j<this->Item(i).GetNumberElements(); j++)
@@ -1106,10 +1062,10 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
     for(int j=0; j<this->Item(i).GetNumberElements(); j++)
     {
      double temp = this->Item(i).GetStoichiometryAt(j) * this->Item(i).GetAtomicMassAt(j);
-     this->Item(i).SetMassQuantityAt(j,temp*CompoundMass/CompoundStoichiometry);
+     double x = this->Item(i).SetMassQuantityAt(j,temp*CompoundMass/CompoundStoichiometry);
     }
    }
-  // With the temporary sample mass fraction evaluated, it is straighforward to convert back to atomic fraction
+  // With the whole sample mass fraction evaluated, it is straighforward to convert back to atomic fraction
   double TotalWeightMass = 0; // Then find the total weight
    for(int i=0; i<this->GetCount(); i++)
    {
@@ -1124,7 +1080,7 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
     for(int j=0; j<this->Item(i).GetNumberElements(); j++)
     {
      double temp = this->Item(i).GetMassQuantityAt(j) / this->Item(i).GetAtomicMassAt(j);
-     this->Item(i).SetStoichiometryAt(j,temp/TotalWeightMass);
+     double x = this->Item(i).SetStoichiometryAt(j,temp/TotalWeightMass);
     }
    }
   return true;
@@ -1829,13 +1785,13 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
     }
    if (!(AdditionalCompounds.ConvertMassAtomicToStoichiometry()))
     {
-     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Incorrect definition of the sample inputs.\nVerify the contents of the Compounds, Mass and Atomic Composition columns, and try again\nRefer to the User Manual about the validity of inputs, for more information.") , wxT("Invalid Sample Definition!"), wxOK | wxICON_ERROR);
+     wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Cannot accept incompatible mass and atomic fraction definition of the sample.\nVerify the contents of the Compounds, Mass and Atomic Composition columns, and try again\nRefer to the User Manual about the validity of inputs, for more information.") , wxT("Invalid Sample Definition!"), wxOK | wxICON_ERROR);
      dial->ShowModal();
      return false;
     }
      // 5. Define the Fitting Parameters, after apply the renormalization
-   IntegerVector ConversionID;
-   Vector ConversionData;
+   IntegerVector ConversionID = AdditionalCompounds.GetElementsID();
+   Vector ConversionData = AdditionalCompounds.GetAllStoichiometry();
    CurrentElements.SetStoichiometryFromTo(ConversionID,ConversionData);
    CurrentElements.RenormStoichiometryTotal();
    AdditionalCompounds.RenormStoichiometryTotal();
