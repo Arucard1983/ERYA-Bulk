@@ -130,7 +130,7 @@ bool Sucess;
 ElementArray ChemicalFormula;
 public:
 Compound(Element ThisElement);
-bool MergeCompound(Compound Additional);
+bool AddElement(Element ThisElement);
 int GetNumberElements() {return ChemicalFormula.GetCount();};
 int GetNumberFitElements();
 int GetElementIDAt(int position) {return ChemicalFormula.Item(position).GetElementID();};

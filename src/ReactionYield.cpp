@@ -794,35 +794,11 @@ double ElementExtra::GetMassFraction(int ElementID)
 }
 
 
-// Main constructor for Compound, that in this case, a single Element are sent to the designed group
+// Main constructor for Compound.
 Compound::Compound(Element ThisElement)
 {
  CompoundGroupNumber = ThisElement.GetCompoundGroup();
  ChemicalFormula.Add(ThisElement);
-}
-
-// Merge two compounds to the original, if it shares the same group. Also return a boolean value if a merge actually occurs
-bool Compound::MergeCompound(Compound Additional)
-{
- if (Additional.GetGroupNumber() == 0 || CompoundGroupNumber == 0)
-  {
-  return false;
-  }
-  else
-  {
-   if (CompoundGroupNumber == Additional.GetGroupNumber())
-   {
-    for (int i=0; i<Additional.ChemicalFormula.GetCount(); i++)  // Copy the additional Elements
-    {
-     ChemicalFormula.Add(Additional.ChemicalFormula.Item(i));
-    }
-    return true;
-   }
-   else
-   {
-    return false;
-   }
-  }
 }
 
 // Get the number of fitting elements from the selected compound
@@ -837,27 +813,49 @@ int Compound::GetNumberFitElements()
  return NFE;
 }
 
+// Add a candidate Element if belongs to the same compound ID
+bool Compound::AddElement(Element ThisElement)
+{
+ if(CompoundGroupNumber == ThisElement.GetCompoundGroup())
+ {
+   ChemicalFormula.Add(ThisElement);
+   return true;
+ }
+ else
+ {
+   return false;
+ }
+}
+
 // Generate the compounds from the main spreadsheet itself
 CompoundExtra::CompoundExtra(ElementExtra CurrentSelectedElements)
 {
- // Create a temporary Compound array, where use the alternative Compound constructor
- for (int i=0; i<CurrentSelectedElements.GetCount(); i++)  // Create the first list of compounds
-   {
-     Compound SingleElement = Compound(CurrentSelectedElements.Item(i));
-     this->Add(SingleElement);
-   }
- // Merging main cycle
-  for (int j=0; j<this->GetCount(); j++)
-   {
-     for (int k=j+1; k<this->GetCount(); k++)
-     {
-       if(this->Item(j).MergeCompound(this->Item(k)))
-        {
-          this->RemoveAt(k);
-          k--;
-        }
-     }
-   }
+ // Copy each element from the original elements array to the array of compounds
+ for(int k=0; k<CurrentSelectedElements.GetCount(); k++)
+ {
+  if(CurrentSelectedElements.Item(k).GetCompoundGroup() == 0) // Independent Elements are always isolated
+  {
+    Compound SingleElement = Compound(CurrentSelectedElements.Item(k));
+    this->Add(SingleElement);
+  }
+  else // Otherwise they should merge with the compounds
+  {
+    bool ElementMerged = false;
+    for(int i=0; i < this->GetCount(); i++)
+    {
+      if(this->Item(i).AddElement(CurrentSelectedElements.Item(k)))
+      {
+        ElementMerged = true;
+        break;
+      }
+    }
+    if(!ElementMerged)
+    {
+      Compound SingleElement = Compound(CurrentSelectedElements.Item(k));
+      this->Add(SingleElement);
+    }
+  }
+ }
   // Set flag for sucefulness
    Sucess = true;
 }
@@ -990,12 +988,12 @@ bool CompoundExtra::CheckMassAtomicStoichiometry()
  // Treat first the trivial cases
  if(this->GetCount() == 0)
   return false;
- 
+
  // Create the counters and make a single run-check.
  double SumMass = 0;
  double ProductMass = 0;
  int TotalElements = 0;
- 
+
  for(int i=0; i<this->GetCount(); i++)
  {
   for(int j=0; j<this->Item(i).GetNumberElements(); j++)
@@ -1014,7 +1012,7 @@ bool CompoundExtra::CheckMassAtomicStoichiometry()
     MassAtomicStoichiometryMode = 0; // Empty Mass Fraction column means the default mode, which is the sample was already defined by the atomic fraction column
     return true;
  }
- else 
+ else
  {
     MassAtomicStoichiometryMode = 1; // Requires further control
     return true;
@@ -1033,6 +1031,15 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
  else if(MassAtomicStoichiometryMode == 1) // A mixture of compounds with fixed atomic ratios but with their mass known, along independent elements with their mass known
  {
    // For each independent element or compound find the absolute mass value, and convert the relative atomic ratios to mass ratios
+   double TotalSampleMass = 0;
+   for(int i=0; i<this->GetCount(); i++)
+   {
+    for(int j=0; j<this->Item(i).GetNumberElements(); j++)
+    {
+     TotalSampleMass = TotalSampleMass+ this->Item(i).GetMassQuantityAt(j);
+    }
+   }
+   // Convert for each compound the absolute mass to the respective mass fraction.
    for(int i=0; i<this->GetCount(); i++)
    {
     double CompoundMass = 0; // To retrieve the compound or independent element mass
@@ -1062,7 +1069,7 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
     for(int j=0; j<this->Item(i).GetNumberElements(); j++)
     {
      double temp = this->Item(i).GetStoichiometryAt(j) * this->Item(i).GetAtomicMassAt(j);
-     double x = this->Item(i).SetMassQuantityAt(j,temp*CompoundMass/CompoundStoichiometry);
+     double x = this->Item(i).SetMassQuantityAt(j,(temp*CompoundMass)/(CompoundStoichiometry*TotalSampleMass));
     }
    }
   // With the whole sample mass fraction evaluated, it is straighforward to convert back to atomic fraction
@@ -1093,13 +1100,18 @@ bool CompoundExtra::ConvertMassAtomicToStoichiometry()
 
 IntegerVector CompoundExtra::GetElementsID()
 {
- IntegerVector InitialID = IntegerVector(this->GetCount());
+ int TotalNumberElements = 0;
+ for(int z=0; z<this->GetCount(); z++)
+ {
+   TotalNumberElements = TotalNumberElements + this->Item(z).GetNumberElements();
+ }
+ IntegerVector InitialID = IntegerVector(TotalNumberElements);
  int k = 0;
  for(int i=0; i<this->GetCount(); i++)
  {
   for(int j=0; j<this->Item(i).GetNumberElements(); j++)
   {
-    double temp = this->Item(i).GetElementIDAt(j);
+    int temp = this->Item(i).GetElementIDAt(j);
     InitialID.SetValue(k,temp);
     k = k + 1;
   }
@@ -1109,7 +1121,12 @@ IntegerVector CompoundExtra::GetElementsID()
 
 Vector CompoundExtra::GetAllStoichiometry()
 {
- Vector InitialID = Vector(this->GetCount());
+ int TotalNumberElements = 0;
+ for(int z=0; z<this->GetCount(); z++)
+ {
+   TotalNumberElements = TotalNumberElements + this->Item(z).GetNumberElements();
+ }
+ Vector InitialID = Vector(TotalNumberElements);
  int k = 0;
  for(int i=0; i<this->GetCount(); i++)
  {
