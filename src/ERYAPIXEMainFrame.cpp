@@ -453,7 +453,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
      }
 
     // Copy the Profiling Data
-    for(int z=0; z<12+AdditionalColumns; z++) //Empty Line
+    for(int z=0; z<13+AdditionalColumns; z++) //Empty Line
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     }
@@ -1048,7 +1048,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
      }
 
     // Copy the Profiling Data
-    for(int z=0; z<12+AdditionalColumns; z++) //Empty Line
+    for(int z=0; z<13+AdditionalColumns; z++) //Empty Line
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     }
