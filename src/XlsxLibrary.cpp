@@ -488,9 +488,14 @@ bool XlsxFile::LoadFile()
              SheetCellAdress = SheetColumn->GetAttribute(wxT("r"),wxT("A1")); //Get cell adress
              SheetCellType = SheetColumn->GetAttribute(wxT("t"),wxT("n")); // Get cell type
              wxXmlNode *SheetValue = SheetColumn->GetChildren();
-             if(SheetValue->GetName() == wxT("v"))
+             // scan for the correct line
+             while(SheetValue)
              {
-              SheetCellValue = SheetValue->GetNodeContent(); //Get the desired value
+              if(SheetValue->GetName() == wxT("v"))
+              {
+               SheetCellValue = SheetValue->GetNodeContent(); //Get the desired value
+              }
+              SheetValue = SheetValue->GetNext();
              }
              // Convert the results
              int RelativeRow, RelativeColumn, RelativeType;
