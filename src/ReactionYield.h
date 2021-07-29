@@ -207,8 +207,8 @@ double CurrentYield;
 int YieldElementPosition;
 int YieldCompoundPosition;
 public:
-Yield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, int ElementPosition, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
-double FunctionYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
+Yield(double Emin, double Emax, double DE, double Charge, double Thickness, double Y0, int ElementPosition, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
+double FunctionYield(double Emin, double Emax, double DE, double Charge, double Thickness, double Y0, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
 int GetElementPosition() {return YieldElementPosition;};
 int GetCompoundPosition() {return YieldCompoundPosition;};
 double GetYield() {return CurrentYield;};
@@ -219,7 +219,7 @@ class YieldFitting : public YieldArray
 {
 private:
 wxString ErrorMensage;
-Vector OriginalYield;
+Vector InitialYield;
 Vector ExperimentalYield;
 Vector FittedYield;
 Vector FittedStoichiometric;
@@ -231,16 +231,16 @@ int LMMaxInteractions;
 double LMTau;
 double LMYield;
 double LMStoichiometry;
-bool LevenbergMarquardtYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds);
-Matrix GradientFunctionYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds);
+bool LevenbergMarquardtYield(double Emin, double Emax, double DE, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds);
+Matrix GradientFunctionYield(double Emin, double Emax, double DE, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds);
 public:
-YieldFitting(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Vector InitialYield, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds, FittingParameterVector ThoseFits, int mi, int lt, int ly, int ls);
+YieldFitting(double Emin, double Emax, double DE, double Charge, double Thickness, Vector InitialYieldNull, Vector ExperimentalYieldNull, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds, FittingParameterVector ThoseFits, int mi, int lt, int ly, int ls);
 double GetFit(int position) {return FittedYield.GetValue(position);};
 double GetStoichiometry(int position) {return FittedStoichiometric.GetValue(position);};
 double GetMass(int position) {return MassStoichiometric.GetValue(position);};
 double GetError(int position) {return ErrorStoichiometric.GetValue(position);};
 int GetFittingIteractions(){return LMNumberInteractions;};
-double GetYieldAt(int Adress, double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
+double GetYieldAt(int Adress, double Emin, double Emax, double DE, double Y0, double Charge, double Thickness, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds);
 };
 
 // Base class that handles the interface between the GUI event, and the whole numeric setup
@@ -251,9 +251,9 @@ class ReactionYield
  int LMN;
  Matrix ElementsProfiling;
  AlgebraicFunction OptionalDetectorFunction;
- bool EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls);
+ bool EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYI, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls);
  public:
- ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls);
+ ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYI, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls);
  AlgebraicFunction GetDetectorFunction(){return OptionalDetectorFunction;};
  int GetNumberIteractions(){return LMN;};
  bool GetErrorStatus(){return ErrorStatus;};

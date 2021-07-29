@@ -34,6 +34,7 @@ WX_DEFINE_OBJARRAY( ArrayCP);
 WX_DEFINE_OBJARRAY( ArrayMG);
 WX_DEFINE_OBJARRAY( ArraySG);
 WX_DEFINE_OBJARRAY( ArrayYS);
+WX_DEFINE_OBJARRAY( ArrayYI);
 WX_DEFINE_OBJARRAY( ArrayYE);
 WX_DEFINE_OBJARRAY( ArrayYF);
 WX_DEFINE_OBJARRAY( ArraySF);
@@ -127,7 +128,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     scrollButtons = new wxScrolledWindow( tabElements, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHSCROLL|wxVSCROLL );
 	scrollButtons->SetScrollRate( 5, 5 );
 
-	sizerButtons = new wxFlexGridSizer( 0, 13, 30, 30 );
+	sizerButtons = new wxFlexGridSizer( 0, 14, 30, 30 );
 
 	wxFont TableFont(70, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, wxEmptyString, wxFONTENCODING_DEFAULT);
 
@@ -151,7 +152,7 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     labelZ->SetFont(TableFont);
 	sizerButtons->Add( labelZ, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
-    labelElementCalibrationParameter = new wxStaticText( scrollButtons, wxID_ANY, wxT("Cross-Section\nCalibration Parameter"), wxDefaultPosition, wxDefaultSize, 0 );
+    labelElementCalibrationParameter = new wxStaticText( scrollButtons, wxID_ANY, wxT("Calibration Factor"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelElementCalibrationParameter->Wrap( -1 );
     labelElementCalibrationParameter->SetFont(TableFont);
 	sizerButtons->Add( labelElementCalibrationParameter, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -170,6 +171,11 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	labelYieldSimulation->Wrap( -1 );
     labelYieldSimulation->SetFont(TableFont);
 	sizerButtons->Add( labelYieldSimulation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+	labelYieldInitial = new wxStaticText(scrollButtons, wxID_ANY, wxT("Initial\nYield"), wxDefaultPosition, wxDefaultSize, 0 );
+	labelYieldInitial->Wrap( -1 );
+    labelYieldInitial->SetFont(TableFont);
+	sizerButtons->Add( labelYieldInitial, 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
 	labelYieldExperimental = new wxStaticText( scrollButtons, wxID_ANY, wxT("Experimental\nYield"), wxDefaultPosition, wxDefaultSize, 0 );
 	labelYieldExperimental->Wrap( -1 );
@@ -222,6 +228,9 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
     textYS.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
     sizerButtons->Add( textYS.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
+    textYI.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxT("0"), wxDefaultPosition, wxSize(120,-1), 0 ));
+    sizerButtons->Add( textYI.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
     textYE.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0 ));
     sizerButtons->Add( textYE.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
@@ -414,32 +423,38 @@ MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
     buttonMainNew = new wxButton( this, wxID_ANY, wxT("Clear All"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainNew->SetFont(TableFont);
     buttonMainNew->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainNew->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainNew, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     buttonMainCheck = new wxButton( this, wxID_ANY, wxT("Check Input"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainCheck->SetFont(TableFont);
     buttonMainCheck->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainCheck->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainCheck, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     buttonMainAdvanced = new wxButton( this, wxID_ANY, wxT("Advanced"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainAdvanced->SetFont(TableFont);
     buttonMainAdvanced->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainAdvanced->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainAdvanced, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	buttonMainFit = new wxButton( this, wxID_ANY, wxT("Run"), wxDefaultPosition, wxDefaultSize, 0 );
 	buttonMainFit->SetFont(TableFont);
     buttonMainFit->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainFit->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainFit, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	buttonMainStop = new wxButton( this, wxID_ANY, wxT("Export Table"), wxDefaultPosition, wxDefaultSize, 0 );
 	buttonMainStop->SetFont(TableFont);
     buttonMainStop->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainStop->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainStop, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	buttonMainHelp = new wxButton( this, wxID_ANY, wxT("Quit ERYA"), wxDefaultPosition, wxDefaultSize, 0 );
     buttonMainHelp->SetFont(TableFont);
     buttonMainHelp->SetBackgroundColour(wxColour(96,128,176,wxALPHA_OPAQUE));
+    buttonMainHelp->SetForegroundColour(wxColour(255,255,255,wxALPHA_OPAQUE));
 	sizerMainButtons->Add( buttonMainHelp, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5 );
 
     sizerMainButtons->Fit(this);

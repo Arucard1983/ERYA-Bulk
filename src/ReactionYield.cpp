@@ -1353,7 +1353,7 @@ Vector FittingParameterVector::GetStoichiometryAt(int ElementID)
 }
 
 // Yield Calculation Main Constructor
-Yield::Yield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, int ElementPosition, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
+Yield::Yield(double Emin, double Emax, double DE, double Charge, double Thickness, double Y0, int ElementPosition, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
 {
  // Obtain the Element Adress, and the Compound Adress
  int temp0,temp1;
@@ -1361,11 +1361,11 @@ Yield::Yield(double Emin, double Emax, double DE, double ProfilingStep, double C
  YieldElementPosition = ThoseElements.Item(ElementPosition).GetElementID();
  YieldCompoundPosition = temp0;
  // Evaluate the theorical yield without fitting
- CurrentYield = this->FunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
+ CurrentYield = this->FunctionYield(Emin,Emax,DE,Charge,Thickness,Y0,ThoseDetector,ThoseElements,ThoseCompounds);
 }
 
 // Evaluate the Yield at a certain range of energies.
-double Yield::FunctionYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
+double Yield::FunctionYield(double Emin, double Emax, double DE, double Charge, double Thickness, double Y0, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
 {
  // Evaluate the initial Yield, which is a simple product.
  double DetectorEfficiency = ThoseDetector.GetEval(ThoseElements.Item(YieldElementPosition).GetGammaPeak());
@@ -1410,7 +1410,7 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
         break;
    }
   }
-  else // ulk samples are plain integration
+  else // Bulk samples are plain integration
   {
    for (int i=0; i<NumberLayers; i++)
    {
@@ -1428,7 +1428,7 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
    }
   }
   // The final result is the product of the integral and the conversion factor
-   double YieldTotal = YieldNull * YieldSum;
+   double YieldTotal = Y0 + YieldNull * YieldSum;
    return YieldTotal;
 }
 
@@ -1436,7 +1436,7 @@ double Yield::FunctionYield(double Emin, double Emax, double DE, double Profilin
 // Using the algorithm published by K. Madsen, H.B.Nilsen, O. Tingleff, from "Methods for Non-Linear Least Square Problems".
 // Our function are defined by a vector of functions defined as f(x) = Yield(E)_exp - Yield(E)_theo, where the parameters are the
 // independent stoichiometric parameters which should be renormalized each turn, since the yield are invariant due such renormalization.
-bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds)
+bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds)
 {
   // Initial setup
   double e1,e2,mu,nu,tau,rho;
@@ -1461,7 +1461,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
   IntegerVector AllElementAdress = ThoseFits.GetElementParameterID();
   for (int i=0; i<FittingExperimentalYield.GetNumberElements(); i++)
   {
-   double tempYield = this->Item(AllElementAdress.GetValue(i)).FunctionYield(Emin, Emax, DE, ProfilingStep,Charge, Thickness, ThoseDetector, ThoseElements, ThoseCompounds);
+   double tempYield = this->Item(AllElementAdress.GetValue(i)).FunctionYield(Emin, Emax, DE, Charge, Thickness, InitialYield.GetValue(AllElementAdress.GetValue(i)), ThoseDetector, ThoseElements, ThoseCompounds);
    double tempExp = ExperimentalYield.GetValue(AllElementAdress.GetValue(i));
    FittingTheoricalYield.SetValue(i,tempYield);
    FittingExperimentalYield.SetValue(i,tempExp);
@@ -1469,7 +1469,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
 
   // Initial vectors and matrices
   Vector f = VectorMinus(FittingExperimentalYield,FittingTheoricalYield);
-  Matrix Jacobian = this->GradientFunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
+  Matrix Jacobian = this->GradientFunctionYield(Emin,Emax,DE,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
   Matrix A = MatrixProduct(MatrixTranspose(Jacobian),Jacobian);
   Matrix g = MatrixProduct(MatrixTranspose(Jacobian),GetMatrix(f));
   Vector tau0 = A.GetNumberRows();
@@ -1554,7 +1554,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
     ThoseCompounds.RenormStoichiometry();
     for (int i=0; i<ThoseFits.GetNumberElements(); i++)
     {
-     double tempYield = this->Item(ThoseFits.GetElementParameterID().GetValue(i)).FunctionYield(Emin, Emax, DE, ProfilingStep, Charge, Thickness, ThoseDetector, ThoseElements, ThoseCompounds);
+     double tempYield = this->Item(ThoseFits.GetElementParameterID().GetValue(i)).FunctionYield(Emin, Emax, DE, Charge, Thickness, InitialYield.GetValue(ThoseFits.GetElementParameterID().GetValue(i)), ThoseDetector, ThoseElements, ThoseCompounds);
      double tempExp = ExperimentalYield.GetValue(ThoseFits.GetElementParameterID().GetValue(i));
      Oldf.SetValue(i,tempExp - tempYield);
     }
@@ -1567,7 +1567,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
     ThoseCompounds.RenormStoichiometry();
     for (int i=0; i<ThoseFits.GetNumberElements(); i++)
     {
-     double tempYield = this->Item(ThoseFits.GetElementParameterID().GetValue(i)).FunctionYield(Emin, Emax, DE, ProfilingStep,Charge, Thickness, ThoseDetector, ThoseElements, ThoseCompounds);
+     double tempYield = this->Item(ThoseFits.GetElementParameterID().GetValue(i)).FunctionYield(Emin, Emax, DE, Charge, Thickness, InitialYield.GetValue(ThoseFits.GetElementParameterID().GetValue(i)), ThoseDetector, ThoseElements, ThoseCompounds);
      double tempExp = ExperimentalYield.GetValue(ThoseFits.GetElementParameterID().GetValue(i));
      Newf.SetValue(i,tempExp - tempYield);
     }
@@ -1593,7 +1593,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
     {
      StoichiometricParameters = NormNewStoichiomety; //Update the testing stoichiometry to definitive
      f = Newf; //Update the residue function
-     Jacobian = this->GradientFunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds); //Update the Jacobian
+     Jacobian = this->GradientFunctionYield(Emin,Emax,DE,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds); //Update the Jacobian
      A = MatrixProduct(MatrixTranspose(Jacobian),Jacobian); //Update the Hessian matrix
      g = MatrixProduct(MatrixTranspose(Jacobian),GetMatrix(f)); //Update the values
      // Update prameters
@@ -1641,7 +1641,7 @@ bool YieldFitting::LevenbergMarquardtYield(double Emin, double Emax, double DE, 
 
 
 // Get the gradient of the Yield vector function, in function of their stoichiometry parameters. This means, a matrix where the rows are the several Yields, and columns equal to the number of fitting parameters
-Matrix YieldFitting::GradientFunctionYield(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds)
+Matrix YieldFitting::GradientFunctionYield(double Emin, double Emax, double DE, double Charge, double Thickness, Detector ThoseDetector, ElementExtra& ThoseElements, CompoundExtra& ThoseCompounds)
 {
  // The Jacobian had `i` times the number of Yields/Elements and `j` times the number of fitting independent parameters
  // Thus J(i,j) = d(Y(i))/d(x(j))
@@ -1666,11 +1666,11 @@ Matrix YieldFitting::GradientFunctionYield(double Emin, double Emax, double DE, 
     LocalParameters.SetStoichiometryAt(CurrentParameter,DiffLeft);
     ThoseElements.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
     ThoseCompounds.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
-    double YieldLeftValue = this->Item(CurrentYield).FunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
+    double YieldLeftValue = this->Item(CurrentYield).FunctionYield(Emin,Emax,DE,Charge,Thickness,InitialYield.GetValue(CurrentYield),ThoseDetector,ThoseElements,ThoseCompounds);
     LocalParameters.SetStoichiometryAt(CurrentParameter,DiffRight);
     ThoseElements.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
     ThoseCompounds.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
-    double YieldRightValue = this->Item(CurrentYield).FunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
+    double YieldRightValue = this->Item(CurrentYield).FunctionYield(Emin,Emax,DE,Charge,Thickness,InitialYield.GetValue(CurrentYield),ThoseDetector,ThoseElements,ThoseCompounds);
     LocalParameters.SetStoichiometryAt(CurrentParameter,Original);
     ThoseElements.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
     ThoseCompounds.SetStoichiometryFromTo(CurrentElements,LocalParameters.GetStoichiometryAt(CurrentParameter));
@@ -1685,7 +1685,7 @@ Matrix YieldFitting::GradientFunctionYield(double Emin, double Emax, double DE, 
 }
 
 // YieldFitting main constructor
-YieldFitting::YieldFitting(double Emin, double Emax, double DE, double ProfilingStep, double Charge, double Thickness, Vector InitialYield, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds, FittingParameterVector ThoseFits, int mi, int lt, int ly, int ls)
+YieldFitting::YieldFitting(double Emin, double Emax, double DE, double Charge, double Thickness, Vector InitialYieldNull, Vector ExperimentalYieldNull, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds, FittingParameterVector ThoseFits, int mi, int lt, int ly, int ls)
 {
   // Set the user-defined precision parameters
   LMMaxInteractions = mi;
@@ -1693,16 +1693,17 @@ YieldFitting::YieldFitting(double Emin, double Emax, double DE, double Profiling
   LMYield = std::pow(10,-1.0*ly);
   LMStoichiometry = std::pow(10,-1.0*ls);
   // Evaluate the initial yields
-  OriginalYield = Vector(InitialYield.GetNumberElements());
-  for (int i = 0; i < InitialYield.GetNumberElements(); i++)
+  Vector OriginalYield = Vector(InitialYieldNull.GetNumberElements());
+  for (int i = 0; i < InitialYieldNull.GetNumberElements(); i++)
   {
-     Yield SomeYield = Yield(Emin, Emax, DE, ProfilingStep, Charge, Thickness, i, ThoseDetector, ThoseElements, ThoseCompounds);
+     Yield SomeYield = Yield(Emin, Emax, DE, Charge, Thickness, InitialYieldNull.GetValue(i), i, ThoseDetector, ThoseElements, ThoseCompounds);
      OriginalYield.SetValue(i,SomeYield.GetYield());
      this->Add(SomeYield);
   }
  // Define the relevant numerical vectors
-  ExperimentalYield = InitialYield;
   FittedYield = OriginalYield;
+  InitialYield = InitialYieldNull;
+  ExperimentalYield = ExperimentalYieldNull;
   FittedStoichiometric = VectorScalarProduct(1/ThoseElements.GetTotalStoichiometry(),ThoseElements.GetAllStoichiometry());
   MassStoichiometric = VectorScalarProduct(1/ThoseElements.GetTotalMass(),ThoseElements.GetAllMass());
   ErrorStoichiometric = VectorNull(ThoseElements.GetCount());
@@ -1712,7 +1713,7 @@ YieldFitting::YieldFitting(double Emin, double Emax, double DE, double Profiling
  if (ThoseFits.GetNumberFittingParameters() > 0)
  {
   // Apply the Levenberg-Marquardt fitting algorithm
-  if(!(this->LevenbergMarquardtYield(Emin, Emax, DE, ProfilingStep, Charge, Thickness, ThoseDetector, ThoseElements, ThoseCompounds)))
+  if(!(this->LevenbergMarquardtYield(Emin, Emax, DE, Charge, Thickness, ThoseDetector, ThoseElements, ThoseCompounds)))
    {
     if(ErrorMensage.Len() == 0)
      ErrorMensage = wxT("Please check the Experimental Yield and other parameters, and try again.");
@@ -1724,7 +1725,7 @@ YieldFitting::YieldFitting(double Emin, double Emax, double DE, double Profiling
      // Evaluate the Fitted Yields and Atomic Mass from the Fitted Stoichiometry
      for(int i=0; i<ThoseElements.GetCount(); i++)
      {
-      FittedYield.SetValue(i,this->Item(i).FunctionYield(Emin,Emax,DE,ProfilingStep,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds));
+      FittedYield.SetValue(i,this->Item(i).FunctionYield(Emin,Emax,DE,Charge,Thickness,InitialYield.GetValue(i),ThoseDetector,ThoseElements,ThoseCompounds));
       FittedStoichiometric.SetValue(i,ThoseElements.Item(i).GetStoichiometry());
       MassStoichiometric.SetValue(i,ThoseElements.Item(i).GetStoichiometry()*ThoseElements.Item(i).GetIsotopicMass()/ThoseElements.GetTotalMass());
       ErrorStoichiometric.SetValue(i,ThoseElements.Item(i).GetStoichiometry()*FitError);
@@ -1734,15 +1735,15 @@ YieldFitting::YieldFitting(double Emin, double Emax, double DE, double Profiling
 }
 
 // Return partial Yields, if necessary
-double YieldFitting::GetYieldAt(int Adress, double Emin, double Emax, double DE, double DetectorAngle, double Charge, double Thickness, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
+double YieldFitting::GetYieldAt(int Adress, double Emin, double Emax, double DE, double Charge, double Thickness, double Y0, Detector ThoseDetector, ElementExtra ThoseElements, CompoundExtra ThoseCompounds)
 {
- return this->Item(Adress).FunctionYield(Emin,Emax,DE,DetectorAngle,Charge,Thickness,ThoseDetector,ThoseElements,ThoseCompounds);
+ return this->Item(Adress).FunctionYield(Emin,Emax,DE,Charge,Thickness,Y0,ThoseDetector,ThoseElements,ThoseCompounds);
 }
 
 // Reaction Yield main constructor
-ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
+ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYI, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
 {
-  if(!(this->EvaluateYield(MainDatabase, DetectorSetup, ZieglerSetup, SRIMSetup, GetMinimumEnergy, GetMaximumEnergy, GetEnergyStep, GetProfilingStep, GetCharge, GetThickness, GetCalibrationArray, GetGroupArray, GetElementArray, GetFitArray, GetMG, GetSG, SetYS, GetYE, SetYF, SetSF, SetSM, SetSE, mi, lt, ly, ls)))
+  if(!(this->EvaluateYield(MainDatabase, DetectorSetup, ZieglerSetup, SRIMSetup, GetMinimumEnergy, GetMaximumEnergy, GetEnergyStep, GetProfilingStep, GetCharge, GetThickness, GetCalibrationArray, GetGroupArray, GetElementArray, GetFitArray, GetMG, GetSG, SetYS, GetYI, GetYE, SetYF, SetSF, SetSM, SetSE, mi, lt, ly, ls)))
   {
    SetYS.Clear();
    SetYF.Clear();
@@ -1758,7 +1759,7 @@ ReactionYield::ReactionYield(ElementDatabaseArray MainDatabase, DetectorParamete
 }
 
 // The main-entry routine for Input/Output data. Notice this function had 20 parameters!
-bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
+bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorParameters DetectorSetup, ZieglerParameters ZieglerSetup, ElementSRIMArray SRIMSetup, wxString GetMinimumEnergy, wxString GetMaximumEnergy, wxString GetEnergyStep, wxString GetProfilingStep, wxString GetCharge, wxString GetThickness, wxArrayString GetCalibrationArray, wxArrayString GetGroupArray, wxArrayString GetElementArray, wxArrayString GetFitArray, wxArrayString GetMG, wxArrayString GetSG, wxArrayString& SetYS, wxArrayString GetYI, wxArrayString GetYE, wxArrayString& SetYF, wxArrayString& SetSF, wxArrayString& SetSM, wxArrayString& SetSE, int mi, int lt, int ly, int ls)
 {
  // Initial setup, and calculation of physical initial parameters
  double ElectricCharge,MinimumEnergy,MaximumEnergy,EnergyStep,Thickness,ProfilingStep;
@@ -1834,14 +1835,21 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
    AdditionalCompounds.RenormStoichiometryTotal();
    FittingParameterVector AllRelevantFitting = FittingParameterVector(CurrentElements, AdditionalCompounds);
   // 6. Yield Calculation Main Cycle
-  Vector ExperimentalYield = Vector(GetYE.GetCount());
+  Vector ExperimentalYield = Vector(GetYE.GetCount()); // Experimental yield
   for (int i = 0; i < GetYE.GetCount(); i++)
   {
    double ThisExperimentalYield;
    ExperimentalYield.SetValue(i,GetYE.Item(i).ToDouble(&ThisExperimentalYield));
    ExperimentalYield.SetValue(i,ThisExperimentalYield);
   }
-  YieldFitting CurrentYields = YieldFitting(MinimumEnergy,MaximumEnergy,EnergyStep,1.0,ElectricCharge,Thickness,ExperimentalYield,SomeDetector,CurrentElements,AdditionalCompounds,AllRelevantFitting,mi,lt,ly,ls);
+  Vector InitialYield = Vector(GetYI.GetCount()); // Initial yield offset
+  for (int i = 0; i < GetYI.GetCount(); i++)
+  {
+   double ThisInitialYield;
+   InitialYield.SetValue(i,GetYI.Item(i).ToDouble(&ThisInitialYield));
+   InitialYield.SetValue(i,ThisInitialYield);
+  }
+  YieldFitting CurrentYields = YieldFitting(MinimumEnergy,MaximumEnergy,EnergyStep,ElectricCharge,Thickness,InitialYield,ExperimentalYield,SomeDetector,CurrentElements,AdditionalCompounds,AllRelevantFitting,mi,lt,ly,ls);
   // 7. Yield Output Main Cycle
   for (int i = 0; i < CurrentYields.GetCount(); i++)
   {
@@ -1861,7 +1869,7 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
    wxString value4 = wxString::Format("%.9e", ThisError);
    SetSE.Add(value4);
   }
-  // 8. And finish the whole evaluation routine
+  // 8. Clean up and compute the profile table
    LMN = CurrentYields.GetFittingIteractions();
    OptionalDetectorFunction = SomeDetector.GetFittingFunction();
    if(ProfilingStep > 0) //Create a result table for several energies between Emin and Emax
@@ -1892,7 +1900,7 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
          if(q == 0)
           ElementsProfiling.SetValue(p,q,MinimumEnergy+p*ProfilingStep);
          else
-          ElementsProfiling.SetValue(p,q,CurrentYields.GetYieldAt(q-1,MinimumEnergy,MinimumEnergy+p*ProfilingStep,EnergyStep,1.0,ElectricCharge,Thickness,SomeDetector,CurrentElements,AdditionalCompounds));
+          ElementsProfiling.SetValue(p,q,CurrentYields.GetYieldAt(q-1,MinimumEnergy,MinimumEnergy+p*ProfilingStep,EnergyStep,ElectricCharge,Thickness,InitialYield.GetValue(q-1),SomeDetector,CurrentElements,AdditionalCompounds));
        }
      }
     for (int z=0; z < ElementsProfiling.GetNumberColumns(); z++)
@@ -1909,7 +1917,7 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
       if(z == 0)
           ElementsProfiling.SetValue(ElementsProfiling.GetNumberRows()-1,z,MaximumEnergy);
          else
-          ElementsProfiling.SetValue(ElementsProfiling.GetNumberRows()-1,z,CurrentYields.GetYieldAt(z-1,MinimumEnergy,MaximumEnergy,EnergyStep,1.0,ElectricCharge,Thickness,SomeDetector,CurrentElements,AdditionalCompounds));
+          ElementsProfiling.SetValue(ElementsProfiling.GetNumberRows()-1,z,CurrentYields.GetYieldAt(z-1,MinimumEnergy,MaximumEnergy,EnergyStep,ElectricCharge,Thickness,InitialYield.GetValue(z-1),SomeDetector,CurrentElements,AdditionalCompounds));
     }
     progress->Destroy();
    }

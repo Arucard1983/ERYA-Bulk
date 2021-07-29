@@ -86,6 +86,7 @@ WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayCP);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayMG);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArraySG);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYS);
+WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYI);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYE);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArrayYF);
 WX_DECLARE_OBJARRAY( wxTextCtrl*, ArraySF);
@@ -105,7 +106,7 @@ class MainFrame : public wxFrame
 		wxMenuBar* mMainMenu;
 		wxMenu* menuFile;
 		wxMenu* menuDatabase;
-                wxMenu* menuERYATool;
+        wxMenu* menuERYATool;
 		wxMenu* menuHelp;
         wxBoxSizer* sizerMainFrame;
 		wxNotebook* tabbedOutput;
@@ -118,6 +119,7 @@ class MainFrame : public wxFrame
         wxStaticText* labelMassGuess;
 		wxStaticText* labelStoichiometricGuess;
 		wxStaticText* labelYieldSimulation;
+		wxStaticText* labelYieldInitial;
 		wxStaticText* labelYieldExperimental;
 		wxStaticText* labelYieldFitted;
 		wxStaticText* labelStoichiometricFitted;
@@ -135,6 +137,7 @@ class MainFrame : public wxFrame
         ArrayMG textMG;
 		ArraySG textSG;
 		ArrayYS textYS;
+		ArrayYI textYI;
 		ArrayYE textYE;
 		ArrayYF textYF;
 		ArraySF textSF;

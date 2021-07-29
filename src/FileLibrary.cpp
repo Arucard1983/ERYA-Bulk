@@ -11,10 +11,21 @@
 
 
 // Load a ERYA Yield file (*.epz)
-bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &MaximumEnergy, wxTextCtrl* &EnergyStep, wxTextCtrl* &ProfilingStep, wxTextCtrl* &Charge, wxTextCtrl* &Thickness, wxArrayString& choiceElement, wxArrayString& choiceGP, wxArrayString& checkFit, wxArrayString& textZ, wxArrayString& textCP, wxArrayString& textMG, wxArrayString& textSG, wxArrayString& textYS, wxArrayString& textYE, wxArrayString& textYF, wxArrayString& textSF, wxArrayString& textSM, wxArrayString& textSE, wxArrayString& TableData, ElementDatabaseArray CurrentDatabase, int&CI, int& MI, int& LT, int& LS, int& LY)
+bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &MaximumEnergy, wxTextCtrl* &EnergyStep, wxTextCtrl* &ProfilingStep, wxTextCtrl* &Charge, wxTextCtrl* &Thickness, wxArrayString& choiceElement, wxArrayString& choiceGP, wxArrayString& checkFit, wxArrayString& textZ, wxArrayString& textCP, wxArrayString& textMG, wxArrayString& textSG, wxArrayString& textYS, wxArrayString& textYI, wxArrayString& textYE, wxArrayString& textYF, wxArrayString& textSF, wxArrayString& textSM, wxArrayString& textSE, wxArrayString& TableData, ElementDatabaseArray CurrentDatabase, int&CI, int& MI, int& LT, int& LS, int& LY)
 {
   // Begin processing
   TableData.Clear();
+  textCP.Clear();
+  textMG.Clear();
+  textSE.Clear();
+  textSF.Clear();
+  textSG.Clear();
+  textSM.Clear();
+  textYE.Clear();
+  textYF.Clear();
+  textYI.Clear();
+  textYS.Clear();
+  textZ.Clear();
   wxArrayString ListLabels,ListElements,ListGammaPeaks;
   wxXmlDocument LocalERYAPIXEFile;
   if(!(LocalERYAPIXEFile.Load(ERYAPIXEFileName)))
@@ -78,7 +89,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
      {
      if(YieldData->GetName() == wxT("Item"))
      {
-       wxString d0,d1,d2,d3,d4,d4x,d5,d6,d7,d8,d9,d10,d11;
+       wxString d0,d1,d2,d3,d4,d4x,d5,d6,d6x,d7,d8,d9,d10,d11;
        // Set default values, for compability of previous ERYA versions;
        d0 = wxT("0");
        d1 = wxT("0");
@@ -88,6 +99,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
        d4x= wxT("0");
        d5 = wxT("1");
        d6 = wxT("0");
+       d6x = wxT("0");
        d7 = wxT("0");
        d8 = wxT("0");
        d9 = wxT("0");
@@ -197,6 +209,18 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
                 }
             }
        }
+       if(YieldDataRegister->GetName() == wxT("Yield_Initial"))
+       {
+         wxXmlNode *Register6x = YieldDataRegister->GetChildren();
+         if(Register6x->GetName() == wxT("value"))
+            {
+                d6x = Register6x->GetNodeContent();
+                if(d6x.Len() == 0)
+                {
+                  d6x = wxT("0");
+                }
+            }
+       }
        if(YieldDataRegister->GetName() == wxT("Yield_Experimental"))
        {
          wxXmlNode *Register7 = YieldDataRegister->GetChildren();
@@ -275,6 +299,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
       textMG.Add(d4x);
       textSG.Add(d5);
       textYS.Add(d6);
+      textYI.Add(d6x);
       textYE.Add(d7);
       textYF.Add(d8);
       textSF.Add(d9);
@@ -404,7 +429,7 @@ bool ERYAPIXEFile::ERYAPIXEFileLoad(wxTextCtrl* &MinimumEnergy, wxTextCtrl* &Max
 }
 
 // Save an ERYA Yield file (*.epz)
-bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* MaximumEnergy, wxTextCtrl* EnergyStep, wxTextCtrl* ProfilingStep, wxTextCtrl* Charge, wxTextCtrl* Thickness, ArrayElement choiceElement, ArrayGP choiceGP, ArrayFit checkFit, ArrayZ textZ, ArrayCP textCP, ArrayMG textMG, ArraySG textSG, ArrayYS textYS, ArrayYE textYE, ArrayYF textYF, ArraySF textSF, ArraySM textSM, ArraySE textSE, wxGrid* TableData, int CI, int MI, int LT, int LS, int LY)
+bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* MaximumEnergy, wxTextCtrl* EnergyStep, wxTextCtrl* ProfilingStep, wxTextCtrl* Charge, wxTextCtrl* Thickness, ArrayElement choiceElement, ArrayGP choiceGP, ArrayFit checkFit, ArrayZ textZ, ArrayCP textCP, ArrayMG textMG, ArraySG textSG, ArrayYS textYS, ArrayYI textYI, ArrayYE textYE, ArrayYF textYF, ArraySF textSF, ArraySM textSM, ArraySE textSE, wxGrid* TableData, int CI, int MI, int LT, int LS, int LY)
 {
   // Get the current time
   wxDateTime ThisTime = wxDateTime::Now();
@@ -445,6 +470,9 @@ bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* Maxim
     wxXmlNode* dataYE = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Yield_Experimental");
      wxXmlNode* dataYEvalue = new wxXmlNode(dataYE, wxXML_ELEMENT_NODE, "value");
        dataYEvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textYE.Item(CurrentElement-1)->GetValue()));
+    wxXmlNode* dataYI = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Yield_Initial");
+     wxXmlNode* dataYIvalue = new wxXmlNode(dataYI, wxXML_ELEMENT_NODE, "value");
+       dataYIvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textYI.Item(CurrentElement-1)->GetValue()));
     wxXmlNode* dataYS = new wxXmlNode(dataitem, wxXML_ELEMENT_NODE, "Yield_Simulated");
      wxXmlNode* dataYSvalue = new wxXmlNode(dataYS, wxXML_ELEMENT_NODE, "value");
        dataYSvalue->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, textYS.Item(CurrentElement-1)->GetValue()));
@@ -515,7 +543,7 @@ bool ERYAPIXEFile::ERYAPIXEFileSave(wxTextCtrl* MinimumEnergy, wxTextCtrl* Maxim
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
     wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.70")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
  // Save the file
@@ -945,7 +973,7 @@ bool DatabaseFile::ERYAPIXEDatabaseFileSave()
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.70")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
  // Save the file
@@ -1207,7 +1235,7 @@ bool DetectorFile::DetectorFileSave()
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.70")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
  // Save the file
@@ -1823,7 +1851,7 @@ bool ZieglerFile::ZieglerFileSave()
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.70")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
  // Save the file

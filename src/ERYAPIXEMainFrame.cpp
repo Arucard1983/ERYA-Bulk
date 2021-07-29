@@ -62,6 +62,7 @@ void ERYAPIXEMainFrame::OnFileNew( wxCommandEvent& event )
   textMG.Item(0)->Clear();
   textSG.Item(0)->Clear();
   textYS.Item(0)->Clear();
+  textYI.Item(0)->Clear();
   textYE.Item(0)->Clear();
   textYF.Item(0)->Clear();
   textSF.Item(0)->Clear();
@@ -88,8 +89,8 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
  {
   wxString CurrentERYAPIXEFilePath = OpenDialog->GetPath();
   ERYAPIXEFile file(CurrentERYAPIXEFilePath);
-  wxArrayString ListElement,ListGammaPeak,ListFit,ListZ,ListCP,ListMG,ListSG,ListYS,ListYE,ListYF,ListSF,ListSM,ListSE,ProfilingDataTable;
-  if(file.ERYAPIXEFileLoad(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness, ListElement, ListGammaPeak, ListFit, ListZ, ListCP, ListMG, ListSG, ListYS, ListYE, ListYF, ListSF, ListSM, ListSE, ProfilingDataTable, OpenDatabase, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield))
+  wxArrayString ListElement,ListGammaPeak,ListFit,ListZ,ListCP,ListMG,ListSG,ListYS,ListYI,ListYE,ListYF,ListSF,ListSM,ListSE,ProfilingDataTable;
+  if(file.ERYAPIXEFileLoad(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness, ListElement, ListGammaPeak, ListFit, ListZ, ListCP, ListMG, ListSG, ListYS, ListYI, ListYE, ListYF, ListSF, ListSM, ListSE, ProfilingDataTable, OpenDatabase, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield))
   {
 
    // Clear screen and allocate room for the loaded file
@@ -122,6 +123,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
     textMG.Item(k)->SetValue(ListMG.Item(k));
     textSG.Item(k)->SetValue(ListSG.Item(k));
     textYS.Item(k)->SetValue(ListYS.Item(k));
+    textYI.Item(k)->SetValue(ListYI.Item(k));
     textYE.Item(k)->SetValue(ListYE.Item(k));
     textYF.Item(k)->SetValue(ListYF.Item(k));
     textSF.Item(k)->SetValue(ListSF.Item(k));
@@ -151,7 +153,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
    if(dial->ShowModal() == wxID_YES)
    {
      // Store the elements as arrays
-  wxArrayString CPList, MGList, SGList, YSList, YEList, YFList, SFList, SMList, SEList, ElementGroupList, ElementAdressList, ElementFitList;
+  wxArrayString CPList, MGList, SGList, YSList, YIList, YEList, YFList, SFList, SMList, SEList, ElementGroupList, ElementAdressList, ElementFitList;
   wxString MinimumEnergy, MaximumEnergy, StepEnergy, DetectorAngle, Charge, Thickness;
   MinimumEnergy = textMinimumEnergy->GetValue();
   MaximumEnergy = textMaximumEnergy->GetValue();
@@ -212,6 +214,15 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
     SGList.Add(textSG.Item(k)->GetValue());
    }
    YSList.Add(textYS.Item(k)->GetValue());
+   wxString ThisYI = textYI.Item(k)->GetValue();
+   if (ThisYI.Len() == 0)
+   {
+    YIList.Add(wxT("1"));
+   }
+   else
+   {
+    YIList.Add(textYI.Item(k)->GetValue());
+   }
    YEList.Add(textYE.Item(k)->GetValue());
    YFList.Add(textYF.Item(k)->GetValue());
    SFList.Add(textSF.Item(k)->GetValue());
@@ -220,7 +231,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
    }
   // Call the main calculation routine:
   barMainStatus->SetStatusText(wxT("Evaluating, Please Wait..."),0);
-  ReactionYield MainReactionYield(OpenDatabase,CurrentDetectorParameters,CurrentZieglerParameters,CurrentSRIMTables,MinimumEnergy,MaximumEnergy,StepEnergy,DetectorAngle,Charge,Thickness,CPList,ElementGroupList,ElementAdressList,ElementFitList,MGList,SGList,YSList,YEList,YFList,SFList,SMList,SEList,FitIterations,LogTau,LogYield,LogStoichiometry);
+  ReactionYield MainReactionYield(OpenDatabase,CurrentDetectorParameters,CurrentZieglerParameters,CurrentSRIMTables,MinimumEnergy,MaximumEnergy,StepEnergy,DetectorAngle,Charge,Thickness,CPList,ElementGroupList,ElementAdressList,ElementFitList,MGList,SGList,YSList,YIList,YEList,YFList,SFList,SMList,SEList,FitIterations,LogTau,LogYield,LogStoichiometry);
   SucefulFit = MainReactionYield.GetErrorStatus();
   IterationSum = MainReactionYield.GetNumberIteractions();
   // Display additional questions
@@ -235,6 +246,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
      textMG.Item(z)->SetValue(wxT("0"));
      textSG.Item(z)->SetValue(SFList.Item(z));
      textYS.Item(z)->SetValue(YFList.Item(z));
+     textYI.Item(z)->SetValue(YIList.Item(z));
      textYF.Item(z)->SetValue(YFList.Item(z));
      textSF.Item(z)->SetValue(SFList.Item(z));
      textSM.Item(z)->SetValue(SMList.Item(z));
@@ -247,6 +259,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
   for(int z=0; z<YSList.GetCount(); z++)
    {
    textYS.Item(z)->SetValue(YSList.Item(z));
+   textYI.Item(z)->SetValue(YIList.Item(z));
    textYF.Item(z)->SetValue(YFList.Item(z));
    textSF.Item(z)->SetValue(SFList.Item(z));
    textSM.Item(z)->SetValue(SMList.Item(z));
@@ -261,6 +274,7 @@ wxFileDialog *OpenDialog = new wxFileDialog(this, wxT("Select a ERYA Yield file 
   for(int z=0; z<YSList.GetCount(); z++)
    {
    textYS.Item(z)->SetValue(YSList.Item(z));
+   textYI.Item(z)->SetValue(YIList.Item(z));
    textYF.Item(z)->SetValue(YFList.Item(z));
    textSF.Item(z)->SetValue(SFList.Item(z));
    textSM.Item(z)->SetValue(SMList.Item(z));
@@ -296,7 +310,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
  {
  wxString CurrentERYAPIXEFilePath = SaveDialog->GetPath();
  ERYAPIXEFile file(CurrentERYAPIXEFilePath);
- file.ERYAPIXEFileSave(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness,  choiceElement, choiceGP, checkFit, textZ, textCP, textMG, textSG, textYS, textYE, textYF, textSF, textSM, textSE, tableLogProfiling, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield);
+ file.ERYAPIXEFileSave(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness,  choiceElement, choiceGP, checkFit, textZ, textCP, textMG, textSG, textYS, textYI, textYE, textYF, textSF, textSM, textSE, tableLogProfiling, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield);
  }
 SaveDialog->Close();
 }
@@ -312,24 +326,24 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
   if(Version == wxT("epz"))
   {
     ERYAPIXEFile file(CurrentERYAPIXEFilePath);
-    file.ERYAPIXEFileSave(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness, choiceElement, choiceGP, checkFit, textZ, textCP, textMG, textSG, textYS, textYE, textYF, textSF, textSM, textSE, tableLogProfiling, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield);
+    file.ERYAPIXEFileSave(textMinimumEnergy, textMaximumEnergy, textStepSize, textDetectorAngle, textCharge, textThickness, choiceElement, choiceGP, checkFit, textZ, textCP, textMG, textSG, textYS, textYI, textYE, textYF, textSF, textSM, textSE, tableLogProfiling, IterationSum, FitIterations, LogTau, LogStoichiometry, LogYield);
   }
   else
   {
    // Fix the correct table dimension, by placing a correct number of blank columns, if necessary
-   int AdditionalColumns = tableLogProfiling->GetNumberCols()-13;
+   int AdditionalColumns = tableLogProfiling->GetNumberCols()-14;
    if(AdditionalColumns < 0)
     AdditionalColumns = 0;
 
-   int ShiftColumns = 13 - tableLogProfiling->GetNumberCols();
+   int ShiftColumns = 14 - tableLogProfiling->GetNumberCols();
    if(ShiftColumns < 0)
     ShiftColumns = 0;
 
     // Create a TableMatrix object to export the main spreadsheet
 
-    TableMatrix CurrentYieldTable(choiceElement.GetCount()+1,13+AdditionalColumns);
+    TableMatrix CurrentYieldTable(choiceElement.GetCount()+1,14+AdditionalColumns);
     CurrentYieldTable.Clear();
-    CurrentYieldTable.DeclareDimension(1,13+AdditionalColumns);
+    CurrentYieldTable.DeclareDimension(1,14+AdditionalColumns);
 
     // Add the first row to the labels
 
@@ -341,6 +355,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(wxT("Initial Mass")));
     CurrentYieldTable.Add(TableNode(wxT("Initial Composition")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
+    CurrentYieldTable.Add(TableNode(wxT("Yield Initial")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Atomic")));
@@ -399,6 +414,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
       CurrentYieldTable.Add(TableNode(wxString::Format("%f",MassFractionData),1));
       CurrentYieldTable.Add(TableNode(wxString::Format("%f",StoichiometryData),1));
       CurrentYieldTable.Add(TableNode(textYS.Item(i)->GetValue(),1));
+      CurrentYieldTable.Add(TableNode(textYI.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textYE.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textYF.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textSF.Item(i)->GetValue(),1));
@@ -425,6 +441,7 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(textCharge->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Thickness(ug/cm2)="),0));
     CurrentYieldTable.Add(TableNode(textThickness->GetValue(),1));
+    CurrentYieldTable.Add(TableNode(wxEmptyString));
     for(int z=0; z<AdditionalColumns; z++)
      {
       CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
@@ -447,13 +464,14 @@ wxFileDialog *SaveDialog = new wxFileDialog(this, wxT("Save ERYA Yield File As..
     CurrentYieldTable.Add(TableNode(wxString::Format("%f",std::pow(10,-1.0*LogYield)),1));
     CurrentYieldTable.Add(TableNode(wxT("Stoichiometry Precision="),0));
     CurrentYieldTable.Add(TableNode(wxString::Format("%f",std::pow(10,-1.0*LogStoichiometry)),1));
+    CurrentYieldTable.Add(TableNode(wxEmptyString));
     for(int z=0; z<AdditionalColumns; z++)
      {
       CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
      }
 
     // Copy the Profiling Data
-    for(int z=0; z<13+AdditionalColumns; z++) //Empty Line
+    for(int z=0; z<14+AdditionalColumns; z++) //Empty Line
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     }
@@ -523,6 +541,8 @@ if (ResetDatabase)
   textMG.Item(z)->Clear();
   textSG.Item(z)->Clear();
   textYS.Item(z)->Clear();
+  textYI.Item(z)->Clear();
+  textYI.Item(z)->SetValue(wxT("0"));
   textYE.Item(z)->Clear();
   textYF.Item(z)->Clear();
   textSF.Item(z)->Clear();
@@ -599,7 +619,7 @@ wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reset the 
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.60\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version 4.70\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )
@@ -658,7 +678,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
  else
  {
   // Store the elements as arrays
-  wxArrayString CPList, MGList, SGList, YSList, YEList, YFList, SFList, SMList, SEList, ElementGroupList, ElementAdressList, ElementFitList;
+  wxArrayString CPList, MGList, SGList, YSList, YIList, YEList, YFList, SFList, SMList, SEList, ElementGroupList, ElementAdressList, ElementFitList;
   wxString MinimumEnergy, MaximumEnergy, StepEnergy, DetectorAngle, Charge, Thickness;
   MinimumEnergy = textMinimumEnergy->GetValue();
   MaximumEnergy = textMaximumEnergy->GetValue();
@@ -719,6 +739,15 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
     SGList.Add(textSG.Item(k)->GetValue());
    }
    YSList.Add(textYS.Item(k)->GetValue());
+   wxString ThisYI = textYI.Item(k)->GetValue();
+   if (ThisYI.Len() == 0)
+   {
+    YIList.Add(wxT("0"));
+   }
+   else
+   {
+    YIList.Add(textYI.Item(k)->GetValue());
+   }
    YEList.Add(textYE.Item(k)->GetValue());
    YFList.Add(textYF.Item(k)->GetValue());
    SFList.Add(textSF.Item(k)->GetValue());
@@ -727,7 +756,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
    }
   // Call the main calculation routine:
   barMainStatus->SetStatusText(wxT("Evaluating, Please Wait..."),0);
-  ReactionYield MainReactionYield(OpenDatabase,CurrentDetectorParameters,CurrentZieglerParameters,CurrentSRIMTables,MinimumEnergy,MaximumEnergy,StepEnergy,DetectorAngle,Charge,Thickness,CPList,ElementGroupList,ElementAdressList,ElementFitList,MGList,SGList,YSList,YEList,YFList,SFList,SMList,SEList,FitIterations,LogTau,LogYield,LogStoichiometry);
+  ReactionYield MainReactionYield(OpenDatabase,CurrentDetectorParameters,CurrentZieglerParameters,CurrentSRIMTables,MinimumEnergy,MaximumEnergy,StepEnergy,DetectorAngle,Charge,Thickness,CPList,ElementGroupList,ElementAdressList,ElementFitList,MGList,SGList,YSList,YIList,YEList,YFList,SFList,SMList,SEList,FitIterations,LogTau,LogYield,LogStoichiometry);
   SucefulFit = MainReactionYield.GetErrorStatus();
   IterationSum = MainReactionYield.GetNumberIteractions();
   Matrix ProfilingData = MainReactionYield.GetElementsProfiling();
@@ -743,6 +772,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
      textMG.Item(z)->SetValue(wxT("0")); // Erased since it was converted
      textSG.Item(z)->SetValue(SFList.Item(z));
      textYS.Item(z)->SetValue(YFList.Item(z));
+     textYI.Item(z)->SetValue(YIList.Item(z));
      textYF.Item(z)->SetValue(YFList.Item(z));
      textSF.Item(z)->SetValue(SFList.Item(z));
      textSM.Item(z)->SetValue(SMList.Item(z));
@@ -755,6 +785,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
   for(int z=0; z<YSList.GetCount(); z++)
    {
    textYS.Item(z)->SetValue(YSList.Item(z));
+   textYI.Item(z)->SetValue(YIList.Item(z));
    textYF.Item(z)->SetValue(YFList.Item(z));
    textSF.Item(z)->SetValue(SFList.Item(z));
    textSM.Item(z)->SetValue(SMList.Item(z));
@@ -769,6 +800,7 @@ if( IsDatabaseEmpty(OpenDatabase) || IsDetectorEmpty(CurrentDetectorParameters) 
   for(int z=0; z<YSList.GetCount(); z++)
    {
    textYS.Item(z)->SetValue(YSList.Item(z));
+   textYI.Item(z)->SetValue(YIList.Item(z));
    textYF.Item(z)->SetValue(YFList.Item(z));
    textSF.Item(z)->SetValue(SFList.Item(z));
    textSM.Item(z)->SetValue(SMList.Item(z));
@@ -843,6 +875,8 @@ void ERYAPIXEMainFrame::OnMainNew( wxCommandEvent& event )
   textMG.Item(k)->Clear();
   textSG.Item(k)->Clear();
   textYS.Item(k)->Clear();
+  textYI.Item(k)->Clear();
+  textYI.Item(k)->SetValue(wxT("0"));
   textYE.Item(k)->Clear();
   textYF.Item(k)->Clear();
   textSF.Item(k)->Clear();
@@ -912,19 +946,19 @@ void ERYAPIXEMainFrame::OnMainCheck( wxCommandEvent& event )
 void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
 {
    // Fix the correct table dimension, by placing a correct number of blank columns, if necessary
-   int AdditionalColumns = tableLogProfiling->GetNumberCols()-13;
+   int AdditionalColumns = tableLogProfiling->GetNumberCols()-14;
    if(AdditionalColumns < 0)
     AdditionalColumns = 0;
 
-   int ShiftColumns = 13 - tableLogProfiling->GetNumberCols();
+   int ShiftColumns = 14 - tableLogProfiling->GetNumberCols();
    if(ShiftColumns < 0)
     ShiftColumns = 0;
 
     // Create a TableMatrix object to export the main spreadsheet
 
-    TableMatrix CurrentYieldTable(choiceElement.GetCount()+1,13+AdditionalColumns);
+    TableMatrix CurrentYieldTable(choiceElement.GetCount()+1,14+AdditionalColumns);
     CurrentYieldTable.Clear();
-    CurrentYieldTable.DeclareDimension(1,13+AdditionalColumns);
+    CurrentYieldTable.DeclareDimension(1,14+AdditionalColumns);
 
     // Add the first row to the labels
 
@@ -936,6 +970,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(wxT("Initial Mass")));
     CurrentYieldTable.Add(TableNode(wxT("Initial Composition")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Guess")));
+    CurrentYieldTable.Add(TableNode(wxT("Yield Initial")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Experimental")));
     CurrentYieldTable.Add(TableNode(wxT("Yield Fitted")));
     CurrentYieldTable.Add(TableNode(wxT("Composition Atomic")));
@@ -994,6 +1029,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
       CurrentYieldTable.Add(TableNode(wxString::Format("%f",MassFractionData),1));
       CurrentYieldTable.Add(TableNode(wxString::Format("%f",StoichiometryData),1));
       CurrentYieldTable.Add(TableNode(textYS.Item(i)->GetValue(),1));
+      CurrentYieldTable.Add(TableNode(textYI.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textYE.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textYF.Item(i)->GetValue(),1));
       CurrentYieldTable.Add(TableNode(textSF.Item(i)->GetValue(),1));
@@ -1020,6 +1056,7 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(textCharge->GetValue(),1));
     CurrentYieldTable.Add(TableNode(wxT("Thickness(ug/cm2)="),0));
     CurrentYieldTable.Add(TableNode(textThickness->GetValue(),1));
+    CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     for(int z=0; z<AdditionalColumns; z++)
      {
       CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
@@ -1042,13 +1079,14 @@ void ERYAPIXEMainFrame::OnMainStop( wxCommandEvent& event )
     CurrentYieldTable.Add(TableNode(wxString::Format("%f",std::pow(10,-1.0*LogYield)),1));
     CurrentYieldTable.Add(TableNode(wxT("Stoichiometry Precision="),0));
     CurrentYieldTable.Add(TableNode(wxString::Format("%f",std::pow(10,-1.0*LogStoichiometry)),1));
+    CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     for(int z=0; z<AdditionalColumns; z++)
      {
       CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
      }
 
     // Copy the Profiling Data
-    for(int z=0; z<13+AdditionalColumns; z++) //Empty Line
+    for(int z=0; z<14+AdditionalColumns; z++) //Empty Line
     {
      CurrentYieldTable.Add(TableNode(wxEmptyString)); //Add a empty cell
     }
@@ -1184,6 +1222,9 @@ void ERYAPIXEMainFrame::GenerateTable(int Number )
   textYS.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), wxTE_READONLY ));
   sizerButtons->Add( textYS.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
+  textYI.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxT("0"), wxDefaultPosition, wxSize(120,-1), 0 ));
+  sizerButtons->Add( textYI.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
+
   textYE.Add(new wxTextCtrl( scrollButtons, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(120,-1), 0 ));
   sizerButtons->Add( textYE.Last(), 0, wxALL|wxALIGN_CENTER_HORIZONTAL, 5 );
 
@@ -1220,7 +1261,7 @@ void ERYAPIXEMainFrame::GenerateTable(int Number )
 // If the number of elements will increase
 if (ChangeElements < 0)
 {
- int NumberRemovedElements = std::abs(ChangeElements * 13); //Obtain the number of retired objects
+ int NumberRemovedElements = std::abs(ChangeElements * 14); //Obtain the number of retired objects
  for (int i=0; i<NumberRemovedElements; i++)
  {
    int CurrentNumberElements = sizerButtons->GetItemCount();
@@ -1240,6 +1281,7 @@ if (ChangeElements < 0)
    textSM.RemoveAt(textSM.GetCount()-1);
    textYE.RemoveAt(textYE.GetCount()-1);
    textYF.RemoveAt(textYF.GetCount()-1);
+   textYI.RemoveAt(textYI.GetCount()-1);
    textYS.RemoveAt(textYS.GetCount()-1);
    textZ.RemoveAt(textZ.GetCount()-1);
  }
@@ -1379,6 +1421,8 @@ bool ERYAPIXEMainFrame::StartUpProgram()
   textMG.Item(k)->Clear();
   textSG.Item(k)->Clear();
   textYS.Item(k)->Clear();
+  textYI.Item(k)->Clear();
+  textYI.Item(k)->SetValue(wxT("0"));
   textYE.Item(k)->Clear();
   textYF.Item(k)->Clear();
   textSF.Item(k)->Clear();
@@ -1661,7 +1705,7 @@ bool ERYAPIXEMainFrame::SaveSetupFile(wxString MainDirectory, wxString MainDetec
    wxXmlNode* programdatetime = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Date_File_Creation");
      programdatetime->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ActualTime));
    wxXmlNode* programversion = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Version");
-     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+     programversion->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.70")));
     wxXmlNode* programname = new wxXmlNode(details, wxXML_ELEMENT_NODE, "Program_Name");
      programname->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("ERYA-Bulk")));
   // Save the file
