@@ -208,6 +208,8 @@ class MainFrame : public wxFrame
 
 		~MainFrame();
 
+        static wxString GetAppVersion(){static int MajorVersion = 5; static int MinorVersion = 0; return wxString::Format("%i",MajorVersion) + wxString::Format(".%i",MinorVersion);}
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////

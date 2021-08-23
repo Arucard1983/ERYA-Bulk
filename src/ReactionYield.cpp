@@ -1921,7 +1921,7 @@ bool ReactionYield::EvaluateYield(ElementDatabaseArray MainDatabase, DetectorPar
     }
     progress->Destroy();
    }
-   return true;
+   return true; // Finish procedure
   }
   else // For some reason, the number of Elements and relevant parameters are not equal
    {

@@ -619,7 +619,7 @@ wxMessageDialog *dial = new wxMessageDialog(NULL, wxT("Do you want to reset the 
 
 void ERYAPIXEMainFrame::OnHelpAbout( wxCommandEvent& event )
 {
- wxMessageBox(wxT("Current Build Version 4.70\nBuilt with wxWidgets 3.0.4, with wxMathPlot 0.13\nand Custom Simple Xlsx File Library\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
+ wxMessageBox(wxT("Current Build Version " + this->GetAppVersion() + "\nBuilt with wxWidgets 3.0.5, with wxMathPlot 0.20\nand Simple Xlsx File Library 0.10\n(c) 2019 LIBPHYS"), wxT("Welcome to ERYA"));
 }
 
 void ERYAPIXEMainFrame::OnElement( wxCommandEvent& event )

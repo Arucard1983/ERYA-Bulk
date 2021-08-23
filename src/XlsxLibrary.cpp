@@ -8,6 +8,7 @@
  **************************************************************/
 
 #include "XlsxLibrary.h"
+#include "ERYAPIXEMainFrame.h"
 #include <wx/arrimpl.cpp>
 WX_DEFINE_OBJARRAY( TableNodeArray);
 
@@ -608,7 +609,7 @@ wxString XlsxFile::GetXlsxApp()
  app->AddAttribute(wxT("xmlns"),wxT("http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"));
  app->AddAttribute(wxT("xmlns:vt"),wxT("http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"));
  wxXmlNode* version = new wxXmlNode(app, wxXML_ELEMENT_NODE, "AppVersion");
- version->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("4.60")));
+ version->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, ERYAPIXEMainFrame::GetAppVersion()));
  wxXmlNode* links = new wxXmlNode(app, wxXML_ELEMENT_NODE, "HyperlinksChanged");
  links->AddChild(new wxXmlNode(wxXML_TEXT_NODE, wxEmptyString, wxT("false")));
  wxXmlNode* doc = new wxXmlNode(app, wxXML_ELEMENT_NODE, "SharedDoc");

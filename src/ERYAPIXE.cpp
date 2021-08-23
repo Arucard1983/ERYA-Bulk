@@ -47,7 +47,8 @@ WX_DEFINE_OBJARRAY( ArraySE);
 
 MainFrame::MainFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+
+    this->SetSizeHints( wxDefaultSize, wxDefaultSize );
 
 	mMainMenu = new wxMenuBar( 0 );
 	menuFile = new wxMenu();
