@@ -17,7 +17,6 @@ all:
 	$(CC) ./src/*.cpp $(WXWIDGETS) -std=c++11 -o ./$(BUILD)/$(TARGET)
 
 #Copy the assets
-	$(CP) ./src/*.html ./$(BUILD)/
 	$(CP) ./src/readme.txt ./$(BUILD)/
 	$(CP) ./src/*.ep* ./$(BUILD)/
 
