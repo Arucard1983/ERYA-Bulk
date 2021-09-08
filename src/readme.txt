@@ -1,15 +1,15 @@
-ERYA-Bulk Version 4.50 ReadMe
+ERYA-Bulk Version 5.00 ReadMe
 
 ----------------------------------------------------
 
 1. Minimum Requirements
 
 ERYA-Bulk requires a computer with an supported operating system or architecture.
-- Windows 7, 10 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux Debian 10 or Ubuntu 18.04 or greater.
+- Windows 7, 10 or greater (Windows XP may work), Mac OS X 10.11 or greater (Mac OS X 10.10 may work), Linux Debian 11 or Ubuntu 21.04 or greater.
 - 64-bit x86-64 is the default suported architecture for all operating systems listed before. Windows and Linux 32-bit versions are provided for legacy systems.
 - ARM binary versions are also provided for Linux systems.
 - The minimum usefull screen resolution is 1280*720, but it is highly recommended to use a FullHD display (1920*1080) for better view.
-- About 100 Mb of free hard disk space is highly recommended.
+- About 10 to 100 Mb of free hard disk space is highly recommended.
 
 2. Supported Features
 # Ziegler's Parameters database supports the SRIM tables for all elements, along the Ziegler's Parameters of this stopping-power model itself. An optional algebraic expression are also supported.
@@ -21,7 +21,7 @@ ERYA-Bulk requires a computer with an supported operating system or architecture
 3. Installation from Binary Package.
 
 # Linux Instructions
-3.1. Check first if your Linux distribution are compatible with Debian 10 or Ubuntu 18.04 codebase.
+3.1. Check first if your Linux distribution are compatible with Debian 11 or Ubuntu 21.04 codebase.
 
 3.2. Download the correct arch version to your computer, then open a Terminal window on the same folder of the downloaded package.
 - For Ubuntu systems, it's not necessary to open a root shell before install programs:
@@ -29,7 +29,7 @@ $ sudo apt update
 $ sudo apt dist-upgrade
 $ sudo dpkg -i *.deb
 $ sudo apt -f install
-- On Debian 10, due to higher security restrictions, it is necessary to open a root shell first:
+- On Debian 11, due to higher security restrictions, it is necessary to open a root shell first:
 $ su [Ask for your root password...]
 $ apt update
 $ apt dist-upgrade
@@ -37,7 +37,7 @@ $ dpkg -i *.deb
 $ dpkg -t stretch-backports -f install
 
 3.3. Open the ERYA-Bulk from your favorite Desktop Environment (Menu>Education>ERYA-Bulk), or simply type on Terminal:
-$ /opt/ERYA-Bulk/ERYA-Bulk
+$ LC_ALL=C /opt/ERYA-Bulk/ERYA-Bulk
 
 3.4. The ERYA-Bulk will create a profile directory as ~/.ERYA-Bulk, where the local configuration settings will be stored.
 
@@ -114,6 +114,7 @@ $ rm -rf ~/.ERYA-Bulk
 
 Copyrights
 
-Group: 2019 LibPhys
+Group: 2021 LibPhys
 Programmer e-mail: vm.manteigas@campus.fct.unl.pt
 wxMathPlot/wxWidgets licence:  https://github.com/wxWidgets/wxWidgets/blob/master/docs/licence.txt
+License: LGPLv3

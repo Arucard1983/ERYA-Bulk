@@ -4,7 +4,7 @@
 <Contents>
 <Program_Name>ERYA-Bulk</Program_Name>
 <Program_Version>4.50</Program_Version>
-<Date_File_Creation>2019-07-21T17:17:55.00Z</Date_File_Creation>
+<Date_File_Creation>2019-07-22T15:54:30.00Z</Date_File_Creation>
 <Remark>Sample Database bundled with ERYA.
 Read each Element/Gamma information for more details.</Remark>
 </Contents>
@@ -6481,7 +6481,7 @@ Source:  R.Mateus et al. Nucl. Instr. &amp; Meth. B190 (2002) 117 + M. Fonseca e
 </Database_Element>
 <Database_Element>
 <register n="28" Element_Name="9Be" Gamma_Peak="718" Atomic_Number="4" Abundance="1.000000" Atomic_Mass="9.012180" Isotopic_Mass="9.012180"/>
-<Element_Remark>Element 9Be0 (718) exported from legacy LabView.</Element_Remark>
+<Element_Remark>Element 9Be0 (718) exported from old CTN Databases.</Element_Remark>
 <Cross-Section>
 <sector n="1" Energy="849.000000" Energy_Error="0" Sigma="0.000000" Sigma_Error="0"/>
 <sector n="2" Energy="850.751052" Energy_Error="0" Sigma="0.009000" Sigma_Error="0"/>

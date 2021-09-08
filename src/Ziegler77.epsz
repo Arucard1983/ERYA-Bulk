@@ -3,12 +3,16 @@
 <File_Details>
 <Contents>
 <Program_Name>ERYA-Bulk</Program_Name>
-<Program_Version>3.75</Program_Version>
-<Date_File_Creation>2017-10-10T15:22:01.00Z</Date_File_Creation>
+<Program_Version>4.30</Program_Version>
+<Date_File_Creation>2019-07-03T16:14:04.00Z</Date_File_Creation>
+<Remark></Remark>
 </Contents>
 </File_Details>
 <Ziegler_Data>
 <Ziegler_Version zv="0"/>
+<Ziegler_Function>
+<macro></macro>
+</Ziegler_Function>
 <Ziegler_Parameters>
 <Element_Number number="1">
 <Element_Name>
@@ -4059,5 +4063,6 @@
 </Atomic_Mass>
 </Element_Number>
 </Ziegler_Parameters>
+<Ziegler_SRIM_Tables/>
 </Ziegler_Data>
 </ERYA-Bulk_Ziegler>

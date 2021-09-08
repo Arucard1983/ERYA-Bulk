@@ -1,0 +1,168 @@
+ERYA-Bulk Compiling Notes
+
+----------------------------------------------------
+
+In this scenario, it will explain how to use a Linux computer to build ERYA-Bulk and ERYA-Profiling for all major three operating systems.
+
+----------------------------------------------------
+
+Before you start, you will need:
+1. ERYA-Bulk source-code
+2. wxWidgets 3.0.4 source-code library
+3. wxMathPlot 0.13 source-code library
+4. GCC toolchain from your Linux distro.
+5. MinGW toolchain for Windows versions.
+6. OSXCross and XCode 7.0 or greater for OS X cross-compilers.
+7. Linux Operating System
+
+----------------------------------------------------
+
+Linux Compilation:
+
+1. Install build-essentials and wxWidgets 3.0.4 from your favorite distro's package manager
+# On Debian systems, just type:
+$ sudo apt-get install build-essential libwxgtk3.0-gtk3-dev
+
+2. Get wxMathPlot from source
+$ wget https://github.com/R1kk3r/wxMathPlot/archive/master.zip
+$ unzip master.zip
+$ cd wxMathPlot-master/mathplot/
+$ cd mathplot.cpp <project folder source>
+$ cd mathplot.h <project folder source>
+(You don't need to build as library, just unpack mathplot.cpp and mathplot.h to root directory source folder)
+
+
+3. Build ERYA-Bulk (wxMathPlot will compile as well)
+$ cd <project folder source>
+$ g++ *.cpp `wx-config --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+
+4. Running ERYA-Bulk
+$ ./ERYA-Bulk
+
+Linux Compilation on Intel and ARM (32 and 64 bits):
+- Replace the step 3 with the following commands:
+$ i686-linux-gnu-g++ - *.cpp `/usr/lib/i686-linux-gnu/wx/config/gtk3-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+$ aarch64-linux-gnu-g++ *.cpp `/usr/lib/aarch64-linux-gnu/wx/config/gtk3-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+$ arm-linux-gnueabihf-g++ *.cpp `/usr/lib/arm-linux-gnueabihf/wx/config/gtk3-unicode-3.0 --cxxflags --libs` -std=c++11 -o ERYA-Bulk
+
+- If qemu-user-static are installed, then it should run the programs directly, since the binary translator emulators are automatically loaded.
+
+Windows Cross-Compiling on Linux:
+
+1. Install mingw64 cross-compiler from your favorite distro's package manager.
+# On Debian systems, just apply:
+$ sudo apt-get install mingw-w64 wine
+
+And change the file ./src/msw/mediactrl_am.cpp on function wxAMMediaEvtHandler::OnActiveX(wxActiveXEvent& event)
+where:
+ switch (event.GetDispatchId())
+replaces by:
+ switch (static_cast<unsigned long>(event.GetDispatchId()))
+
+2. Build wxWidgets 3.0.5 from source.
+$ wget -nc --no-check-certificate https://sourceforge.net/projects/wxwindows/files/3.0.5/wxWidgets-3.0.5.tar.bz2
+$ tar xjf wxWidgets-3.0.5.tar.bz2
+$ cd wxWidgets-3.0.5
+$ ./configure --prefix=/usr/x86_64-w64-mingw32/ --host=x86_64-w64-mingw32 --build=x86_64-linux --disable-shared --enable-unicode --with-msw --without-subdirs
+$ make
+$ sudo make install
+$ sudo ldconfig
+$ make clean
+$ ./configure --prefix=/usr/i686-w64-mingw32/ --host=i686-w64-mingw32 --build=x86_64-linux --disable-shared --enable-unicode --with-msw --without-subdirs
+$ make
+$ sudo make install
+$ sudo ldconfig
+# This builds the 64-bit and the 32-bit Windows libraries
+
+3. Get wxMathPlot from source and unpack mathplot.cpp and mathplot.h to source folder
+$ wget https://github.com/R1kk3r/wxMathPlot/archive/master.zip
+$ unzip master.zip
+$ cd wxMathPlot-master/mathplot
+$ cp mathplot.cpp <project folder source>
+$ cp mathplot.h <project folder source>
+
+4. Build ERYA-Bulk (Be carefull to not mix 32-bit and 64-bit executables at the same directory)
+$ cd <project folder source>
+$ x86_64-w64-mingw32-g++ *.cpp `sh /usr/x86_64-w64-mingw32/bin/wx-config --cxxflags --libs` -o ERYA-Bulk-Win64.exe
+$ cp /usr/lib/gcc/x86_64-w64-mingw32/10.2-win32/*.dll <project folder source>
+$ i686-w64-mingw32-g++ *.cpp `sh /usr/i686-w64-mingw32/bin/wx-config --cxxflags --libs` -o ERYA-Bulk-Win32.exe
+$ cp /usr/lib/gcc/i686-w64-mingw32/10.2-win32/*.dll <project folder source>
+(It is necessary those dll's to run this program. Is better to put on root program directory for best portability.)
+
+5. Running ERYA-Bulk
+$ wine ERYA-Bulk-Win32.exe / ERYA-Bulk-Win64.exe (Using Wine to test the program on original Linux workstation)
+(Copy the files to a real Windows machine, and run ERYA-Bulk.exe from Windows Explorer)
+
+Mac OS X Cross-Compiling on Linux
+
+1. Get OSX-Cross from the official GitHub site:
+https://github.com/tpoechtrager/osxcross
+
+2. Obtain the XCode 7.0 (or better version, tested up to last 7.2) from Apple, or any third-party sources (Warning: It may be illegal to use Apple's tools in non-Apple hardware.)
+
+3. Copy the XCode's DMG file to the /osxcross/tools directory.
+
+4. Build the cross-toolchain using the following command (It will build a native and patched version of p7zip capable to read HFS+ disks):
+$ ./gen_sdk_package_p7zip.sh <xcode>.dmg
+
+5. Build the Clang cross-compiler:
+$ ./build.sh
+
+6. To avoid license issues, delete all unused DMG files. In fact, only a tiny fraction (100 MB) of the 5 GB Apple SDK are used, and only extracted the Open-Source components of Mac OS X.
+
+7. OSX-Cross also ported the MacPorts repository. You can use it to install the wxWidgets-3.0.2 libraries, avoiding the need to cross-compile the wxWidgets source-code. However, build wxWidgets by the source was less error-prone.
+
+8. From source-code, just unpack the same file in "Windows" section, jump to target directory, and set the following steps:
+$ export PATH=<OSX-Cross binary folder>:$PATH (Like ~/osxcross/target/bin)
+$ mkdir -p <Path to wxWidgets libraries>   (Like ~/osxcross/opt/wxWidgets/)
+
+9. Edit the following source-file: src/osx/webview_webkit.mm
+And change the following line:
+-#include <WebKit/WebKit.h>
++#include <WebKit/WebKitLegacy.h> 
+
+10. Edit the following source-file: src/osx/choice_osx.cpp
+Change the following function to the following snippet code:
+
+wxString wxChoice::GetString(unsigned int n) const
+{
+ if( n < m_strings.size() )
+     return m_strings[n];
+ else
+     return wxEmptyString;
+}
+
+11. Build the library as static, using the following parameters:
+$ ./configure --prefix=/home/username/OSX/wxWidgets/ --host=x86_64-apple-darwin15  CC=o64-clang CXX=o64-clang++ --build=x86_64-linux --with-osx_cocoa --with-macosx-version-min=10.11  --disable-shared --enable-monolithic --enable-unicode --without-subdirs --with-libjpeg=builtin --with-libpng=builtin --with-regex=builtin --with-libtiff=builtin --with-zlib=builtin --with-expat=builtin --with-opengl
+$ make
+$ make install
+
+12. Build ERYA-Bulk 
+$ o64-clang++ *.cpp `/home/username/OSX/wxWidgets/bin/wx-config --cxxflags --libs` -stdlib=libc++ -std=c++11 -o ERYA-Bulk-OSX
+(Compilation may spam a lot of warnings, but it's fine)
+
+13. On Linux, Darling may be used to run the binary (At this moment, Darling still cannot run GUI applications on Linux), otherwise run on a real Mac OS X machine.
+
+14. Using Darling tools, specialy motool, you can get the program library dependencies:
+$ motool ERYA-Bulk-OSX -d
+Processing file: ERYA-Bulk-OSX
+Platform: x86-64
+Dylibs:
+	/System/Library/Frameworks/IOKit.framework/Versions/A/IOKit (compatibility version 1.0.0, current version 275.0.0)
+	/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 157.0.0)
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 22.0.0)
+	/System/Library/Frameworks/AudioToolbox.framework/Versions/A/AudioToolbox (compatibility version 1.0.0, current version 492.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1226.10.1)
+	/System/Library/Frameworks/OpenGL.framework/Versions/A/OpenGL (compatibility version 1.0.0, current version 1.0.0)
+	/System/Library/Frameworks/WebKit.framework/Versions/A/WebKit (compatibility version 1.0.0, current version 601.5.17)
+	/usr/lib/libiconv.2.dylib (compatibility version 7.0.0, current version 7.0.0)
+	/usr/lib/liblzma.5.dylib (compatibility version 6.0.0, current version 6.3.0)
+	/usr/lib/libc++.1.dylib (compatibility version 1.0.0, current version 120.1.0)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1404.46.0)
+	/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 48.0.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1258.1.0)
+	/System/Library/Frameworks/CoreServices.framework/Versions/A/CoreServices (compatibility version 1.0.0, current version 728.9.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1258.0.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+
+
